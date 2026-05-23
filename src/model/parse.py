@@ -48,15 +48,21 @@ def parse(raw: str, fmt: Format) -> ParsedAnswer:
 
 
 def _letter(text: str) -> Optional[str]:
-    # prefer an explicit "Answer: B" / "(B)" / leading letter
-    m = re.search(r"\b(?:answer|option)\s*[:=]?\s*\(?([A-E])\)?", text, re.I)
+    # The answer follows the thinking block; restrict to the region AFTER the last
+    # </think> so stray "Patient A/B" mentions inside the reasoning can't be grabbed
+    # (fixes the first-match mis-grade — vault ERR-20260523-002).
+    region = text.rsplit("</think>", 1)[-1] if "</think>" in text else text
+    # explicit "Answer: B" / "(B)" in the answer region
+    m = re.search(r"\b(?:answer|option)\s*[:=]?\s*\(?([A-E])\)?", region, re.I)
     if m:
         return m.group(1).upper()
-    m = re.match(r"\(?([A-E])\)?[\.\):]?\b", text.strip(), re.I)
+    # leading bare letter
+    m = re.match(r"\(?([A-E])\)?[\.\):]?\b", region.strip(), re.I)
     if m:
         return m.group(1).upper()
-    m = re.search(r"\b([A-E])\b", text)
-    return m.group(1).upper() if m else None
+    # fallback: the LAST standalone A-E in the answer region (the verdict comes last)
+    matches = re.findall(r"\b([A-E])\b", region)
+    return matches[-1].upper() if matches else None
 
 
 def _number(text: str) -> Optional[float]:
