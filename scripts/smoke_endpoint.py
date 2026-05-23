@@ -26,7 +26,7 @@ PROBE = [
 def main():
     print(f"base_url = {config.LONGEVITY_BASE_URL}")
     print(f"model    = {config.LONGEVITY_MODEL}")
-    print(f"HF_TOKEN = {'set' if config.HF_TOKEN else 'MISSING — fill .env'}\n")
+    print(f"MODEL_ACCESS_TOKEN = {'set' if config.MODEL_ACCESS_TOKEN else 'MISSING — fill .env'}\n")
     res = chat(PROBE, max_tokens=200)
     if not res.ok:
         print(f"FAIL after retries: {res.error}")

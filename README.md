@@ -37,8 +37,8 @@ Plain NHANES mortality/age already ship as **LB-0042/46/50/54** and **LB-0030/34
 rebuilding them = zero novelty. Our contribution is **counterfactual red-flag robustness +
 context-vs-keyword reasoning**, which doesn't exist in the benchmark:
 - **LB-0142 `nhanes_redflag_pairwise`** (pairwise/accuracy) — A (base) vs B (base + 1 red flag)
-- **LB-0143 `nhanes_redflag_relevance`** (binary/accuracy) — is this flag a real driver *for this patient*? (keyword traps)
-- **LB-0144 `nhanes_redflag_setgen`** (generation/jaccard) — which listed factors raise *this* patient's risk?
+- **LB-0146 `nhanes_redflag_relevance`** (binary/accuracy) — is this flag a real driver *for this patient*? (keyword traps)
+- **LB-0150 `nhanes_redflag_setgen`** (generation/jaccard) — which listed factors raise *this* patient's risk?
 - **bonus** — reasoning-verification scorer (`src/score/deterministic.py` + `judge.py`) over `has_reasoning` traces
 
 Ground truth: relative (red-flag effect) from matched-cohort/epidemiology, in `metadata`.

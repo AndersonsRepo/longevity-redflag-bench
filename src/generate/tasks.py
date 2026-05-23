@@ -6,8 +6,8 @@ We do NOT rebuild plain NHANES mortality — those already exist as LB-0042/46/5
 Our contribution is counterfactual red-flag robustness + context-vs-keyword reasoning.
 
   LB-0142 gen_redflag_pairwise   pairwise/accuracy  — A (base) vs B (base+1 red flag)
-  LB-0143 gen_redflag_relevance  binary/accuracy    — is THIS flag a real driver here? (traps)
-  LB-0144 gen_redflag_setgen     generation/jaccard — which listed factors raise THIS risk?
+  LB-0146 gen_redflag_relevance  binary/accuracy    — is THIS flag a real driver here? (traps)
+  LB-0150 gen_redflag_setgen     generation/jaccard — which listed factors raise THIS risk?
 
 Gold goes in the trailing assistant message; verifiable GT (direction, matched-cohort
 band, should_moderate, split, cycle, base_profile_id) goes in metadata. Tag split by

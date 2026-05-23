@@ -19,6 +19,10 @@ LONGEVITY_BASE_URL = os.environ.get(
 # HF dedicated TGI endpoints usually accept model="tgi". Override via env if the
 # endpoint reports a specific model id.
 LONGEVITY_MODEL = os.environ.get("LONGEVITY_MODEL", "tgi")
+# Token to CALL the model endpoint (the actual LLM credential from event materials).
+MODEL_ACCESS_TOKEN = os.environ.get("MODEL_ACCESS_TOKEN", "")
+
+# Personal HF READ token — used only for DATASET access (datasets-server / load_dataset).
 HF_TOKEN = os.environ.get("HF_TOKEN", "")
 
 # --- Judge (bonus reasoning scorer): the only thing the $50 Anthropic credit pays for ---

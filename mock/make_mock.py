@@ -6,8 +6,8 @@ Doubles as worked examples of the reconciled contract. Run:  python mock/make_mo
 
 Task ids (lb_id is per-TASK, shared across its rows; continue past LB-0054):
   LB-0142  nhanes_redflag_pairwise   (pairwise / accuracy)
-  LB-0143  nhanes_redflag_relevance  (binary  / accuracy)  -- includes keyword-reactive traps
-  LB-0144  nhanes_redflag_setgen     (generation / jaccard)
+  LB-0146  nhanes_redflag_relevance  (binary  / accuracy)  -- includes keyword-reactive traps
+  LB-0150  nhanes_redflag_setgen     (generation / jaccard)
 """
 
 import os
@@ -70,7 +70,7 @@ def build():
                       "should_moderate": mod, "evidence_ids": [f"ev-{rf}"],
                       "split": "train" if cyc == "1999-2000" else "test", "cycle": cyc}))
 
-    # --- LB-0143  relevance (binary): is THIS flag a real driver for THIS patient? -- #
+    # --- LB-0146  relevance (binary): is THIS flag a real driver for THIS patient? -- #
     relevance = [
         ("current_smoker", "current smoker", "A", ["genuine driver"], "increase_risk"),       # yes
         ("controlled_hypertension", "hypertension, well controlled on medication", "B",         # NO -- trap
@@ -86,7 +86,7 @@ def build():
                 "mortality risk, given their full profile?\n\n"
                 "Options: A. Yes  B. No\n\nAnswer with the option letter.")
         recs.append(BenchmarkRecord(
-            lb_id="LB-0143", pool="nhanes_redflag_relevance",
+            lb_id="LB-0146", pool="nhanes_redflag_relevance",
             display_name="NHANES Red-Flag / Relevance", display_group="NHANES Red-Flag Robustness",
             format=Format.binary, metric=Metric.accuracy, units=None,
             messages=_msgs(user, gold), task="nhanes_redflag_relevance",
@@ -95,7 +95,7 @@ def build():
                       "should_moderate": mod, "evidence_ids": [f"ev-{rf}"], "is_trap": gold == "B",
                       "split": "train" if cyc == "1999-2000" else "test", "cycle": cyc}))
 
-    # --- LB-0144  set generation (jaccard): which listed factors RAISE this risk? ---- #
+    # --- LB-0150  set generation (jaccard): which listed factors RAISE this risk? ---- #
     setgen = [
         (["current smoking", "age 72"],
          "current smoking; controlled hypertension on medication; age 72; daily exercise",
@@ -110,7 +110,7 @@ def build():
                 "10-year mortality risk, as a comma-separated list.\n"
                 f"Factors: {options}.")
         recs.append(BenchmarkRecord(
-            lb_id="LB-0144", pool="nhanes_redflag_setgen",
+            lb_id="LB-0150", pool="nhanes_redflag_setgen",
             display_name="NHANES Red-Flag / Set", display_group="NHANES Red-Flag Robustness",
             format=Format.generation, metric=Metric.jaccard, units=None,
             messages=_msgs(user, ", ".join(gold_set)), task="nhanes_redflag_setgen",
