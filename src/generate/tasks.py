@@ -1,12 +1,17 @@
-"""STUB — owner: Anderson. The 5 task generators. Each returns a list of
-BenchmarkRecord (the contract). >= 50 per task. See mock/make_mock.py for worked
-examples of every record shape.
+"""STUB — owner: Anderson. The NOVEL red-flag task generators. Each returns a list of
+BenchmarkRecord (LongevityBench format). >= 50 rows per task (rows of a task share lb_id).
+See mock/make_mock.py for worked examples of every record shape.
 
-Layer A (absolute GT, real outcome): binary_survival, ordinal_risk, regression
-Layer B (relative GT, red-flag effect): pairwise_counterfactual, set_generation
+We do NOT rebuild plain NHANES mortality — those already exist as LB-0042/46/50/54.
+Our contribution is counterfactual red-flag robustness + context-vs-keyword reasoning.
 
-Wire phrasing variants (phrasings.py) for Diversity and tag split by `covariates.cycle`
-(build-plan.md §4 covariate split). Validate output with validate/validate_jsonl.py.
+  LB-0142 gen_redflag_pairwise   pairwise/accuracy  — A (base) vs B (base+1 red flag)
+  LB-0143 gen_redflag_relevance  binary/accuracy    — is THIS flag a real driver here? (traps)
+  LB-0144 gen_redflag_setgen     generation/jaccard — which listed factors raise THIS risk?
+
+Gold goes in the trailing assistant message; verifiable GT (direction, matched-cohort
+band, should_moderate, split, cycle, base_profile_id) goes in metadata. Tag split by
+covariates.cycle (build-plan.md §4). Validate with validate/validate_jsonl.py.
 """
 
 from __future__ import annotations
@@ -16,27 +21,22 @@ from typing import List
 from schema.records import BenchmarkRecord
 
 
-def gen_binary_survival(cohort, n: int = 60) -> List[BenchmarkRecord]:
-    raise NotImplementedError("Anderson: real profile -> survive >=10yr? GT=died_10yr.")
+def gen_redflag_pairwise(cohort, redflags, effects, n: int = 60) -> List[BenchmarkRecord]:
+    """Base profile vs same profile + one injected red flag; gold = higher-risk option.
+    Direction from matched_cohort.empirical_effect (fallback: redflags.csv direction)."""
+    raise NotImplementedError("Anderson: build pairwise A/B; gold from effect direction.")
 
 
-def gen_ordinal_risk(cohort, n: int = 60) -> List[BenchmarkRecord]:
-    raise NotImplementedError("Anderson: low/med/high vs empirical tertiles.")
+def gen_redflag_relevance(cohort, redflags, context_cases, n: int = 60) -> List[BenchmarkRecord]:
+    """Is this red flag a clinically significant driver for THIS patient? Include the
+    keyword-reactive traps from tasks/context_cases.yaml (gold=No despite scary keyword)."""
+    raise NotImplementedError("Anderson: build binary relevance; wire context_cases traps.")
 
 
-def gen_pairwise_counterfactual(cohort, redflags, effects, n: int = 60) -> List[BenchmarkRecord]:
-    raise NotImplementedError("Anderson: A vs A+redflag; GT=relative effect.")
+def gen_redflag_setgen(cohort, redflags, context_cases, n: int = 60) -> List[BenchmarkRecord]:
+    """Which of the listed factors raise THIS patient's risk? Mix real drivers with
+    managed/hereditary distractors; gold_set in metadata; metric=jaccard."""
+    raise NotImplementedError("Anderson: build set-generation with distractors.")
 
 
-def gen_set_generation(cohort, redflags, n: int = 60) -> List[BenchmarkRecord]:
-    raise NotImplementedError("Anderson: which factors raise THIS person's risk? include keyword traps.")
-
-
-def gen_regression(cohort, n: int = 60) -> List[BenchmarkRecord]:
-    raise NotImplementedError("Anderson: risk score / years; handle censoring in GT.")
-
-
-ALL_GENERATORS = (
-    gen_binary_survival, gen_ordinal_risk,
-    gen_pairwise_counterfactual, gen_set_generation, gen_regression,
-)
+ALL_GENERATORS = (gen_redflag_pairwise, gen_redflag_relevance, gen_redflag_setgen)

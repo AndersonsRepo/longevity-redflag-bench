@@ -21,15 +21,29 @@ python mock/make_mock.py                                           # build mock 
 python validate/validate_jsonl.py mock/mock_records.jsonl --min-per-task 1   # gate works
 ```
 
-## The contract
-`schema/records.py :: BenchmarkRecord` is the single shared interface. A submission line
-is `record.model_dump_json()`. **Don't change a field without telling the team.** Build
-against `mock/mock_records.jsonl` until the real NHANES cohort lands.
+## The contract — LongevityBench format
+`schema/records.py :: BenchmarkRecord` mirrors the real LongevityBench row schema
+(`lb_id, pool, display_name, display_group, domain, format, metric, units, messages,
+task, has_reasoning, metadata`) so our tasks **extend the framework**. Confirmed against
+a live `LB-0042` row:
+- **gold = the trailing `assistant` message** (e.g. `"B"`); prompt sent = `messages[:-1]`.
+- `metadata` is a **JSON string** of provenance; we stash our verifiable GT there
+  (`red_flag, expected_direction, magnitude_band, should_moderate, evidence_ids, split, cycle, base_profile_id`).
+A submission line is `record.model_dump_json()`. Build against `mock/mock_records.jsonl`.
+**Don't change a field without telling the team.**
 
-## Ground truth (3 layers — see build-plan.md §2)
-- **A / absolute:** real profile → real linked outcome (`binary_survival`, `ordinal_risk`, `regression`)
-- **B / relative:** counterfactual red-flag effect (`pairwise_counterfactual`, `set_generation`) — direction + matched-cohort band
-- **C / bonus:** reasoning-verification scorer (`src/score/deterministic.py` + `judge.py`)
+## Our tasks (the NOVEL part — we do NOT rebuild plain NHANES mortality)
+Plain NHANES mortality/age already ship as **LB-0042/46/50/54** and **LB-0030/34/38** —
+rebuilding them = zero novelty. Our contribution is **counterfactual red-flag robustness +
+context-vs-keyword reasoning**, which doesn't exist in the benchmark:
+- **LB-0142 `nhanes_redflag_pairwise`** (pairwise/accuracy) — A (base) vs B (base + 1 red flag)
+- **LB-0143 `nhanes_redflag_relevance`** (binary/accuracy) — is this flag a real driver *for this patient*? (keyword traps)
+- **LB-0144 `nhanes_redflag_setgen`** (generation/jaccard) — which listed factors raise *this* patient's risk?
+- **bonus** — reasoning-verification scorer (`src/score/deterministic.py` + `judge.py`) over `has_reasoning` traces
+
+Ground truth: relative (red-flag effect) from matched-cohort/epidemiology, in `metadata`.
+Contamination is confirmed (NHANES is in LongevityBench) → the perturbation is what makes
+these retrieval-resistant. Run `scripts/contamination_probe.py` to document it.
 
 ## Who owns what
 | Person | Start here | Builds |
