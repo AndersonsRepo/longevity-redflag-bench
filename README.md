@@ -32,6 +32,14 @@ a live `LB-0042` row:
 A submission line is `record.model_dump_json()`. Build against `mock/mock_records.jsonl`.
 **Don't change a field without telling the team.**
 
+## Model behavior (verified live 2026-05-23)
+Endpoint is **vLLM-served**, model id **`longevity-llm`** (not `tgi`), **28K** real context
+(`max_model_len`), ~8s/call. It **ignores JSON formatting** and answers in verbose prose, so:
+- End every prompt with `Reason briefly, then on the FINAL line output exactly: Answer: <letter>`
+  and call with `max_tokens >= ~400`. `src/model/parse.py` extracts the trailing letter.
+- The reasoning prose is a bonus-track asset → set `has_reasoning=True` and feed the scorer.
+- Calls need `MODEL_ACCESS_TOKEN` + `LONGEVITY_BASE_URL` (with `/v1`) in `.env`.
+
 ## Our tasks (the NOVEL part — we do NOT rebuild plain NHANES mortality)
 Plain NHANES mortality/age already ship as **LB-0042/46/50/54** and **LB-0030/34/38** —
 rebuilding them = zero novelty. Our contribution is **counterfactual red-flag robustness +

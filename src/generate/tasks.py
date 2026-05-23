@@ -12,6 +12,13 @@ Our contribution is counterfactual red-flag robustness + context-vs-keyword reas
 Gold goes in the trailing assistant message; verifiable GT (direction, matched-cohort
 band, should_moderate, split, cycle, base_profile_id) goes in metadata. Tag split by
 covariates.cycle (build-plan.md §4). Validate with validate/validate_jsonl.py.
+
+PROMPT PATTERN (verified live 2026-05-23): the endpoint is vLLM-served `longevity-llm`,
+28K ctx, and IGNORES JSON formatting — it reasons in verbose prose. So end EVERY prompt
+with: "Reason briefly, then on the FINAL line output exactly: Answer: <letter>"
+(call with max_tokens >= ~400 so it finishes). src/model/parse.py extracts the trailing
+letter; the reasoning prose feeds the bonus scorer -> set has_reasoning=True. ~8s/call,
+so parallelize the eval pass.
 """
 
 from __future__ import annotations
