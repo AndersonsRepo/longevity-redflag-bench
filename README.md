@@ -67,3 +67,32 @@ vLLM-served `longevity-llm`, **28K** context, ignores JSON → end prompts with 
   conditions), `validate_jsonl`, `eval_lb0138` (Longevity-LLM + Claude arms), model client, parser.
 - **Stubs (`# TODO`):** `src/data/impc.py` + `gen_impc_viability` (LB-0142, blocked on IMPC re-pull),
   `gen_mgi_genotype_pairwise` (LB-0146), baselines, the per-category sampler, Hallmark-of-Aging tags.
+
+## Extra credit: Reasoning trace scorer
+
+Beyond final-answer accuracy, we built a **programmatic reasoning scorer** (`judge/`) that grades the *quality* of the model's `<think>` trace against real biological ground truth. Three checks run instantly with no API key; one optional check uses Claude Haiku (~$0.001/call).
+
+### What it checks
+| Check | Needs API? | What it catches |
+|---|---|---|
+| Gene hallucination | No | Model invents genes that don't exist in MGI (18K real genes) |
+| Think/answer consistency | No | `<think>` says "no effect" but answer says "A (impairs)" |
+| System/pathway grounding | No | Claims gene is in wrong biological system vs. MGI annotations |
+| Claude biological verification | Yes (Haiku) | Fabricated mechanisms, wrong pathways, invented citations |
+
+### Try it (no setup required)
+```bash
+python judge/demo_trace_scorer.py          # 5 curated examples, ~2 seconds, $0
+```
+
+### Score a JSONL of traces
+```bash
+python judge/score_trace.py traces.jsonl --no-api -o judge/trace_scores.jsonl
+```
+Input JSONL fields: `trace`, `answer` (A/B), `genes_in_prompt` (list).
+
+### Live end-to-end demo (queries Longevity-LLM + Claude)
+```bash
+python judge/live_scorer.py                # needs MODEL_ACCESS_TOKEN + ANTHROPIC_API_KEY in .env
+python judge/live_scorer.py --use-cached   # skip LLM call, only needs ANTHROPIC_API_KEY
+```
