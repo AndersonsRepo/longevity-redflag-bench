@@ -72,6 +72,8 @@ def main():
     ap.add_argument("--test-frac", type=float, default=0.2)
     ap.add_argument("--keep-contradictions", action="store_true",
                     help="keep extenders whose profile contradicts the extends label (default: drop)")
+    ap.add_argument("--single-gene", action="store_true", help="single-gene genotypes only (epistasis control)")
+    ap.add_argument("--out", default=None, help="output path (default outputs/lifespan_pairwise.jsonl)")
     ap.add_argument("--seed", type=int, default=config.SEED)
     a = ap.parse_args()
     rng = random.Random(a.seed)
@@ -84,7 +86,8 @@ def main():
     ext_ids = {r["genotype_id"] for r in csv.DictReader(AGING.open(encoding="utf-8"))
                if r["direction"] == "extends" and r["is_famous"] == "0" and r["eligible"] == "1"
                and int(r["n_phenotype_terms"] or 0) >= a.min_pheno}
-    extenders = [by_id[i] for i in ext_ids if i in by_id and len(by_id[i].phenotype_terms) >= a.min_pheno]
+    extenders = [by_id[i] for i in ext_ids if i in by_id and len(by_id[i].phenotype_terms) >= a.min_pheno
+                 and (len(by_id[i].genes) == 1 if a.single_gene else True)]
     if not a.keep_contradictions:
         dropped = [e for e in extenders if _contradicts_extension(e.phenotype_terms)]
         extenders = [e for e in extenders if not _contradicts_extension(e.phenotype_terms)]
@@ -94,7 +97,8 @@ def main():
     shorteners_by_sys = defaultdict(list)
     for r in rows:
         if (r.mortality_category == "death" and r.lethality_stage == "adult_aging"
-                and len(r.phenotype_terms) >= a.min_pheno):
+                and len(r.phenotype_terms) >= a.min_pheno
+                and (len(r.genes) == 1 if a.single_gene else True)):
             shorteners_by_sys[ps_map.get(r.genotype_id, "")].append(r)
     all_short = [r for lst in shorteners_by_sys.values() for r in lst]
 
@@ -139,7 +143,7 @@ def main():
         tgt |= set(ext.genes) | set(sho.genes)
     overlap = train_g & test_g
 
-    out = os.path.join(config.OUTPUTS_DIR, "lifespan_pairwise.jsonl")
+    out = a.out or os.path.join(config.OUTPUTS_DIR, "lifespan_pairwise.jsonl")
     os.makedirs(config.OUTPUTS_DIR, exist_ok=True)
     with open(out, "w", encoding="utf-8") as f:
         for r in records:
