@@ -9,6 +9,8 @@ Mirrors the original NHANES method (measurements → mortality), with an added g
 
 **The dataset is the deliverable** — judged on Utility / Diversity / Retrieval-Resistance / Statistical-Rigor. No demo/leaderboard score.
 
+**For judges:** [Live Lovable dashboard](https://mouse-pathfinder-data.lovable.app) · [one-page PDF](docs/hackathon-submission-one-page.pdf) · [evaluation notes](docs/EVALS.md)
+
 ## Quickstart
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
