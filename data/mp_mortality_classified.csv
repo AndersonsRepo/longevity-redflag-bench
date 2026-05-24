@@ -1,0 +1,130 @@
+mp_id,name,category,label_contribution,lethality_stage
+MP:0001657,abnormal induced morbidity/mortality,conditional,,na
+MP:0001658,increased mortality induced by gamma-irradiation,conditional,,na
+MP:0001661,extended life span,beneficial,0,aging
+MP:0002058,neonatal lethality,death,1,developmental
+MP:0002080,prenatal lethality,death,1,developmental
+MP:0002081,perinatal lethality,death,1,developmental
+MP:0002082,postnatal lethality,death,1,postnatal
+MP:0002083,premature death,death,1,adult_aging
+MP:0003010,decreased mortality induced by ionizing radiation,protective,0,na
+MP:0003786,premature aging,death,1,adult_aging
+MP:0003992,increased mortality induced by ionizing radiation,conditional,,na
+MP:0006204,embryonic lethality before implantation,death,1,developmental
+MP:0006205,embryonic lethality between implantation and somite formation,death,1,developmental
+MP:0006206,embryonic lethality between somite formation and embryo turning,death,1,developmental
+MP:0006207,embryonic lethality during organogenesis,death,1,developmental
+MP:0006208,lethality throughout fetal growth and development,death,1,developmental
+MP:0008028,pregnancy-related premature death,reproductive,,na
+MP:0008527,embryonic lethality at implantation,death,1,developmental
+MP:0008569,lethality at weaning,death,1,developmental
+MP:0008762,embryonic lethality,death,1,developmental
+MP:0008770,decreased survivor rate,death,1,unspecified
+MP:0008995,early reproductive senescence,reproductive,,na
+MP:0009763,increased susceptibility to induced morbidity/mortality,conditional,,na
+MP:0009764,decreased susceptibility to induced morbidity/mortality,protective,0,na
+MP:0009765,abnormal xenobiotic induced morbidity/mortality,conditional,,na
+MP:0009766,increased susceptibility to xenobiotic induced morbidity/mortality,conditional,,na
+MP:0009767,decreased susceptibility to xenobiotic induced morbidity/mortality,protective,0,na
+MP:0009785,abnormal susceptibility to infection induced morbidity/mortality,conditional,,na
+MP:0009786,decreased susceptibility to infection induced morbidity/mortality,protective,0,na
+MP:0009787,increased susceptibility to infection induced morbidity/mortality,conditional,,na
+MP:0009788,increased susceptibility to bacterial infection induced morbidity/mortality,conditional,,na
+MP:0009789,decreased susceptibility to bacterial infection induced morbidity/mortality,protective,0,na
+MP:0009790,decreased susceptibility to viral infection induced morbidity/mortality,protective,0,na
+MP:0009791,increased susceptibility to viral infection induced morbidity/mortality,conditional,,na
+MP:0009850,embryonic lethality between implantation and placentation,death,1,developmental
+MP:0010750,increased susceptibility to parasitic infection induced morbidity/mortality,conditional,,na
+MP:0010751,decreased susceptibility to parasitic infection induced morbidity/mortality,protective,0,na
+MP:0010769,abnormal survival,ambiguous,,na
+MP:0010770,preweaning lethality,death,1,developmental
+MP:0010831,"lethality, incomplete penetrance",death,1,unspecified
+MP:0010832,lethality during fetal growth through weaning,death,1,developmental
+MP:0011083,"lethality at weaning, complete penetrance",death,1,developmental
+MP:0011084,"lethality at weaning, incomplete penetrance",death,1,developmental
+MP:0011085,"postnatal lethality, complete penetrance",death,1,postnatal
+MP:0011086,"postnatal lethality, incomplete penetrance",death,1,postnatal
+MP:0011087,"neonatal lethality, complete penetrance",death,1,developmental
+MP:0011088,"neonatal lethality, incomplete penetrance",death,1,developmental
+MP:0011089,"perinatal lethality, complete penetrance",death,1,developmental
+MP:0011090,"perinatal lethality, incomplete penetrance",death,1,developmental
+MP:0011091,"prenatal lethality, complete penetrance",death,1,developmental
+MP:0011092,"embryonic lethality, complete penetrance",death,1,developmental
+MP:0011093,"embryonic lethality at implantation, complete penetrance",death,1,developmental
+MP:0011094,"embryonic lethality before implantation, complete penetrance",death,1,developmental
+MP:0011095,"embryonic lethality between implantation and placentation, complete penetrance",death,1,developmental
+MP:0011096,"embryonic lethality between implantation and somite formation, complete penetrance",death,1,developmental
+MP:0011097,"embryonic lethality between somite formation and embryo turning, complete penetrance",death,1,developmental
+MP:0011098,"embryonic lethality during organogenesis, complete penetrance",death,1,developmental
+MP:0011099,"lethality throughout fetal growth and development, complete penetrance",death,1,developmental
+MP:0011100,"preweaning lethality, complete penetrance",death,1,developmental
+MP:0011101,"prenatal lethality, incomplete penetrance",death,1,developmental
+MP:0011102,"embryonic lethality, incomplete penetrance",death,1,developmental
+MP:0011103,"embryonic lethality at implantation, incomplete penetrance",death,1,developmental
+MP:0011104,"embryonic lethality before implantation, incomplete penetrance",death,1,developmental
+MP:0011105,"embryonic lethality between implantation and placentation, incomplete penetrance",death,1,developmental
+MP:0011106,"embryonic lethality between implantation and somite formation, incomplete penetrance",death,1,developmental
+MP:0011107,"embryonic lethality between somite formation and embryo turning, incomplete penetrance",death,1,developmental
+MP:0011108,"embryonic lethality during organogenesis, incomplete penetrance",death,1,developmental
+MP:0011109,"lethality throughout fetal growth and development, incomplete penetrance",death,1,developmental
+MP:0011110,"preweaning lethality, incomplete penetrance",death,1,developmental
+MP:0011111,"lethality during fetal growth through weaning, complete penetrance",death,1,developmental
+MP:0011112,"lethality during fetal growth through weaning, incomplete penetrance",death,1,developmental
+MP:0011400,"lethality, complete penetrance",death,1,unspecified
+MP:0011614,slow aging,beneficial,0,aging
+MP:0013139,moribund,death,1,adult_aging
+MP:0013292,embryonic lethality prior to organogenesis,death,1,developmental
+MP:0013293,embryonic lethality prior to tooth bud stage,death,1,developmental
+MP:0013294,prenatal lethality prior to heart atrial septation,death,1,developmental
+MP:0013297,abnormal susceptibility to colitis induced morbidity/mortality,conditional,,na
+MP:0013298,increased susceptibility to colitis induced morbidity/mortality,conditional,,na
+MP:0013299,decreased susceptibility to colitis induced morbidity/mortality,protective,0,na
+MP:0014235,abnormal tumor-free survival time,ambiguous,,na
+MP:0014236,increased tumor-free survival time,beneficial,0,aging
+MP:0014237,decreased tumor-free survival time,death,1,adult_aging
+MP:0014257,"embryonic lethality prior to tooth bud stage, complete penetrance",death,1,developmental
+MP:0014258,"embryonic lethality prior to tooth bud stage, incomplete penetrance",death,1,developmental
+MP:0014259,"embryonic lethality prior to organogenesis, complete penetrance",death,1,developmental
+MP:0014260,"embryonic lethality prior to organogenesis, incomplete penetrance",death,1,developmental
+MP:0020148,abnormal susceptibility to induced morbidity/mortality,conditional,,na
+MP:0020149,abnormal mortality induced by ionizing radiation,conditional,,na
+MP:0020344,abnormal susceptibility to injury induced morbidity/mortality,conditional,,na
+MP:0031020,premature ovarian failure,reproductive,,na
+MP:0031023,decreased susceptibility to Riboviria infection induced morbidity/mortality,protective,0,na
+MP:0031024,increased susceptibility to Riboviria infection induced morbidity/mortality,conditional,,na
+MP:0031025,decreased susceptibility to Herpesvirales infection induced morbidity/mortality,protective,0,na
+MP:0031026,increased susceptibility to Herpesvirales infection induced morbidity/mortality,conditional,,na
+MP:0031027,decreased susceptibility to Ortervirales infection induced morbidity/mortality,protective,0,na
+MP:0031028,increased susceptibility to Ortervirales infection induced morbidity/mortality,conditional,,na
+MP:0031029,decreased susceptibility to Parvoviridae infection induced morbidity/mortality,protective,0,na
+MP:0031030,increased susceptibility to Parvoviridae infection induced morbidity/mortality,conditional,,na
+MP:0031031,decreased susceptibility to Hepadnaviridae infection induced morbidity/mortality,protective,0,na
+MP:0031032,increased susceptibility to Hepadnaviridae infection induced morbidity/mortality,conditional,,na
+MP:0031033,decreased susceptibility to Poxviridae infection induced morbidity/mortality,protective,0,na
+MP:0031034,increased susceptibility to Poxviridae infection induced morbidity/mortality,conditional,,na
+MP:0031035,decreased susceptibility to Adenoviridae infection induced morbidity/mortality,protective,0,na
+MP:0031036,increased susceptibility to Adenoviridae infection induced morbidity/mortality,conditional,,na
+MP:0031037,decreased susceptibility to Retroviridae infection induced morbidity/mortality,protective,0,na
+MP:0031038,increased susceptibility to Retroviridae infection induced morbidity/mortality,conditional,,na
+MP:0031039,decreased susceptibility to Picornaviridae infection induced morbidity/mortality,protective,0,na
+MP:0031040,increased susceptibility to Picornaviridae infection induced morbidity/mortality,conditional,,na
+MP:0031041,decreased susceptibility to Togaviridae infection induced morbidity/mortality,protective,0,na
+MP:0031042,increased susceptibility to Togaviridae infection induced morbidity/mortality,conditional,,na
+MP:0031043,decreased susceptibility to Flaviviridae infection induced morbidity/mortality,protective,0,na
+MP:0031044,increased susceptibility to Flaviviridae infection induced morbidity/mortality,conditional,,na
+MP:0031045,decreased susceptibility to Orthomyxoviridae infection induced morbidity/mortality,protective,0,na
+MP:0031046,increased susceptibility to Orthomyxoviridae infection induced morbidity/mortality,conditional,,na
+MP:0031047,decreased susceptibility to Coronaviridae infection induced morbidity/mortality,protective,0,na
+MP:0031048,increased susceptibility to Coronaviridae infection induced morbidity/mortality,conditional,,na
+MP:0031049,decreased susceptibility to Paramyxoviridae infection induced morbidity/mortality,protective,0,na
+MP:0031050,increased susceptibility to Paramyxoviridae infection induced morbidity/mortality,conditional,,na
+MP:0031149,abnormal susceptibility to thrombosis induced morbidity/mortality,conditional,,na
+MP:0031150,decreased susceptibility to thrombosis induced morbidity/mortality,protective,0,na
+MP:0031151,increased susceptibility to thrombosis induced morbidity/mortality,conditional,,na
+MP:0031185,sudden unexpected death in epilepsy,death,1,adult_aging
+MP:0031279,abnormal susceptibility to aneurysm induced morbidity/mortality,conditional,,na
+MP:0031280,decreased susceptibility to aneurysm induced morbidity/mortality,protective,0,na
+MP:0031281,increased susceptibility to aneurysm induced morbidity/mortality,conditional,,na
+MP:0031660,"prenatal lethality prior to heart atrial septation, incomplete penetrance",death,1,developmental
+MP:0031661,"prenatal lethality prior to heart atrial septation, complete penetrance",death,1,developmental
+MP:0010768,mortality/aging,ambiguous,,na

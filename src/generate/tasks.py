@@ -83,13 +83,16 @@ def gen_mgi_survival_binary(rows: List[GenotypeRow], condition: str,
             "genes": row.genes,
             "zygosity": row.zygosity,
             "expression_direction": row.expression_direction,
-            "condition": condition,            # the ablation tag (Lever A)
-            "label_impairs_survival": row.label,
-            "is_famous": row.is_famous,        # Lever B slice key
-            "split": row.split,                # gene-grouped covariate split
+            "condition": condition,                  # the ablation tag (Lever A)
+            "label_impairs_survival": row.label,     # CORRECTED label (ERR-20260523-403)
+            "mortality_category": row.mortality_category,  # death | reversed | none (slice key)
+            "lethality_stage": row.lethality_stage,  # developmental|postnatal|adult_aging|... (stratify)
+            "orig_label": row.orig_label,            # buggy build-time label, for audit
+            "is_famous": row.is_famous,              # Lever B slice key
+            "split": row.split,                      # gene-grouped covariate split
             "base_profile_id": profile_id_for(row),
             "n_phenotype_terms": len(row.phenotype_terms),
-            "pmids": row.pmids,                # verifiable ground truth
+            "pmids": row.pmids,                      # verifiable ground truth
             "source": "MGI",
         }
         out.append(BenchmarkRecord(

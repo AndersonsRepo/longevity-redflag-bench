@@ -1,9 +1,13 @@
 # secrets
 .env
 
-# data + outputs (large / regenerable / PHI-adjacent)
+# data + outputs (large / regenerable). Large materialized data stays out; the small,
+# auditable ground-truth tables + the gene blocklist (loader runtime deps) are tracked.
 data/*
 !data/README.md
+!data/mp_mortality_terms.csv
+!data/mp_mortality_classified.csv
+!data/famous_gene_blocklist.csv
 outputs/
 
 # python

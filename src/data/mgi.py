@@ -11,9 +11,10 @@ Three rigor pieces live HERE (build-plan.md §6; LRN-mouse-longevity-experiment-
      famous-vs-obscure comparison can be sliced at eval time without rebuilding.
      `include_famous=False` (default) filters them out for the clean retrieval-resistant set.
 
-  2. Balance the binary task. The raw set is ~26/74 (19,816 impair survival vs 54,757 no
-     mortality) -> an always-"no-effect" guesser scores 74%. We keep all positives and
-     downsample negatives to match, WITHIN each split, so the majority baseline is 50%.
+  2. Balance the binary task. After label correction the set is ~25/75 (18,465 impair survival
+     vs 54,741 no-mortality + 407 reversed hard-negatives) -> an always-"no-effect" guesser scores
+     ~75%. We keep all positives and downsample negatives to match, WITHIN each split, so the
+     majority baseline is 50%. (Counts: data/mgi_labeled.csv; correction: docs/LABELING.md.)
 
   3. Split BY GENE (the leakage key). The same gene must never span train/test, or a model
      memorizes gene->label from train and aces test by lookup. Multi-gene genotypes
@@ -36,6 +37,13 @@ from src import config
 
 MGI_CSV = config.DATA_DIR / "mgi_genotype_phenotype.csv"
 BLOCKLIST_CSV = config.DATA_DIR / "famous_gene_blocklist.csv"
+MORTALITY_CLASS_CSV = config.DATA_DIR / "mp_mortality_classified.csv"
+
+# longevity-EXTENDING terms; a genotype carrying BOTH one of these and a genuine death
+# term has contradictory ground truth -> excluded (see _classify_genotype).
+_BENEFICIAL_NAMES = {"extended life span", "slow aging", "increased tumor-free survival time"}
+# death stages in precedence order (earliest first) for assigning a genotype's primary stage
+_STAGE_ORDER = ("developmental", "postnatal", "adult_aging", "unspecified")
 
 
 @dataclass
@@ -48,9 +56,13 @@ class GenotypeRow:
     expression_direction: str   # decreased | increased | none | unknown | mixed | altered
     genetic_background: str
     phenotype_terms: List[str]  # non-mortality MP terms = the phenotype profile (mortality already excluded)
-    label: int                  # 1 = impairs survival, 0 = no mortality phenotype
+    label: int                  # CORRECTED: 1 = impairs survival, 0 = does NOT (incl. reversed + true-neg)
     pmids: List[str]            # provenance for verifiable GT
     is_famous: bool             # any gene in the GenAge famous-gene blocklist
+    # --- corrected-label provenance (see src/data/mortality_classes.py + ERR-20260523-403) ---
+    mortality_category: str     # death | reversed | none | (excluded: conditional|reproductive|ambiguous|contradictory)
+    lethality_stage: str        # developmental | postnatal | adult_aging | unspecified | na
+    orig_label: int             # the buggy build-time label_impairs_survival (for audit / Δ)
     split: str = "train"        # train | test (assigned by gene component)
 
 
@@ -99,6 +111,60 @@ def _read_raw() -> List[dict]:
         return list(csv.DictReader(f))
 
 
+def _load_mortality_classes() -> Dict[str, tuple]:
+    """name -> (category, label_contribution|None, stage), from the FROZEN ground-truth table."""
+    if not MORTALITY_CLASS_CSV.exists():
+        raise FileNotFoundError(
+            f"{MORTALITY_CLASS_CSV} not found — run scripts/classify_mortality_terms.py first.")
+    out: Dict[str, tuple] = {}
+    with MORTALITY_CLASS_CSV.open(encoding="utf-8") as f:
+        for row in csv.DictReader(f):
+            lab = row["label_contribution"].strip()
+            out[row["name"].strip()] = (
+                row["category"].strip(),
+                int(lab) if lab != "" else None,
+                row["lethality_stage"].strip(),
+            )
+    return out
+
+
+def _classify_genotype(mort_names: List[str], classes: Dict[str, tuple]) -> tuple:
+    """Aggregate a genotype's mortality-term NAMES into the CORRECTED ground truth.
+
+    Returns (label|None, mortality_category, lethality_stage). label=None => INELIGIBLE
+    for the baseline binary (excluded). Precedence:
+      contradictory (genuine death + longevity-extending) -> excluded
+      death                                                -> 1, primary stage
+      beneficial/protective only ("reversed")             -> 0  (kept as a HARD NEGATIVE)
+      conditional / reproductive / ambiguous only          -> excluded
+      no mortality term                                    -> 0  (true negative)
+    """
+    if not mort_names:
+        return (0, "none", "na")
+    cats, stages, has_beneficial = set(), set(), False
+    for m in mort_names:
+        cat, _lab, stage = classes.get(m, ("UNCLASSIFIED", None, "na"))
+        cats.add(cat)
+        if cat == "death":
+            stages.add(stage)
+        if m in _BENEFICIAL_NAMES:
+            has_beneficial = True
+    if "death" in cats and has_beneficial:
+        return (None, "contradictory", "na")        # the 6 genuinely-conflicting strains
+    if "death" in cats:
+        stage = next((s for s in _STAGE_ORDER if s in stages), "unspecified")
+        return (1, "death", stage)
+    if cats & {"beneficial", "protective"}:
+        return (0, "reversed", "na")                # was wrongly impairs=1; correct answer is "No"
+    if "conditional" in cats:
+        return (None, "conditional", "na")
+    if "reproductive" in cats:
+        return (None, "reproductive", "na")
+    if "ambiguous" in cats:
+        return (None, "ambiguous", "na")
+    return (None, "unclassified", "na")
+
+
 def _assign_components(parsed: List[dict]) -> None:
     """Mutate each parsed row, setting row['component'] to its gene-component root."""
     uf = _UnionFind()
@@ -143,21 +209,40 @@ def load_mgi(
     *,
     include_famous: bool = False,
     balance: bool = True,
+    include_ineligible: bool = False,
     test_frac: float = 0.2,
     seed: int = config.SEED,
 ) -> List[GenotypeRow]:
-    """Load MGI genotype rows.
+    """Load MGI genotype rows with CORRECTED survival labels.
 
-    include_famous : keep genes on the famous-gene blocklist (default False = obscure-only).
-                     is_famous is tagged regardless, so you can also slice at eval time.
-    balance        : downsample negatives to match positives, within each split.
-    test_frac      : fraction of gene-components held out for test.
-    seed           : reproducible shuffle/sample (config.SEED).
+    The build-time label_impairs_survival is buggy (it tagged longevity-extending,
+    protective, conditional, and reproductive terms as "impairs survival" — ERR-20260523-403).
+    We re-derive the label here from each genotype's mortality terms via the frozen
+    data/mp_mortality_classified.csv table. By default we DROP genotypes whose ground truth
+    is excluded (conditional-challenge / reproductive / ambiguous / contradictory).
+
+    include_famous     : keep genes on the famous-gene blocklist (default False = obscure-only).
+                         is_famous is tagged regardless, so you can also slice at eval time.
+    balance            : downsample negatives to match positives, within each split.
+    include_ineligible : keep excluded categories (label=None rows are dropped regardless;
+                         use the per-category slices instead). Default False.
+    test_frac          : fraction of gene-components held out for test.
+    seed               : reproducible shuffle/sample (config.SEED).
     """
     blocklist = _load_blocklist()
+    classes = _load_mortality_classes()
     parsed: List[dict] = []
     for raw in _read_raw():
         genes = _split_field(raw.get("gene_symbols", ""))
+        # re-partition: any mortality-classified term sitting in the phenotype column (e.g. the
+        # bare root "mortality/aging", which the build's descendants-only walk missed) moves back
+        # to the mortality set, so it is classified — never shown to the model as a phenotype.
+        raw_pheno = _split_field(raw.get("phenotype_terms", ""))
+        pheno = [p for p in raw_pheno if p not in classes]
+        mort_names = _split_field(raw.get("mortality_terms", "")) + [p for p in raw_pheno if p in classes]
+        label, category, stage = _classify_genotype(mort_names, classes)
+        if label is None and not include_ineligible:
+            continue  # excluded: contradictory / conditional / reproductive / ambiguous
         parsed.append({
             "genotype_id": raw.get("genotype_id", ""),
             "genes": genes,
@@ -165,8 +250,11 @@ def load_mgi(
             "zygosity": raw.get("zygosity", ""),
             "expression_direction": raw.get("expression_direction", ""),
             "genetic_background": raw.get("genetic_background", ""),
-            "phenotype_terms": _split_field(raw.get("phenotype_terms", "")),
-            "label": 1 if str(raw.get("label_impairs_survival", "")).strip() in ("1", "True", "true") else 0,
+            "phenotype_terms": pheno,
+            "label": label if label is not None else 0,
+            "mortality_category": category,
+            "lethality_stage": stage,
+            "orig_label": 1 if str(raw.get("label_impairs_survival", "")).strip() in ("1", "True", "true") else 0,
             "pmids": _split_field(raw.get("pmids", "")),
             "is_famous": any(g in blocklist for g in genes),
         })
@@ -179,7 +267,8 @@ def load_mgi(
 
     rows = [GenotypeRow(**{k: r[k] for k in (
         "genotype_id", "genes", "component", "alleles", "zygosity", "expression_direction",
-        "genetic_background", "phenotype_terms", "label", "pmids", "is_famous", "split",
+        "genetic_background", "phenotype_terms", "label", "pmids", "is_famous",
+        "mortality_category", "lethality_stage", "orig_label", "split",
     )}) for r in parsed]
 
     if balance:
@@ -188,17 +277,23 @@ def load_mgi(
 
 
 def summarize(rows: List[GenotypeRow]) -> Dict[str, object]:
+    from collections import Counter
+
     def counts(split: Optional[str]) -> Dict[str, int]:
         sub = [r for r in rows if split is None or r.split == split]
         return {"n": len(sub), "pos": sum(r.label for r in sub), "neg": sum(1 for r in sub if r.label == 0)}
 
     train_genes = {g for r in rows if r.split == "train" for g in r.genes}
     test_genes = {g for r in rows if r.split == "test" for g in r.genes}
+    flipped = sum(1 for r in rows if r.label != r.orig_label)  # corrected vs buggy build label
     return {
         "total": counts(None),
         "train": counts("train"),
         "test": counts("test"),
         "famous_rows": sum(1 for r in rows if r.is_famous),
+        "mortality_category": dict(Counter(r.mortality_category for r in rows)),
+        "lethality_stage": dict(Counter(r.lethality_stage for r in rows if r.label == 1)),
+        "label_flipped_vs_orig": flipped,                          # reversed positives now label=0
         "gene_overlap_train_test": len(train_genes & test_genes),  # MUST be 0 (leakage check)
     }
 
