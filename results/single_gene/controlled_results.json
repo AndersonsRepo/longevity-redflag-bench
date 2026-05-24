@@ -1,0 +1,106 @@
+{
+  "task": "LB-0138 survival binary, CONTROLLED, single-gene only (epistasis-controlled)",
+  "models": {
+    "Longevity-LLM": {
+      "label": "Longevity-LLM (3-run majority vote)",
+      "n_pairs": 120,
+      "geno_pheno": {
+        "acc": 0.708,
+        "n": 120
+      },
+      "pheno_only": {
+        "acc": 0.692,
+        "n": 120
+      },
+      "delta_recall": 0.017,
+      "delta_recall_ci95": [
+        -0.075,
+        0.108
+      ],
+      "mcnemar": {
+        "b": 16,
+        "c": 14,
+        "p": 0.8555
+      },
+      "per_run": [
+        {
+          "run": 1,
+          "geno_pheno": 0.708,
+          "pheno_only": 0.683,
+          "delta": 0.025
+        },
+        {
+          "run": 2,
+          "geno_pheno": 0.683,
+          "pheno_only": 0.7,
+          "delta": -0.017
+        },
+        {
+          "run": 3,
+          "geno_pheno": 0.725,
+          "pheno_only": 0.692,
+          "delta": 0.033
+        }
+      ],
+      "n_runs": 3
+    },
+    "Claude Sonnet 4.6": {
+      "label": "Claude Sonnet 4.6 (single run)",
+      "n_pairs": 120,
+      "geno_pheno": {
+        "acc": 0.75,
+        "n": 120
+      },
+      "pheno_only": {
+        "acc": 0.7,
+        "n": 120
+      },
+      "delta_recall": 0.05,
+      "delta_recall_ci95": [
+        -0.033,
+        0.125
+      ],
+      "mcnemar": {
+        "b": 15,
+        "c": 9,
+        "p": 0.3075
+      }
+    }
+  },
+  "baseline_multigene_controlled": {
+    "Longevity-LLM": {
+      "geno_pheno": 0.775,
+      "pheno_only": 0.675,
+      "delta_recall": 0.1,
+      "delta_ci95": [
+        0.025,
+        0.175
+      ],
+      "mcnemar_p": 0.017
+    },
+    "Claude Sonnet 4.6": {
+      "geno_pheno": 0.817,
+      "pheno_only": 0.733,
+      "delta_recall": 0.083,
+      "delta_ci95": [
+        -0.008,
+        0.175
+      ],
+      "mcnemar_p": 0.099
+    }
+  },
+  "comparison_delta_recall": [
+    {
+      "model": "Longevity-LLM",
+      "delta_singlegene": 0.017,
+      "delta_multigene": 0.1,
+      "shift": -0.083
+    },
+    {
+      "model": "Claude Sonnet 4.6",
+      "delta_singlegene": 0.05,
+      "delta_multigene": 0.083,
+      "shift": -0.033
+    }
+  ]
+}
