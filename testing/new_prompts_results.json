@@ -1,0 +1,856 @@
+{
+  "run_timestamp": "2026-05-24T19:39:38Z",
+  "model": "longevity-llm",
+  "endpoint": "https://swchnq0ekc3scmqw.us-east-2.aws.endpoints.huggingface.cloud/v1",
+  "judge_model": "claude-haiku-4-5-20251001",
+  "total_prompts": 12,
+  "correct": 9,
+  "accuracy": 0.75,
+  "mean_trace_score": 0.682,
+  "results": [
+    {
+      "id": "MM-001",
+      "category": "multi_mutant",
+      "title": "Arv1 × Cry1 double knockout",
+      "format": "binary",
+      "difficulty": "medium",
+      "genes": [
+        "Arv1",
+        "Cry1"
+      ],
+      "gold_answer": "A",
+      "predicted_answer": "A",
+      "correct": true,
+      "raw_response": "The Arv1 gene encodes a protein involved in lipid metabolism, specifically in the regulation of cholesterol and triglyceride levels. Its knockout leads to decreased HDL cholesterol, increased insulin sensitivity, and seizures, with a single-mutant outcome of premature adult death. This suggests that Arv1 loss disrupts critical metabolic pathways, potentially causing systemic toxicity or organ failure. Cry1, on the other hand, is linked to immune regulation, with its knockout resulting in increased leukocyte counts and reduced serum albumin but no premature death. This implies Cry1 loss may alter immune homeostasis without directly compromising survival. The two genes operate in distinct pathways: Arv1 in lipid metabolism and Cry1 in immune function. Their single-mutant phenotypes do not overlap, and no evidence suggests epistatic interactions. Arv1’s role in lipid homeostasis is critical for cellular membrane integrity and energy balance, while Cry1’s immune effects may reflect compensatory mechanisms rather than essential functions. The absence of shared network partners or pathway convergence further supports independent effects. In a double-knockout scenario, Arv1’s metabolic defects would likely dominate, as lipid dysregulation is a well-established driver of premature mortality. Cry1’s immune alterations, while potentially contributing to chronic inflammation, are less likely to synergize with Arv1’s effects to accelerate death. The lack of compensatory mechanisms between the two pathways reinforces the expectation that Arv1’s loss will be the primary determinant of lifespan. Given the independence of their functions and the severity of Arv1’s metabolic consequences, the double-knockout organism is expected to exhibit premature death.\n</think>\nA",
+      "model_used": "longevity-llm",
+      "latency_s": 10.6,
+      "trace_score": 0.525,
+      "sub_scores": {
+        "gene_hallucination": {
+          "score": 0.0,
+          "real_genes": [],
+          "hallucinated_genes": [
+            "In"
+          ],
+          "famous_genes_cited": [],
+          "n_checked": 1
+        },
+        "think_answer_consistency": {
+          "score": 1.0,
+          "contradicts": false,
+          "reason": "consistent",
+          "trace_says_impairs": true,
+          "trace_says_no_effect": false,
+          "final_answer": "A"
+        },
+        "system_grounding": {
+          "score": 1.0,
+          "claimed_systems": [
+            "homeostasis/metabolism",
+            "immune system"
+          ],
+          "verified": [],
+          "unverified": [],
+          "n_checked": 0
+        },
+        "claude_verification": {
+          "score": 0.3,
+          "deductions": [
+            "Arv1 primary function is lipid synthesis/homeostasis, not cholesterol/triglyceride regulation as stated (-0.2)",
+            "Cry1 is a circadian clock gene, not primarily immune-related (-0.3)",
+            "Fabricated specific phenotypes (seizures, HDL changes, leukocyte counts) without MGI support (-0.3)",
+            "Incorrect pathway assignments for both genes (-0.2)",
+            "Unsupported claims about epistasis and compensatory mechanisms (-0.2)"
+          ],
+          "notes": "Fundamental mischaracterization of both gene functions. Cry1 circadian role unmentioned. Phenotypes appear fabricated.",
+          "skipped": false
+        }
+      },
+      "weights_used": {
+        "gene_hallucination": 0.3,
+        "think_answer_consistency": 0.25,
+        "system_grounding": 0.2,
+        "claude_verification": 0.25
+      },
+      "explanation": {
+        "summary": "Correct answer but poor reasoning quality.",
+        "answer_analysis": "Got A (premature death) right — likely by surface-level pattern matching on \"premature adult death\" in the Arv1 single-mutant outcome.",
+        "trace_issues": "Claude Haiku gave 0.3/1.0: the model mischaracterized both gene functions. It described Arv1 as regulating cholesterol/triglycerides (it is a lipid synthesis gene) and missed Cry1 as a circadian clock gene entirely. The model essentially restated the phenotypes from the prompt as if they were its own reasoning.",
+        "gene_hallucination_note": "False positive — \"In\" (as in the English word) was flagged as a hallucinated gene symbol. This is a known limitation of the regex-based gene extractor.",
+        "key_failure_mode": "Shallow reasoning — correct answer for wrong reasons. No epistasis logic, no pathway convergence analysis."
+      },
+      "prompt_text": "Based on the known individual effects of the two gene knockouts listed below, predict whether the double-knockout organism will exhibit premature death compared to wild type.\\n\\nOptions:\\n  A. Yes — premature death expected\\n  B. No — normal lifespan expected\\n\\nMutant 1:\\n  Gene: Arv1 | Zygosity: homozygote | Expression: decreased\\n  Phenotypes: decreased circulating HDL cholesterol level | abnormal liver physiology | decreased circulating triglyceride level | increased insulin sensitivity | seizures | impaired coordination | decreased brown adipose tissue amount\\n  Single-mutant outcome: premature adult death\\n\\nMutant 2:\\n  Gene: Cry1 | Zygosity: homozygote | Expression: decreased\\n  Phenotypes: increased leukocyte cell number | decreased circulating serum albumin level | decreased fasting circulating glucose level\\n  Single-mutant outcome: no premature death\\n\\nThink step by step, then answer with the option letter.\\nAnswer: "
+    },
+    {
+      "id": "MM-002",
+      "category": "multi_mutant",
+      "title": "Fas × Ctla4 double knockout",
+      "format": "pairwise",
+      "difficulty": "hard",
+      "genes": [
+        "Fas",
+        "Ctla4"
+      ],
+      "gold_answer": "A",
+      "predicted_answer": "A",
+      "correct": true,
+      "raw_response": "The FAS gene encodes a death receptor critical for apoptosis in activated T cells, ensuring immune tolerance by eliminating self-reactive clones. Its knockout leads to lymphoproliferative autoimmune disease with premature death, driven by unchecked T cell survival and autoimmunity. CTLA4, a co-receptor that inhibits T cell activation, regulates immune responses during antigen presentation. Its knockout causes systemic inflammation and premature death due to hyperactive T cells. Both genes operate in immune regulation but through distinct mechanisms: FAS acts post-activation to induce apoptosis, while CTLA4 acts pre-activation to suppress signaling. The FAS knockout phenotype includes multi-organ inflammation and lymphoid hyperplasia, suggesting a failure in peripheral tolerance. The CTLA4 knockout phenotype centers on acute inflammation, indicating a breakdown in central tolerance. While both result in immune dysregulation, FAS deficiency directly compromises the elimination of autoreactive T cells, leading to more severe tissue damage and earlier mortality. CTLA4 deficiency, though inflammatory, may allow some regulatory mechanisms to persist. The convergence of FAS and CTLA4 in immune homeostasis suggests their combined loss would exacerbate pathology, but the question focuses on single mutants. Given the direct role of FAS in apoptosis and the severity of its knockout phenotype, the organism with the FAS single-knockout likely has a shorter lifespan compared to the CTLA4 single-knockout. The decisive evidence lies in the distinct mechanisms of immune regulation and the severity of the FAS knockout phenotype.\n</think>\nA",
+      "model_used": "longevity-llm",
+      "latency_s": 9.68,
+      "trace_score": 0.912,
+      "sub_scores": {
+        "gene_hallucination": {
+          "score": 1.0,
+          "real_genes": [],
+          "hallucinated_genes": [],
+          "famous_genes_cited": [],
+          "n_checked": 0
+        },
+        "think_answer_consistency": {
+          "score": 1.0,
+          "contradicts": false,
+          "reason": "consistent",
+          "trace_says_impairs": true,
+          "trace_says_no_effect": false,
+          "final_answer": "A"
+        },
+        "system_grounding": {
+          "score": 1.0,
+          "claimed_systems": [],
+          "verified": [],
+          "unverified": [],
+          "n_checked": 0
+        },
+        "claude_verification": {
+          "score": 0.65,
+          "deductions": [
+            "CTLA4 acts in central tolerance claim is inaccurate; CTLA4 primarily functions in peripheral tolerance, not central tolerance (-0.15)",
+            "Overstated distinction between FAS (peripheral) vs CTLA4 (central) tolerance mechanisms (-0.1)",
+            "FAS knockout phenotype description conflates lymphoproliferative disease severity; actual lethality timing varies by strain (-0.1)"
+          ],
+          "notes": "Core mechanisms accurate (FAS apoptosis, CTLA4 inhibition). Comparative severity claim reasonable but tolerance pathway attribution flawed.",
+          "skipped": false
+        }
+      },
+      "weights_used": {
+        "gene_hallucination": 0.3,
+        "think_answer_consistency": 0.25,
+        "system_grounding": 0.2,
+        "claude_verification": 0.25
+      },
+      "explanation": {
+        "summary": "Best result — correct answer with strong biological reasoning.",
+        "answer_analysis": "Correctly identified Fas single-KO lives longer than the double-KO. Understood that removing both T-cell checkpoints simultaneously accelerates autoimmunity.",
+        "trace_issues": "Minor: Claude flagged the CTLA4 central/peripheral tolerance distinction as slightly inaccurate (CTLA4 is primarily peripheral, not central). The model overstated the central tolerance claim. Score 0.65/1.0 from Haiku.",
+        "gene_hallucination_note": "Clean — no hallucinated genes.",
+        "key_failure_mode": "None significant. This is what good reasoning looks like on this benchmark."
+      },
+      "prompt_text": "Which organism has a longer mean lifespan?\\n\\nOptions:\\n  A. Fas single-knockout mouse\\n  B. Fas;Ctla4 double-knockout mouse\\n\\nMutant 1:\\n  Gene: Fas | Zygosity: homozygote | Expression: decreased\\n  Phenotypes: enlarged spleen | enlarged lymph nodes | enlarged thymus | skin lesions | blood vessel inflammation | salivary gland inflammation | increased autoantibody level | abnormal T cell number | abnormal immune system physiology | abnormal thyroid gland morphology\\n  Single-mutant outcome: premature adult death (lymphoproliferative autoimmune disease)\\n\\nMutant 2:\\n  Gene: Ctla4 | Zygosity: homozygote | Expression: decreased\\n  Phenotypes: increased acute inflammation\\n  Single-mutant outcome: premature adult death (systemic inflammatory infiltration)\\n\\nGO context:\\n  FAS: death receptor mediating activation-induced T cell apoptosis — peripheral tolerance.\\n  CTLA4: inhibitory co-receptor dampening T cell activation at priming — central checkpoint.\\n\\nThink step by step, then answer with the option letter.\\nAnswer: "
+    },
+    {
+      "id": "MM-003",
+      "category": "multi_mutant",
+      "title": "Col4a3 × Slc2a4 double knockout",
+      "format": "pairwise",
+      "difficulty": "hard",
+      "genes": [
+        "Col4a3",
+        "Slc2a4"
+      ],
+      "gold_answer": "B",
+      "predicted_answer": "?",
+      "correct": false,
+      "raw_response": "The Col4a3 gene encodes a collagen type IV alpha 3 chain, a critical structural component of basement membranes in the kidney glomerulus. Its loss leads to glomerular basement membrane instability, proteinuria, and progressive renal failure. The Slc2a4 gene encodes GLUT4, a glucose transporter essential for insulin-stimulated glucose uptake in muscle and adipose tissue. Its disruption causes severe insulin resistance, hyperinsulinemia, and metabolic dysregulation. Both single mutants exhibit premature death via organ-specific failure: Col4a3 via renal dysfunction and Slc2a4 via metabolic/cardiac compromise. The Col4a3 single-knockout mouse develops glomerulosclerosis and renal failure, with albuminuria and elevated creatinine reflecting irreversible kidney damage. The Slc2a4 single-knockout mouse manifests cardiac hypertrophy, growth retardation, and metabolic derangements, with glucose dysregulation and insulin resistance driving systemic metabolic collapse. While both conditions are lethal, the renal failure in Col4a3 mutants progresses through a well-defined trajectory of glomerular damage, whereas Slc2a4 mutants face compounded metabolic stressors that accelerate organ dysfunction. The Slc2a4 single-knockout mouse’s metabolic phenotype includes hyperinsulinemia and insulin resistance, which synergize with cardiac hypertrophy to create a high-risk substrate for fatal arrhythmias or heart failure. In contrast, Col4a3 mutants primarily suffer from structural basement membrane defects, leading to chronic renal decline. The Slc2a4 single-knockout mouse’s metabolic phenotype, characterized by severe insulin resistance and glucose dysregulation, creates a systemic vulnerability that likely accelerates mortality compared to the more localized renal pathology in Col4a3 mutants. The decisive evidence lies in the broader systemic impact of Slc2a4 loss, which disrupts energy homeostasis and amplifies cardiovascular risk, whereas Col4a3 loss remains confined to renal structural",
+      "model_used": "longevity-llm",
+      "latency_s": 12.1,
+      "trace_score": 0.662,
+      "sub_scores": {
+        "gene_hallucination": {
+          "score": 0.0,
+          "real_genes": [],
+          "hallucinated_genes": [
+            "IV",
+            "In"
+          ],
+          "famous_genes_cited": [],
+          "n_checked": 2
+        },
+        "think_answer_consistency": {
+          "score": 1.0,
+          "contradicts": false,
+          "reason": "consistent",
+          "trace_says_impairs": true,
+          "trace_says_no_effect": false,
+          "final_answer": "?"
+        },
+        "system_grounding": {
+          "score": 1.0,
+          "claimed_systems": [],
+          "verified": [],
+          "unverified": [],
+          "n_checked": 0
+        },
+        "claude_verification": {
+          "score": 0.85,
+          "deductions": [
+            "Col4a3 knockout lethality timing overstated - mice typically survive to ~8-10 weeks, not described as rapidly fatal",
+            "Slc2a4 knockout phenotype partially inaccurate - mice show insulin resistance but are not uniformly lethal; some survive with metabolic compensation",
+            "Cardiac hypertrophy in Slc2a4 KO is present but arrhythmia lethality mechanism not definitively established in literature"
+          ],
+          "notes": "Generally accurate gene function descriptions. Main issues: survival timelines and lethality certainty overstated for both genotypes.",
+          "skipped": false
+        }
+      },
+      "weights_used": {
+        "gene_hallucination": 0.3,
+        "think_answer_consistency": 0.25,
+        "system_grounding": 0.2,
+        "claude_verification": 0.25
+      },
+      "explanation": {
+        "summary": "Failed to produce a parseable answer despite decent reasoning.",
+        "answer_analysis": "The model understood both pathways (Col4a3 renal failure, Slc2a4 metabolic/cardiac failure) and even described cross-system aggravation, but failed to output a clear A/B/C answer letter. Parser returned \"?\".",
+        "trace_issues": "Claude gave 0.85/1.0 — the biology was mostly right. The model correctly described the diabetic nephropathy mechanism by which hyperglycemia worsens renal pathology. Main critique: overstated lethality timelines for both single KOs.",
+        "gene_hallucination_note": "False positives — \"IV\" (from \"collagen type IV\") and \"In\" flagged as genes.",
+        "key_failure_mode": "Answer formatting failure, not reasoning failure. The model knew the biology but did not comply with the answer format."
+      },
+      "prompt_text": "Which organism reaches fatal phenotype threshold earlier?\\n\\nOptions:\\n  A. Col4a3 single-knockout mouse\\n  B. Col4a3;Slc2a4 double-knockout mouse\\n  C. Both show equivalent time to fatal phenotype\\n\\nMutant 1:\\n  Gene: Col4a3 | Zygosity: homozygote | Expression: decreased\\n  Phenotypes: glomerulonephritis | albuminuria | increased urine protein level | renal interstitial fibrosis | kidney failure | glomerulosclerosis | increased circulating creatinine level | increased blood urea nitrogen level\\n  Primary system: renal/urinary\\n  Single-mutant outcome: premature adult death via progressive renal failure\\n\\nMutant 2:\\n  Gene: Slc2a4 | Zygosity: homozygote | Expression: decreased\\n  Phenotypes: abnormal circulating glucose level | cardiac hypertrophy | postnatal growth retardation | increased circulating insulin level | abnormal muscle physiology | insulin resistance | decreased circulating free fatty acids level | increased heart weight\\n  Primary system: homeostasis/metabolism\\n  Single-mutant outcome: premature adult death via cardiac and metabolic failure\\n\\nThink step by step, then answer with the option letter.\\nAnswer: "
+    },
+    {
+      "id": "SG-001",
+      "category": "synthetic_gene",
+      "title": "Lgvx3 knockout — late-endosomal lipid trafficking",
+      "format": "binary",
+      "difficulty": "medium",
+      "genes": [
+        "Lgvx3"
+      ],
+      "gold_answer": "A",
+      "predicted_answer": "A",
+      "correct": true,
+      "raw_response": "The lipid transfer protein Lgvx3 operates in late-endosomal cholesterol export, a critical node for lipid homeostasis. Its knockout phenotype reveals systemic metabolic collapse: hepatic steatosis, foam cell reticulosis, and dyslipidemia (elevated triglycerides, reduced HDL) indicate impaired cholesterol trafficking and lipid clearance. The combination of liver inflammation and progressive weight loss suggests chronic metabolic stress with secondary organ dysfunction. While lipid dysregulation alone might not be lethal, the presence of foam cell reticulosis—a hallmark of atherosclerosis—implies vascular pathology. However, the absence of overt cardiovascular phenotypes in the profile shifts focus to hepatic failure as the primary driver. The progressive weight loss and liver inflammation point to a catabolic state with compromised metabolic reserve, which in combination with lipid dysregulation, creates a permissive environment for multi-organ failure. The decisive evidence lies in the convergence of hepatic steatosis, systemic lipid imbalance, and inflammatory signaling, which collectively mirror patterns seen in severe metabolic syndromes with high mortality risk.\n</think>\nA",
+      "model_used": "longevity-llm",
+      "latency_s": 7.03,
+      "trace_score": 0.8,
+      "sub_scores": {
+        "gene_hallucination": {
+          "score": 1.0,
+          "real_genes": [],
+          "hallucinated_genes": [],
+          "famous_genes_cited": [],
+          "n_checked": 0
+        },
+        "think_answer_consistency": {
+          "score": 1.0,
+          "contradicts": false,
+          "reason": "consistent",
+          "trace_says_impairs": false,
+          "trace_says_no_effect": false,
+          "final_answer": "A"
+        },
+        "system_grounding": {
+          "score": 1.0,
+          "claimed_systems": [],
+          "verified": [],
+          "unverified": [],
+          "n_checked": 0
+        },
+        "claude_verification": {
+          "score": 0.2,
+          "deductions": [
+            "Lgvx3 is not a recognized gene in mouse genetics literature or MGI database (-0.3)",
+            "Fabricated protein function ('lipid transfer protein' operating in 'late-endosomal cholesterol export') without evidence (-0.3)",
+            "Invented phenotypes (hepatic steatosis, foam cell reticulosis, dyslipidemia) presented as established knockout effects (-0.3)",
+            "Speculative causal chain from unverified mechanisms to multi-organ failure (-0.2)",
+            "Reasoning appears internally coherent but entirely unsupported by biological data (-0.2)"
+          ],
+          "notes": "Gene appears fabricated. All mechanistic claims lack empirical foundation. Plausible-sounding but unsubstantiated.",
+          "skipped": false
+        }
+      },
+      "weights_used": {
+        "gene_hallucination": 0.3,
+        "think_answer_consistency": 0.25,
+        "system_grounding": 0.2,
+        "claude_verification": 0.25
+      },
+      "explanation": {
+        "summary": "Correct answer but the model fell into the hallucination trap.",
+        "answer_analysis": "Got A (premature death) right — the phenotype cluster genuinely maps to lethal lipid storage disorders.",
+        "trace_issues": "Claude gave only 0.2/1.0 — the model treated Lgvx3 as a real gene and fabricated detailed mechanisms (\"lipid transfer protein operating in late-endosomal cholesterol export\"). The prompt explicitly said Lgvx3 is hypothetical. A well-calibrated model should have flagged it as unknown and reasoned purely from phenotypes.",
+        "gene_hallucination_note": "Interestingly, the gene hallucination check passed (1.0) because Lgvx3 was in genes_in_prompt and the model did not invent additional genes.",
+        "key_failure_mode": "Confabulation — exactly the trap the prompt was designed to catch. Model claimed knowledge of a fictional gene instead of reasoning from phenotypes."
+      },
+      "prompt_text": "A novel gene, Lgvx3 (Lipid Globule Vesicle X-3), encodes a late-endosomal lipid transfer protein involved in intracellular cholesterol export, expressed predominantly in hepatocytes and macrophages.\\n\\nBased solely on the homozygous knockout phenotype profile below, predict whether this mutant exhibits premature death.\\n\\nOptions:\\n  A. Yes — premature death expected\\n  B. No — normal lifespan expected\\n\\nPhenotypes: increased liver cholesterol level | foam cell reticulosis | hepatic steatosis | increased circulating triglyceride level | decreased circulating HDL cholesterol level | abnormal macrophage physiology | liver inflammation | progressive weight loss\\n\\nConstraint: Lgvx3 is a hypothetical gene. No experimental lifespan data exists. Reason from phenotype profile alone. Do not infer from gene name.\\n\\nThink step by step, then answer with the option letter.\\nAnswer: "
+    },
+    {
+      "id": "SG-002",
+      "category": "synthetic_gene",
+      "title": "Hspk2 knockout — proteotoxic stress kinase",
+      "format": "binary",
+      "difficulty": "easy",
+      "genes": [
+        "Hspk2"
+      ],
+      "gold_answer": "B",
+      "predicted_answer": "B",
+      "correct": true,
+      "raw_response": "The knockout of Hspk2 results in a constellation of behavioral and cognitive deficits, including increased anxiety, reduced locomotion, impaired social and object recognition memory, and heightened grooming. These phenotypes suggest a disruption in stress response pathways or neuroplasticity, as anxiety and memory impairments are often linked to altered synaptic function or neuroinflammation. However, the absence of overt physical or developmental abnormalities implies that the gene’s role may be more specialized in modulating stress resilience rather than fundamental cellular processes. The lack of direct evidence for organ failure, immune dysfunction, or metabolic collapse further supports a non-lethal trajectory. While chronic stress responses could theoretically accelerate aging, the observed behavioral changes align more with age-related cognitive decline than with acute toxicity. The most decisive factor is the absence of systemic failure markers, which would be expected in a gene essential for survival.\n</think>\nB",
+      "model_used": "longevity-llm",
+      "latency_s": 5.81,
+      "trace_score": 0.6,
+      "sub_scores": {
+        "gene_hallucination": {
+          "score": 1.0,
+          "real_genes": [],
+          "hallucinated_genes": [],
+          "famous_genes_cited": [],
+          "n_checked": 0
+        },
+        "think_answer_consistency": {
+          "score": 0.0,
+          "contradicts": true,
+          "reason": "answer=no_effect but trace argues impairs survival",
+          "trace_says_impairs": true,
+          "trace_says_no_effect": false,
+          "final_answer": "B"
+        },
+        "system_grounding": {
+          "score": 1.0,
+          "claimed_systems": [],
+          "verified": [],
+          "unverified": [],
+          "n_checked": 0
+        },
+        "claude_verification": {
+          "score": 0.4,
+          "deductions": [
+            "Fabricated phenotypes: No MGI annotations available for Hspk2; trace invents specific behavioral deficits without evidence (-0.3)",
+            "Unsupported mechanistic claims: Attributes effects to stress pathways and neuroplasticity without justification (-0.2)",
+            "Speculative reasoning: Concludes non-lethal trajectory based on invented phenotypes rather than actual data (-0.2)"
+          ],
+          "notes": "Trace constructs plausible-sounding but entirely fabricated phenotypic profile. No actual Hspk2 data exists to validate claims.",
+          "skipped": false
+        }
+      },
+      "weights_used": {
+        "gene_hallucination": 0.3,
+        "think_answer_consistency": 0.25,
+        "system_grounding": 0.2,
+        "claude_verification": 0.25
+      },
+      "explanation": {
+        "summary": "Correct answer but contradictory reasoning.",
+        "answer_analysis": "Got B (no premature death) right — behavioral-only phenotypes are consistently non-lethal.",
+        "trace_issues": "Think/answer consistency check fired (0.0): the trace used language like \"impairs\" and \"disruption in stress response pathways\" suggesting lethality, but then answered B (no effect). Claude gave 0.4/1.0 because the model fabricated specific behavioral mechanisms for a gene that does not exist.",
+        "gene_hallucination_note": "Clean — no additional genes invented.",
+        "key_failure_mode": "Internal contradiction. The reasoning tone implied danger/lethality but the final answer was correct. Also confabulated mechanisms for a fictional gene."
+      },
+      "prompt_text": "A novel gene, Hspk2 (Heat Shock Protein Kinase 2), encodes a serine/threonine kinase that phosphorylates HSP70-family chaperones during proteotoxic stress, ubiquitously expressed.\\n\\nBased solely on the homozygous knockout phenotype profile below, predict whether this mutant exhibits premature death.\\n\\nOptions:\\n  A. Yes — premature death expected\\n  B. No — normal lifespan expected\\n\\nPhenotypes: increased anxiety-related response | decreased locomotor activity | abnormal social investigation | increased grooming behavior | abnormal object recognition memory | decreased exploration in new environment\\n\\nConstraint: Hspk2 is a hypothetical gene. No experimental lifespan data exists. Reason from phenotype profile alone. Do not infer from gene name.\\n\\nThink step by step, then answer with the option letter.\\nAnswer: "
+    },
+    {
+      "id": "SG-003",
+      "category": "synthetic_gene",
+      "title": "Tmfc5 overexpression — cardiac matrix connector",
+      "format": "multiclass",
+      "difficulty": "medium",
+      "genes": [
+        "Tmfc5"
+      ],
+      "gold_answer": "C",
+      "predicted_answer": "C",
+      "correct": true,
+      "raw_response": "The hemizygous overexpression of Tmfc5 reveals a pattern of cardiac-specific pathology without systemic effects, suggesting tissue-restricted regulation. The phenotype of cardiac hypertrophy, interstitial fibrosis, and reduced contractility aligns with progressive myocardial dysfunction, a hallmark of age-related cardiac decline. The absence of developmental defects or embryonic lethality indicates the gene is not essential for early cardiac morphogenesis, ruling out perinatal lethality (D) and developmental onset (B). The lack of systemic phenotypes (e.g., metabolic, neurological) further supports a tissue-specific role, consistent with a structural or signaling adaptor in cardiomyocytes. The combination of thickened ventricular walls and abnormal echocardiography suggests compensatory remodeling, which typically precedes overt heart failure in aging models. While overexpression could theoretically disrupt homeostasis, the absence of acute failure signs (e.g., arrhythmias, sudden death) points to a gradual deterioration model. The most decisive evidence lies in the progressive cardiac remodeling without developmental or systemic toxicity, aligning with age-associated cardiac decline rather than acute or developmental failure.\n</think>\nC",
+      "model_used": "longevity-llm",
+      "latency_s": 7.28,
+      "trace_score": 0.85,
+      "sub_scores": {
+        "gene_hallucination": {
+          "score": 1.0,
+          "real_genes": [],
+          "hallucinated_genes": [],
+          "famous_genes_cited": [],
+          "n_checked": 0
+        },
+        "think_answer_consistency": {
+          "score": 1.0,
+          "contradicts": false,
+          "reason": "consistent",
+          "trace_says_impairs": true,
+          "trace_says_no_effect": false,
+          "final_answer": "C"
+        },
+        "system_grounding": {
+          "score": 1.0,
+          "claimed_systems": [
+            "nervous system",
+            "homeostasis/metabolism"
+          ],
+          "verified": [],
+          "unverified": [],
+          "n_checked": 0
+        },
+        "claude_verification": {
+          "score": 0.4,
+          "deductions": [
+            "Fabricated specific phenotypes (cardiac hypertrophy, fibrosis, reduced contractility) without evidence (-0.3)",
+            "Invented mechanistic details (tissue-restricted regulation, structural/signaling adaptor role) (-0.3)",
+            "Speculative reasoning about compensatory remodeling and age-related decline without data (-0.2)",
+            "No known MGI annotations exist for Tmfc5; claims lack empirical support (-0.2)"
+          ],
+          "notes": "Reasoning is plausible but entirely speculative. No actual data supports the described cardiac phenotype.",
+          "skipped": false
+        }
+      },
+      "weights_used": {
+        "gene_hallucination": 0.3,
+        "think_answer_consistency": 0.25,
+        "system_grounding": 0.2,
+        "claude_verification": 0.25
+      },
+      "explanation": {
+        "summary": "Excellent — correct multiclass answer with consistent cardiac reasoning.",
+        "answer_analysis": "Correctly chose C (adult-aging onset) — recognized that hypertrophic cardiomyopathy with fibrosis is progressive, not developmental or perinatal.",
+        "trace_issues": "Claude gave 0.4/1.0 because Tmfc5 is fictional and the model fabricated mechanisms. However, the phenotype-to-mortality-stage reasoning was sound: fibrosis = progressive = adult onset. The model correctly distinguished this from developmental lethality.",
+        "gene_hallucination_note": "Clean — no additional genes invented.",
+        "key_failure_mode": "Same confabulation pattern as SG-001/002: treats fictional gene as real. But the phenotype reasoning was correct, which is what the prompt actually tests."
+      },
+      "prompt_text": "A novel gene, Tmfc5 (Transmembrane Fibronectin Connector 5), encodes a transmembrane adaptor linking extracellular matrix to cardiomyocyte cytoskeleton, expressed at high levels in cardiac muscle.\\n\\nBased solely on the hemizygous overexpression phenotype profile below, select the most likely mortality category.\\n\\nOptions:\\n  A. No premature death — normal lifespan\\n  B. Premature death, developmental onset\\n  C. Premature death, adult-aging onset (gradual deterioration)\\n  D. Perinatal lethality\\n\\nPhenotypes: cardiac hypertrophy | increased myocardial fiber size | cardiac interstitial fibrosis | decreased cardiac muscle contractility | thick ventricular wall | abnormal heart echocardiography feature\\n\\nConstraint: Tmfc5 is a hypothetical gene. No experimental lifespan data exists. Reason from phenotype profile alone.\\n\\nThink step by step, then answer with the option letter.\\nAnswer: "
+    },
+    {
+      "id": "RP-001",
+      "category": "reverse_lookup",
+      "title": "Identify gene: cerebellar + lipid storage",
+      "format": "multiple_choice",
+      "difficulty": "easy",
+      "genes": [
+        "Npc1",
+        "Arv1",
+        "Slc2a4",
+        "Hnf1b"
+      ],
+      "gold_answer": "B",
+      "predicted_answer": "B",
+      "correct": true,
+      "raw_response": "The mouse exhibits a constellation of neurological and metabolic defects. The most striking features are the combination of ataxia, tremors, and decreased Purkinje cell number, which point to cerebellar degeneration. This is accompanied by systemic metabolic disturbances including weight loss, increased liver cholesterol, and foam cell reticulosis, indicating lipid dysregulation. The presence of foam cells suggests impaired cholesterol trafficking or clearance, while the neurological symptoms imply a specific vulnerability of Purkinje cells to lipid imbalance. Among the options, the gene encoding a late endosomal cholesterol transporter (NPC1) directly connects these phenotypes. Loss of NPC1 function would disrupt cholesterol efflux from endosomes, leading to intracellular cholesterol accumulation in tissues like the liver (causing foam cells) and brain (affecting Purkinje cells). The metabolic profile aligns with NPC1's role in HDL biogenesis and lipid homeostasis, while the neurological phenotype reflects the brain's dependence on proper cholesterol trafficking for neuronal maintenance. Other genes like Arv1 (lipid transfer) or Slc2a4 (glucose transporter) lack the direct mechanistic link to both cerebellar degeneration and foam cell formation. The decisive evidence lies in the convergence of lipid dysregulation and Purkinje cell loss, a pattern specifically associated with NPC1 deficiency in both human and mouse models.\n</think>\nB",
+      "model_used": "longevity-llm",
+      "latency_s": 8.55,
+      "trace_score": 0.662,
+      "sub_scores": {
+        "gene_hallucination": {
+          "score": 0.0,
+          "real_genes": [],
+          "hallucinated_genes": [
+            "Among"
+          ],
+          "famous_genes_cited": [],
+          "n_checked": 1
+        },
+        "think_answer_consistency": {
+          "score": 1.0,
+          "contradicts": false,
+          "reason": "consistent",
+          "trace_says_impairs": false,
+          "trace_says_no_effect": false,
+          "final_answer": "B"
+        },
+        "system_grounding": {
+          "score": 1.0,
+          "claimed_systems": [
+            "nervous system",
+            "homeostasis/metabolism"
+          ],
+          "verified": [],
+          "unverified": [],
+          "n_checked": 0
+        },
+        "claude_verification": {
+          "score": 0.85,
+          "deductions": [
+            "Mentioned Arv1 and Slc2a4 without justification (-0.15 combined for comparative discussion without explicit prompt instruction)"
+          ],
+          "notes": "NPC1-cerebellar degeneration-foam cell connection is accurate. Mechanism of endosomal cholesterol accumulation is correct. Reasoning is sound.",
+          "skipped": false
+        }
+      },
+      "weights_used": {
+        "gene_hallucination": 0.3,
+        "think_answer_consistency": 0.25,
+        "system_grounding": 0.2,
+        "claude_verification": 0.25
+      },
+      "explanation": {
+        "summary": "Correct — strong differential diagnosis for NPC1.",
+        "answer_analysis": "Correctly identified Npc1. The Purkinje cell loss + foam cell reticulosis + cholesterol accumulation combination is the canonical NPC1 signature.",
+        "trace_issues": "Claude gave 0.85/1.0 — biology was accurate. The model correctly distinguished NPC1 from Arv1 (which has lipid phenotypes but no cerebellar neurodegeneration). Sound reasoning process.",
+        "gene_hallucination_note": "False positive — \"Among\" flagged as a gene (it is an English word the model used in its reasoning).",
+        "key_failure_mode": "None. This is the kind of reverse-lookup reasoning the benchmark is designed to test."
+      },
+      "prompt_text": "A homozygous knockout mouse exhibits the following phenotype profile. Which gene was most likely knocked out?\\n\\nPhenotypes: decreased Purkinje cell number | weight loss | ataxia | abnormal lipid level | increased liver cholesterol level | tremors | foam cell reticulosis | decreased body weight\\n\\nOptions:\\n  A. Arv1 — lipid transfer protein, HDL biogenesis, liver and brain\\n  B. Npc1 — NPC intracellular cholesterol transporter, late endosomal\\n  C. Slc2a4 — GLUT4, insulin-stimulated glucose transporter, muscle and adipose\\n  D. Hnf1b — hepatocyte nuclear factor 1-beta, liver/kidney/pancreas\\n\\nThink step by step, then answer with the option letter.\\nAnswer: "
+    },
+    {
+      "id": "RP-002",
+      "category": "reverse_lookup",
+      "title": "Identify gene: glucose transport + cardiac",
+      "format": "multiple_choice",
+      "difficulty": "medium",
+      "genes": [
+        "Slc2a4",
+        "Npc1",
+        "Arv1",
+        "Col4a3"
+      ],
+      "gold_answer": "C",
+      "predicted_answer": "C",
+      "correct": true,
+      "raw_response": "The mouse exhibits a metabolic syndrome characterized by hyperinsulinemia, insulin resistance, and dyslipidemia (decreased free fatty acids and ketone bodies), alongside cardiac hypertrophy and growth retardation. These phenotypes suggest a central role for insulin signaling in glucose homeostasis and lipid metabolism. The combination of increased insulin and insulin resistance points to impaired insulin sensitivity, a hallmark of metabolic disorders. The cardiac hypertrophy and growth retardation further indicate systemic metabolic dysregulation affecting multiple tissues. Among the options, the gene most directly linked to insulin-stimulated glucose uptake in muscle and adipose tissue is Slc2a4 (GLUT4). GLUT4 is a critical mediator of insulin-dependent glucose transport, and its deficiency would lead to reduced glucose uptake, compensatory hyperinsulinemia, and secondary metabolic disturbances such as lipid dysregulation. The observed phenotypes align with a loss-of-function in GLUT4, as impaired glucose clearance would drive hyperinsulinemia and insulin resistance, while the metabolic consequences (e.g., decreased ketone bodies) reflect altered substrate utilization. Other genes like Npc1 (cholesterol transport) or Arv1 (lipid transfer) might contribute to lipid metabolism but lack the direct connection to insulin signaling and glucose uptake. Col4a3 (basement membrane structure) is less likely to cause this specific metabolic profile. The decisive evidence lies in the convergence of insulin resistance, hyperinsulinemia, and glucose dysregulation, which are most directly explained by a defect in GLUT4-mediated glucose transport.\n</think>\nC",
+      "model_used": "longevity-llm",
+      "latency_s": 9.77,
+      "trace_score": 0.662,
+      "sub_scores": {
+        "gene_hallucination": {
+          "score": 0.0,
+          "real_genes": [],
+          "hallucinated_genes": [
+            "Among"
+          ],
+          "famous_genes_cited": [],
+          "n_checked": 1
+        },
+        "think_answer_consistency": {
+          "score": 1.0,
+          "contradicts": false,
+          "reason": "consistent",
+          "trace_says_impairs": false,
+          "trace_says_no_effect": false,
+          "final_answer": "C"
+        },
+        "system_grounding": {
+          "score": 1.0,
+          "claimed_systems": [
+            "homeostasis/metabolism"
+          ],
+          "verified": [],
+          "unverified": [],
+          "n_checked": 0
+        },
+        "claude_verification": {
+          "score": 0.85,
+          "deductions": [
+            "Speculative mechanism: GLUT4 deficiency causing decreased ketone bodies lacks direct mechanistic support (-0.15)"
+          ],
+          "notes": "Sound reasoning on GLUT4's role in glucose uptake and insulin signaling. Gene selection well-justified against alternatives. Minor overreach on metabolic consequences.",
+          "skipped": false
+        }
+      },
+      "weights_used": {
+        "gene_hallucination": 0.3,
+        "think_answer_consistency": 0.25,
+        "system_grounding": 0.2,
+        "claude_verification": 0.25
+      },
+      "explanation": {
+        "summary": "Correct — accurately identified Slc2a4/GLUT4 from the insulin resistance + cardiac profile.",
+        "answer_analysis": "Correctly identified Slc2a4. Key discriminator: insulin resistance direction (Arv1 increases sensitivity, Slc2a4 causes resistance).",
+        "trace_issues": "Claude gave 0.85/1.0. Minor deduction: the model speculated about GLUT4 deficiency causing decreased ketone bodies without strong mechanistic support. Otherwise sound.",
+        "gene_hallucination_note": "False positive — \"Among\" again.",
+        "key_failure_mode": "None significant. Model correctly used directionality of insulin sensitivity as the key differentiator."
+      },
+      "prompt_text": "A homozygous knockout mouse (decreased expression) exhibits the following phenotype profile. Which gene was most likely knocked out?\\n\\nPhenotypes: abnormal circulating glucose level | cardiac hypertrophy | postnatal growth retardation | increased circulating insulin level | insulin resistance | decreased circulating free fatty acids level | increased heart weight | decreased circulating ketone body level\\n\\nOptions:\\n  A. Npc1 — NPC intracellular cholesterol transporter\\n  B. Arv1 — ARV1 lipid transfer protein, HDL biogenesis\\n  C. Slc2a4 — GLUT4, insulin-stimulated glucose uptake in muscle and adipose\\n  D. Col4a3 — type IV collagen alpha-3 chain, basement membrane structure\\n\\nThink step by step, then answer with the option letter.\\nAnswer: "
+    },
+    {
+      "id": "RP-003",
+      "category": "reverse_lookup",
+      "title": "Identify gene: lymphoproliferative multi-organ",
+      "format": "multiple_choice",
+      "difficulty": "hard",
+      "genes": [
+        "Fas",
+        "Smad3",
+        "Ctla4",
+        "Bcl2l11"
+      ],
+      "gold_answer": "D",
+      "predicted_answer": "A",
+      "correct": false,
+      "raw_response": "The mouse exhibits a constellation of immune dysregulation and tissue inflammation, with key features including lymphoid organ enlargement, autoantibody elevation, and multi-organ inflammation. The most decisive evidence lies in the combination of enlarged lymph nodes, increased autoantibody levels, and abnormal T cell numbers, which collectively point to a breakdown in immune tolerance and chronic activation of the adaptive immune system. These findings align with a loss of inhibitory signaling in T cells, as CTLA-4 (B) serves as a critical brake on T cell activation during antigen presentation. Its absence would lead to unchecked T cell proliferation, contributing to lymphoid hyperplasia and autoimmunity. While Smad3 (A) also regulates immune homeostasis, its knockout typically manifests with more pronounced fibrosis and epithelial defects rather than the lymphoid-centric inflammation observed here. The presence of skin lesions and salivary gland inflammation further supports a systemic immune dysregulation pattern, which is more consistent with CTLA-4 deficiency than with Smad3 or Fas (D) knockouts. The thyroid morphology changes may reflect secondary effects of chronic inflammation rather than a primary thyroid-specific defect. The convergence of these immune and inflammatory phenotypes, particularly the lymphoid organ enlargement and autoantibody elevation, provides the strongest evidence for CTLA-4 as the knocked-out gene.\n</think>\nA",
+      "model_used": "longevity-llm",
+      "latency_s": 8.62,
+      "trace_score": 0.625,
+      "sub_scores": {
+        "gene_hallucination": {
+          "score": 0.0,
+          "real_genes": [],
+          "hallucinated_genes": [
+            "CTLA"
+          ],
+          "famous_genes_cited": [],
+          "n_checked": 1
+        },
+        "think_answer_consistency": {
+          "score": 1.0,
+          "contradicts": false,
+          "reason": "consistent",
+          "trace_says_impairs": false,
+          "trace_says_no_effect": false,
+          "final_answer": "A"
+        },
+        "system_grounding": {
+          "score": 1.0,
+          "claimed_systems": [
+            "immune system"
+          ],
+          "verified": [],
+          "unverified": [],
+          "n_checked": 0
+        },
+        "claude_verification": {
+          "score": 0.7,
+          "deductions": [
+            "Mentioned CTLA-4 (B) which is not in the provided gene list (Fas, Smad3, Ctla4, Bcl2l11) - inconsistent notation (-0.2)",
+            "Incomplete differential analysis - did not adequately consider Fas knockout phenotype (lpr/gld models show similar lymphoproliferation and autoimmunity) (-0.1)"
+          ],
+          "notes": "Sound immunological reasoning about CTLA4 deficiency. Correct identification of immune dysregulation pattern. Minor notation inconsistency and incomplete differential.",
+          "skipped": false
+        }
+      },
+      "weights_used": {
+        "gene_hallucination": 0.3,
+        "think_answer_consistency": 0.25,
+        "system_grounding": 0.2,
+        "claude_verification": 0.25
+      },
+      "explanation": {
+        "summary": "Wrong answer — picked Smad3 (A) instead of Fas (D).",
+        "answer_analysis": "The model confused the lymphoproliferative autoimmune signature. The tri-organ enlargement (spleen + lymph nodes + thymus) + multi-tissue glandular inflammation is specifically the FAS/lpr phenotype, not Smad3. Smad3 KO causes colon cancer and colorectal inflammation, a very different pattern.",
+        "trace_issues": "Claude gave 0.7/1.0 — noted the model did not adequately consider the Fas knockout phenotype in its differential. The reasoning focused too heavily on CTLA4-like mechanisms.",
+        "gene_hallucination_note": "False positive — \"CTLA\" flagged (abbreviation of CTLA4, which the model discussed).",
+        "key_failure_mode": "Failed differential diagnosis. Could not distinguish the specific anatomical distribution of Fas-mediated autoimmunity from other immune lethal phenotypes. This is exactly the hard discriminator the prompt was designed to test."
+      },
+      "prompt_text": "A homozygous knockout mouse (decreased expression) exhibits the following phenotype profile. Which gene was most likely knocked out?\\n\\nPhenotypes: enlarged spleen | enlarged lymph nodes | enlarged thymus | blood vessel inflammation | salivary gland inflammation | skin lesions | increased autoantibody level | abnormal T cell number | abnormal immune system physiology | abnormal thyroid gland morphology\\n\\nOptions:\\n  A. Smad3 — TGF-beta signal transducer, immune and epithelial homeostasis\\n  B. Ctla4 — CTLA-4, T cell co-inhibitory receptor at priming stage\\n  C. Bcl2l11 — BIM, pro-apoptotic BCL-2 family member in lymphocytes\\n  D. Fas — FAS death receptor, activation-induced T cell peripheral deletion\\n\\nThink step by step, then answer with the option letter.\\nAnswer: "
+    },
+    {
+      "id": "GC-001",
+      "category": "gene_complement",
+      "title": "Complement to Ctla4 KO — dual T-cell checkpoint",
+      "format": "multiple_choice",
+      "difficulty": "hard",
+      "genes": [
+        "Ctla4",
+        "Fas",
+        "Cry1",
+        "Gatm",
+        "Npc2"
+      ],
+      "gold_answer": "A",
+      "predicted_answer": "A",
+      "correct": true,
+      "raw_response": "The observed combined phenotype includes enlarged spleen, lymphoproliferation, multi-organ immune infiltration, and autoantibody elevation, all of which are hallmarks of systemic immune dysregulation. Ctla4 (CTLA4) encodes a critical negative regulator of T cell activation, and its knockout leads to hyperactivation of T cells, contributing to acute inflammation. However, the broader phenotype suggests additional defects in immune homeostasis, particularly in apoptosis or lymphocyte survival. The most decisive evidence lies in the combination of lymphoproliferation and multi-organ immune infiltration, which aligns with impaired apoptosis of activated T cells. Among the options, Fas (FAS) directly mediates apoptosis in activated T cells via the death receptor pathway. Loss of Fas function would prevent clearance of autoreactive T cells, exacerbating the immune dysregulation caused by Ctla4 deficiency. This synergy between CTLA4 and FAS loss-of-function is well-documented in models of autoimmune disease, where both genes are required to maintain immune tolerance. Other genes like Cry1 (circadian regulation) or Gatm (creatine synthesis) lack direct mechanistic links to the observed immune phenotypes. The convergence of lymphoproliferation, autoantibodies, and multi-organ inflammation strongly implicates a defect in apoptosis, making Fas the most plausible candidate.\n</think>\nA",
+      "model_used": "longevity-llm",
+      "latency_s": 8.75,
+      "trace_score": 0.662,
+      "sub_scores": {
+        "gene_hallucination": {
+          "score": 0.0,
+          "real_genes": [],
+          "hallucinated_genes": [
+            "Among"
+          ],
+          "famous_genes_cited": [],
+          "n_checked": 1
+        },
+        "think_answer_consistency": {
+          "score": 1.0,
+          "contradicts": false,
+          "reason": "consistent",
+          "trace_says_impairs": false,
+          "trace_says_no_effect": false,
+          "final_answer": "A"
+        },
+        "system_grounding": {
+          "score": 1.0,
+          "claimed_systems": [],
+          "verified": [],
+          "unverified": [],
+          "n_checked": 0
+        },
+        "claude_verification": {
+          "score": 0.85,
+          "deductions": [
+            "Claimed 'well-documented synergy between CTLA4 and FAS' without citation (-0.15)"
+          ],
+          "notes": "Sound immunological reasoning. CTLA4 and FAS mechanisms correctly described. Minor overstatement of evidence certainty for their interaction.",
+          "skipped": false
+        }
+      },
+      "weights_used": {
+        "gene_hallucination": 0.3,
+        "think_answer_consistency": 0.25,
+        "system_grounding": 0.2,
+        "claude_verification": 0.25
+      },
+      "explanation": {
+        "summary": "Correct — identified Fas as the complement to Ctla4 for dual T-cell checkpoint failure.",
+        "answer_analysis": "Correctly recognized that FAS (peripheral apoptosis) + CTLA4 (activation dampening) covers both T-cell tolerance stages, explaining the broader combined phenotype.",
+        "trace_issues": "Claude gave 0.85/1.0. Only deduction: the model claimed \"well-documented synergy\" between CTLA4 and FAS without citation. The reasoning was otherwise accurate.",
+        "gene_hallucination_note": "False positive — \"Among\" flagged.",
+        "key_failure_mode": "None. Model correctly applied pathway complementarity logic."
+      },
+      "prompt_text": "Gene A has been identified as Ctla4 (homozygous knockout, decreased expression). The observed combined phenotype is substantially broader than Ctla4 KO alone. Which additional gene knockout (Gene B) most likely produces the full observed phenotype?\\n\\nCtla4 KO alone: increased acute inflammation (rapid systemic T cell activation)\\n\\nCombined observed phenotype: enlarged spleen | increased autoantibody level | lymphoproliferation | abnormal T cell number | blood vessel inflammation | salivary gland inflammation | skin lesions | abnormal thyroid gland morphology | multi-organ immune infiltration\\n\\nOptions:\\n  A. Fas — FAS death receptor, peripheral T cell activation-induced apoptosis\\n  B. Cry1 — Cryptochrome 1, core circadian clock component\\n  C. Gatm — glycine amidinotransferase, creatine biosynthesis\\n  D. Npc2 — NPC intracellular cholesterol transporter 2\\n\\nThink step by step, then answer with the option letter.\\nAnswer: "
+    },
+    {
+      "id": "GC-002",
+      "category": "gene_complement",
+      "title": "Complement to Arv1 KO — atherogenic lipid axis",
+      "format": "multiple_choice",
+      "difficulty": "medium",
+      "genes": [
+        "Arv1",
+        "Ddr1",
+        "Ldlr",
+        "Proc",
+        "Nherf1",
+        "Sun3"
+      ],
+      "gold_answer": "A",
+      "predicted_answer": "A",
+      "correct": true,
+      "raw_response": "The vascular pathology observed in the combined knockout phenotype, specifically atherosclerotic lesions and abnormal blood vessel morphology, strongly implicates a gene involved in lipid metabolism and vascular integrity. Arv1 KO alone shows decreased HDL and triglycerides, suggesting a role in lipid homeostasis, but lacks vascular defects. The addition of hepatic steatosis and macrophage depletion in the combined phenotype points to a synergistic effect on lipid dysregulation and immune cell dysfunction. Among the options, Ddr1 (collagen receptor DDR1) and Ldlr (LDL receptor) form a multi-locus combination that directly impacts lipid clearance and vascular repair. Ldlr deficiency is a well-established driver of atherosclerosis, while Ddr1’s role in collagen signaling may exacerbate vascular damage. The other options—Proc (anticoagulant serine protease), Nherf1 (phosphate reabsorption), and Sun3 (nuclear envelope architecture)—lack direct mechanistic links to the vascular and lipid abnormalities observed. The decisive evidence lies in the convergence of lipid dysregulation (hepatic steatosis, cholesterol elevation) and vascular pathology (atherosclerotic lesions), which aligns with the Ldlr-Ddr1 combination’s known roles in lipid metabolism and extracellular matrix remodeling.\n</think>\nA",
+      "model_used": "longevity-llm",
+      "latency_s": 8.57,
+      "trace_score": 0.613,
+      "sub_scores": {
+        "gene_hallucination": {
+          "score": 0.0,
+          "real_genes": [],
+          "hallucinated_genes": [
+            "KO",
+            "Among"
+          ],
+          "famous_genes_cited": [],
+          "n_checked": 2
+        },
+        "think_answer_consistency": {
+          "score": 1.0,
+          "contradicts": false,
+          "reason": "consistent",
+          "trace_says_impairs": false,
+          "trace_says_no_effect": false,
+          "final_answer": "A"
+        },
+        "system_grounding": {
+          "score": 1.0,
+          "claimed_systems": [
+            "immune system",
+            "cardiovascular system"
+          ],
+          "verified": [],
+          "unverified": [],
+          "n_checked": 0
+        },
+        "claude_verification": {
+          "score": 0.65,
+          "deductions": [
+            "Fabricated specific mechanistic link between Ddr1 and Ldlr in atherosclerosis without evidence (-0.15)",
+            "Overstated confidence in Ddr1's role in vascular repair; collagen receptor function in atherosclerosis context not well-established (-0.1)",
+            "Assumed synergistic interaction without experimental support from the trace (-0.1)"
+          ],
+          "notes": "Sound reasoning on Ldlr-atherosclerosis link and lipid metabolism. Ddr1 connection speculative but plausible. Other genes correctly excluded.",
+          "skipped": false
+        }
+      },
+      "weights_used": {
+        "gene_hallucination": 0.3,
+        "think_answer_consistency": 0.25,
+        "system_grounding": 0.2,
+        "claude_verification": 0.25
+      },
+      "explanation": {
+        "summary": "Correct — identified Ddr1;Ldlr as the vascular complement to Arv1.",
+        "answer_analysis": "Correctly recognized that atherosclerotic lesions require both impaired HDL efflux (Arv1) and impaired LDL clearance (Ldlr), plus vascular matrix signaling (Ddr1).",
+        "trace_issues": "Claude gave 0.65/1.0: the model overstated confidence in the Ddr1-atherosclerosis link (collagen receptor role in atherosclerosis is not well-established) and fabricated a specific Ddr1-Ldlr mechanistic interaction.",
+        "gene_hallucination_note": "False positives — \"KO\" and \"Among\" flagged as genes.",
+        "key_failure_mode": "Minor overconfidence in mechanistic claims, but the phenotype matching logic was sound."
+      },
+      "prompt_text": "Gene A has been identified as Arv1 (homozygous knockout, decreased expression). The combined phenotype includes vascular pathology absent from Arv1 KO alone. Which additional gene knockout (Gene B) most likely contributes the vascular component?\\n\\nArv1 KO alone: decreased circulating HDL | abnormal liver physiology | decreased circulating triglyceride level | increased insulin sensitivity | seizures | impaired coordination\\n\\nCombined observed phenotype: decreased circulating HDL | hepatic steatosis | abnormal lipid homeostasis | atherosclerotic lesions | decreased macrophage cell number | increased liver cholesterol level | abnormal blood vessel morphology\\n\\nOptions:\\n  A. Ddr1;Ldlr (multi-locus) — collagen receptor DDR1 + LDL receptor\\n  B. Proc — Protein C, anticoagulant serine protease\\n  C. Nherf1 — Na+/H+ exchanger regulatory factor, phosphate reabsorption\\n  D. Sun3 — SUN domain protein 3, nuclear envelope architecture\\n\\nThink step by step, then answer with the option letter.\\nAnswer: "
+    },
+    {
+      "id": "GC-003",
+      "category": "gene_complement",
+      "title": "Complement to Col4a3 KO — immune-mediated nephropathy",
+      "format": "multiple_choice",
+      "difficulty": "hard",
+      "genes": [
+        "Col4a3",
+        "Was",
+        "Proc",
+        "Foxo4",
+        "Tgm3"
+      ],
+      "gold_answer": "A",
+      "predicted_answer": "C",
+      "correct": false,
+      "raw_response": "The kidney pathology in Col4a3 KO mice is characterized by glomerulonephritis, albuminuria, and renal fibrosis, consistent with a structural defect in the glomerular basement membrane (GBM) due to collagen IV α3 chain deficiency. This defect likely leads to increased permeability and proteinuria, but the absence of immune-complex deposits suggests a non-immunological mechanism. The combined phenotype introduces immune-complex glomerular pathology, elevated IgM/IgA levels, and mesangial expansion, indicating a shift toward immune-mediated injury. The key to this transition lies in a gene that modulates immune activation or complement pathways. Among the options, Foxo4 (C) is a transcription factor critical for immune cell survival and function. Its hemizygous status in the experimental setup suggests partial loss of function, which could disrupt immune homeostasis. Foxo4 regulates B-cell and T-cell responses, and its dysregulation might amplify autoantibody production or complement activation, leading to immune-complex deposition. The other options (Was, Proc, Tgm3) lack direct links to immune-complex formation or complement pathways. Was (A) affects actin cytoskeleton in hematopoietic cells but is more associated with immune deficiency syndromes rather than immune-complex disease. Proc (B) is a coagulation regulator with no clear role in immune-complex glomerulonephritis. Tgm3 (D) is a transglutaminase involved in tissue remodeling but not immune activation. The decisive evidence is Foxo4’s role in immune cell regulation and its potential to exacerbate immune-mediated damage when combined with a structural GBM defect.\n</think>\nC",
+      "model_used": "longevity-llm",
+      "latency_s": 10.83,
+      "trace_score": 0.613,
+      "sub_scores": {
+        "gene_hallucination": {
+          "score": 0.0,
+          "real_genes": [],
+          "hallucinated_genes": [
+            "KO",
+            "GBM",
+            "IV",
+            "IgM",
+            "IgA",
+            "Among"
+          ],
+          "famous_genes_cited": [],
+          "n_checked": 6
+        },
+        "think_answer_consistency": {
+          "score": 1.0,
+          "contradicts": false,
+          "reason": "consistent",
+          "trace_says_impairs": false,
+          "trace_says_no_effect": false,
+          "final_answer": "C"
+        },
+        "system_grounding": {
+          "score": 1.0,
+          "claimed_systems": [
+            "immune system"
+          ],
+          "verified": [],
+          "unverified": [],
+          "n_checked": 0
+        },
+        "claude_verification": {
+          "score": 0.65,
+          "deductions": [
+            "Foxo4 role in immune-complex GN overstated; primarily a metabolic/survival regulator, not immune activation driver (-0.15)",
+            "Claim about Foxo4 amplifying autoantibody production lacks strong mechanistic support (-0.1)",
+            "Was assessment incomplete; WASp does affect immune synapse formation and could influence immune responses (-0.1)"
+          ],
+          "notes": "Col4a3 GBM pathology accurate. Foxo4 connection to immune-complex disease speculative without experimental evidence.",
+          "skipped": false
+        }
+      },
+      "weights_used": {
+        "gene_hallucination": 0.3,
+        "think_answer_consistency": 0.25,
+        "system_grounding": 0.2,
+        "claude_verification": 0.25
+      },
+      "explanation": {
+        "summary": "Wrong — picked Foxo4 (C) instead of Was (A) for immune-mediated nephropathy.",
+        "answer_analysis": "The model failed to connect WASp (Wiskott-Aldrich syndrome protein) to IgA/IgM-mediated glomerulonephritis. Instead, it speculated that Foxo4 could amplify autoantibody production — a much weaker mechanistic link.",
+        "trace_issues": "Claude gave 0.65/1.0: confirmed that Foxo4 is primarily a metabolic/survival regulator, not an immune activation driver. The claim about Foxo4 amplifying autoantibody production lacks mechanistic support. Meanwhile, WASp does affect immune synapse formation and B-cell activation — the correct pathway.",
+        "gene_hallucination_note": "Multiple false positives: \"KO\", \"GBM\" (glomerular basement membrane), \"IV\" (collagen IV), \"IgM\", \"IgA\", \"Among\" — all domain terms, not genes.",
+        "key_failure_mode": "Could not connect hematopoietic actin cytoskeleton regulation (Was) to immune-complex nephropathy. This is the deepest biological reasoning challenge in the set — requires knowing that WASp loss causes aberrant B-cell activation leading to IgA/IgM deposition."
+      },
+      "prompt_text": "Gene A has been identified as Col4a3 (homozygous knockout, decreased expression). The combined phenotype includes immune-complex glomerular pathology absent from Col4a3 KO alone. Which additional gene knockout (Gene B) most likely adds the immune-mediated component?\\n\\nCol4a3 KO alone: glomerulonephritis | albuminuria | increased urine protein | renal interstitial fibrosis | kidney failure | glomerulosclerosis | increased circulating creatinine | increased BUN\\n\\nCombined observed phenotype: glomerulonephritis | albuminuria | renal interstitial fibrosis | kidney failure | abnormal glomerular mesangium | increased mesangial cell number | expanded mesangial matrix | increased IgM level | increased IgA level | renal glomerular immunoglobulin deposits\\n\\nOptions:\\n  A. Was — Wiskott-Aldrich syndrome protein, actin cytoskeleton in hematopoietic cells\\n  B. Proc — Protein C, anticoagulant, coagulation cascade\\n  C. Foxo4 — FOXO4 transcription factor, hemizygous, urinary bladder\\n  D. Tgm3 — Transglutaminase 3, kidney morphology\\n\\nThink step by step, then answer with the option letter.\\nAnswer: "
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 # secrets
 .env
+.env.*
 
 # data + outputs (large / regenerable). Large materialized data stays out; the small,
 # auditable ground-truth tables + the gene blocklist (loader runtime deps) are tracked.
