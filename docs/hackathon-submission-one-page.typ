@@ -42,9 +42,9 @@
 #grid(columns: (1fr, 1fr, 1fr, 1fr), gutter: 5pt)[
   #card("Dataset", "74,573", "MGI mouse genotypes")
 ][
-  #card("Main eval", "240", "controlled binary prompts")
+  #card("Main eval", "240", "controlled binary prompts (120 matched pairs)")
 ][
-  #card("Single-gene control", "120", "epistasis removed")
+  #card("Single-gene control", "120", "matched pairs = 240 prompts; epistasis removed")
 ][
   #card("Extra credit", "12", "reasoning stress-test prompts", color: warn)
 ]
@@ -96,11 +96,11 @@
 
 #v(0.02in)
 #grid(columns: (1fr, 1fr, 1fr), gutter: 5pt)[
-  #card("Mixed controlled Delta_recall", "+0.100", "Longevity-LLM, p=0.017", color: good)
+  #card("Recall reliance, controlled set", "+0.100", "Longevity-LLM Delta_recall; McNemar p=0.017 (significant)", color: accent)
 ][
-  #card("Single-gene Delta_recall", "+0.017", "not significant, p=0.86", color: accent)
+  #card("...collapses, single-gene only", "+0.017", "not significant (p=0.86) - the effect was a multi-gene/epistasis artifact", color: good)
 ][
-  #card("Life-extension recall", "1/20", "Longevity gene-shown extenders", color: warn)
+  #card("Life-extension blind spot", "1/20", "Longevity extends-recall gene-shown vs 10/20 gene-hidden - showing the gene makes it WORSE", color: warn)
 ]
 
 #grid(columns: (1fr, 1fr), gutter: 0.2in)[
