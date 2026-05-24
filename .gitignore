@@ -8,6 +8,8 @@ data/*
 !data/mp_mortality_terms.csv
 !data/mp_mortality_classified.csv
 !data/famous_gene_blocklist.csv
+# canonical labeled dataset (~31M; under GitHub's 100MB limit)
+!data/mgi_labeled.csv
 outputs/
 
 # python
