@@ -39,6 +39,17 @@ Metric: accuracy + Δ_recall. Curated: drops extenders whose profile contradicts
 recall boost — distinguishing extend-vs-shorten leans on phenotype reasoning more than the absolute
 survival call does. n=52 pairs (directional).
 
+### Contamination / recall probe (retrieval-resistance evidence — not a scored task)
+Asks "does a knockout of gene X impair survival?" with **gene name only, no phenotype** — so a
+correct answer can only come from prior knowledge. Compares famous (GenAge) vs obscure genes.
+
+| builder | outputs | result (Longevity-LLM) |
+|---|---|---|
+| `scripts/contamination_probe_genes.py` | `data/contamination_probe_results.csv` + `_summary.json`; writeup `docs/contamination-probe-2026-05-23.md` | impairs-YES subset: **famous 70% vs obscure 5%** (Fisher p=3.9e-5); overall gap +16.3% |
+
+**Key finding:** the model recalls famous longevity genes but not obscure ones → empirically
+justifies the famous-gene blocklist and validates the Δ_recall ablation. (Run with `--n 40 --seed 1234`.)
+
 ### Deferred / not built
 - **LB-0142** IMPC viability (viable/subviable/lethal) — data-blocked (lethal-only extract).
 - **Ternary** shortens/no-effect/extends, **regression** (OpenGenes/SynergyAge %-change) — candidates.
