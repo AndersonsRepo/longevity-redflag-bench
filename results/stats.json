@@ -1,0 +1,154 @@
+{
+  "longevity_controlled": {
+    "n_runs": 3,
+    "conditions": {
+      "geno_pheno": {
+        "acc": 0.775,
+        "n": 120,
+        "sem": 0.0381,
+        "ci95": [
+          0.7003,
+          0.8497
+        ]
+      },
+      "pheno_only": {
+        "acc": 0.675,
+        "n": 120,
+        "sem": 0.0428,
+        "ci95": [
+          0.5912,
+          0.7588
+        ]
+      }
+    },
+    "delta_recall": {
+      "n_pairs": 120,
+      "delta_recall": 0.1,
+      "delta_recall_ci95": [
+        0.025,
+        0.175
+      ],
+      "mcnemar_b_genoOnly": 17,
+      "mcnemar_c_phenoOnly": 5,
+      "mcnemar_p": 0.0169
+    },
+    "parse_success": {
+      "geno_pheno": "360/360",
+      "pheno_only": "360/360"
+    }
+  },
+  "claude_controlled": {
+    "n_runs": 3,
+    "conditions": {
+      "geno_pheno": {
+        "acc": 0.8167,
+        "n": 120,
+        "sem": 0.0353,
+        "ci95": [
+          0.7474,
+          0.8859
+        ]
+      },
+      "pheno_only": {
+        "acc": 0.7333,
+        "n": 120,
+        "sem": 0.0404,
+        "ci95": [
+          0.6542,
+          0.8125
+        ]
+      }
+    },
+    "delta_recall": {
+      "n_pairs": 120,
+      "delta_recall": 0.0833,
+      "delta_recall_ci95": [
+        -0.0083,
+        0.175
+      ],
+      "mcnemar_b_genoOnly": 20,
+      "mcnemar_c_phenoOnly": 10,
+      "mcnemar_p": 0.09874
+    },
+    "parse_success": {
+      "geno_pheno": "360/360",
+      "pheno_only": "360/360"
+    }
+  },
+  "longevity_random": {
+    "n_runs": 3,
+    "conditions": {
+      "geno_pheno": {
+        "acc": 0.775,
+        "n": 120,
+        "sem": 0.0381,
+        "ci95": [
+          0.7003,
+          0.8497
+        ]
+      },
+      "pheno_only": {
+        "acc": 0.7417,
+        "n": 120,
+        "sem": 0.04,
+        "ci95": [
+          0.6633,
+          0.82
+        ]
+      }
+    },
+    "delta_recall": {
+      "n_pairs": 120,
+      "delta_recall": 0.0333,
+      "delta_recall_ci95": [
+        -0.0417,
+        0.1083
+      ],
+      "mcnemar_b_genoOnly": 14,
+      "mcnemar_c_phenoOnly": 10,
+      "mcnemar_p": 0.54126
+    },
+    "parse_success": {
+      "geno_pheno": "360/360",
+      "pheno_only": "360/360"
+    }
+  },
+  "longevity_pairwise": {
+    "n_runs": 3,
+    "conditions": {
+      "geno_pheno": {
+        "acc": 0.8846,
+        "n": 52,
+        "sem": 0.0443,
+        "ci95": [
+          0.7978,
+          0.9715
+        ]
+      },
+      "pheno_only": {
+        "acc": 0.8462,
+        "n": 52,
+        "sem": 0.05,
+        "ci95": [
+          0.7481,
+          0.9442
+        ]
+      }
+    },
+    "delta_recall": {
+      "n_pairs": 52,
+      "delta_recall": 0.0385,
+      "delta_recall_ci95": [
+        -0.0385,
+        0.1154
+      ],
+      "mcnemar_b_genoOnly": 3,
+      "mcnemar_c_phenoOnly": 1,
+      "mcnemar_p": 0.625
+    },
+    "parse_success": {
+      "geno_pheno": "156/156",
+      "pheno_only": "156/156"
+    }
+  }
+}
