@@ -1,0 +1,24 @@
+{
+  "model": "longevity-llm",
+  "base_url": "https://swchnq0ekc3scmqw.us-east-2.aws.endpoints.huggingface.cloud/v1",
+  "seed": 1234,
+  "n_per_group": 70,
+  "famous_accuracy": 0.6285714285714286,
+  "famous_n": 70,
+  "obscure_accuracy": 0.5285714285714286,
+  "obscure_n": 70,
+  "recall_gap": 0.09999999999999998,
+  "gap_95ci": [
+    -0.05714285714285716,
+    0.2571428571428572
+  ],
+  "famous_yes_subset_acc": 0.5428571428571428,
+  "famous_yes_n": 35,
+  "obscure_yes_subset_acc": 0.08571428571428572,
+  "obscure_yes_n": 35,
+  "pred_distribution": {
+    "B": 107,
+    "A": 33
+  },
+  "parse_failures": 0
+}
