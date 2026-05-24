@@ -44,7 +44,7 @@ from src import config
 from src.data.mgi import GenotypeRow
 from src.generate.profiles import CONDITIONS, profile_id_for, render_user_message
 
-__all__ = ["CONDITIONS", "gen_mgi_survival_binary", "gen_impc_viability",
+__all__ = ["CONDITIONS", "make_survival_record", "gen_mgi_survival_binary", "gen_impc_viability",
            "gen_mgi_genotype_pairwise", "ALL_GENERATORS"]
 
 
@@ -69,51 +69,55 @@ def _select(rows: List[GenotypeRow], n: int, seed: int, test_frac: float = 0.2) 
     return picked
 
 
+def make_survival_record(row: GenotypeRow, condition: str) -> BenchmarkRecord:
+    """Render ONE GenotypeRow under ONE ablation condition into an LB-0138 record. Shared by
+    the random generator below and the categorized longevity sampler (scripts/build_longevity_
+    benchmark.py), so both produce the identical record shape. gold A=Yes (impairs), B=No."""
+    gold = "A" if row.label == 1 else "B"
+    meta = {
+        "genotype_id": row.genotype_id,
+        "genes": row.genes,
+        "zygosity": row.zygosity,
+        "expression_direction": row.expression_direction,
+        "condition": condition,                  # the ablation tag (Lever A)
+        "label_impairs_survival": row.label,     # CORRECTED label (ERR-20260523-403)
+        "mortality_category": row.mortality_category,  # death | reversed | none (slice key)
+        "lethality_stage": row.lethality_stage,  # developmental|postnatal|adult_aging|... (stratify)
+        "orig_label": row.orig_label,            # buggy build-time label, for audit
+        "is_famous": row.is_famous,              # Lever B slice key
+        "split": row.split,                      # gene-grouped covariate split
+        "base_profile_id": profile_id_for(row),
+        "n_phenotype_terms": len(row.phenotype_terms),
+        "pmids": row.pmids,                      # verifiable ground truth
+        "source": "MGI",
+    }
+    return BenchmarkRecord(
+        lb_id="LB-0138",
+        pool="mgi_survival_binary",
+        display_name="MGI Genotype Survival / Binary",
+        display_group="Mouse Longevity (MGI)",
+        domain=Domain.genetics,
+        format=Format.binary,
+        metric=Metric.accuracy,
+        units=None,
+        messages=[
+            ChatMessage(role=Role.system, content=SYSTEM_PROMPT),
+            ChatMessage(role=Role.user, content=render_user_message(row, condition)),
+            ChatMessage(role=Role.assistant, content=gold),
+        ],
+        task="mgi_survival_binary",
+        has_reasoning=True,
+        metadata=meta,
+    )
+
+
 def gen_mgi_survival_binary(rows: List[GenotypeRow], condition: str,
                             n: int = 60, seed: int = config.SEED) -> List[BenchmarkRecord]:
-    """LB-0138 [PRIMARY]. Genotype + phenotype profile -> does this genotype impair survival?
-    (binary/accuracy). `rows` come from src.data.mgi.load_mgi (already balanced + gene-split +
-    famous-tagged). Renders the selected items under one ablation `condition`; call once per
-    condition with the same seed for a matched pair. gold A=Yes (impairs), B=No."""
-    out: List[BenchmarkRecord] = []
-    for row in _select(rows, n, seed):
-        gold = "A" if row.label == 1 else "B"
-        meta = {
-            "genotype_id": row.genotype_id,
-            "genes": row.genes,
-            "zygosity": row.zygosity,
-            "expression_direction": row.expression_direction,
-            "condition": condition,                  # the ablation tag (Lever A)
-            "label_impairs_survival": row.label,     # CORRECTED label (ERR-20260523-403)
-            "mortality_category": row.mortality_category,  # death | reversed | none (slice key)
-            "lethality_stage": row.lethality_stage,  # developmental|postnatal|adult_aging|... (stratify)
-            "orig_label": row.orig_label,            # buggy build-time label, for audit
-            "is_famous": row.is_famous,              # Lever B slice key
-            "split": row.split,                      # gene-grouped covariate split
-            "base_profile_id": profile_id_for(row),
-            "n_phenotype_terms": len(row.phenotype_terms),
-            "pmids": row.pmids,                      # verifiable ground truth
-            "source": "MGI",
-        }
-        out.append(BenchmarkRecord(
-            lb_id="LB-0138",
-            pool="mgi_survival_binary",
-            display_name="MGI Genotype Survival / Binary",
-            display_group="Mouse Longevity (MGI)",
-            domain=Domain.genetics,
-            format=Format.binary,
-            metric=Metric.accuracy,
-            units=None,
-            messages=[
-                ChatMessage(role=Role.system, content=SYSTEM_PROMPT),
-                ChatMessage(role=Role.user, content=render_user_message(row, condition)),
-                ChatMessage(role=Role.assistant, content=gold),
-            ],
-            task="mgi_survival_binary",
-            has_reasoning=True,
-            metadata=meta,
-        ))
-    return out
+    """LB-0138 [PRIMARY], RANDOM-balanced selection. Genotype + phenotype profile -> does this
+    genotype impair survival? (binary/accuracy). `rows` come from src.data.mgi.load_mgi. Renders
+    the selected items under one ablation `condition`; call once per condition with the same seed
+    for a matched pair. For the CURATED/stratified selection see scripts/build_longevity_benchmark.py."""
+    return [make_survival_record(row, condition) for row in _select(rows, n, seed)]
 
 
 def gen_impc_viability(impc_rows, condition: str, n: int = 60) -> List[BenchmarkRecord]:
