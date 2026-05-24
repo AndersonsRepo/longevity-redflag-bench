@@ -79,7 +79,8 @@ def main():
         gold = rec["messages"][-1]["content"].strip().upper()
         pred = pa.answer if pa.ok else None
         return {
-            "genotype_id": meta["genotype_id"], "condition": meta["condition"],
+            "genotype_id": meta.get("genotype_id") or meta.get("base_profile_id", ""),
+            "condition": meta.get("condition"),
             "mortality_category": meta.get("mortality_category"),
             "lethality_stage": meta.get("lethality_stage"),
             "gold": gold, "pred": pred, "correct": (pred == gold),

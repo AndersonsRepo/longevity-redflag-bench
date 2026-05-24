@@ -69,3 +69,36 @@ def render_user_message(row: GenotypeRow, condition: str) -> str:
         zyg = _ZYGOSITY_PHRASE.get(row.zygosity, "a mutation")
         head = f"A laboratory mouse strain carries {zyg} in an undisclosed gene."
     return f"{head}\n\n{_phenotype_block(row)}\n\n{_QUESTION}\n\n{_ANSWER_LINE}"
+
+
+_PAIRWISE_QUESTION = ("Question: Which strain's mutation is more likely to EXTEND lifespan "
+                      "(promote longevity / slow aging)?\n\nOptions: A. Strain A  B. Strain B")
+
+
+def _strain_block(label: str, row: GenotypeRow, condition: str) -> str:
+    """One strain's block inside a pairwise prompt; gene/allele shown only in geno_pheno."""
+    if condition == "geno_pheno":
+        genes = ", ".join(row.genes) if row.genes else "(unnamed)"
+        head = (f"Strain {label}:\n  Gene(s): {genes}\n"
+                f"  Allelic composition: {row.alleles}\n  Zygosity: {row.zygosity}")
+    else:
+        zyg = _ZYGOSITY_PHRASE.get(row.zygosity, "a mutation")
+        head = f"Strain {label}: carries {zyg} in an undisclosed gene."
+    if row.phenotype_terms:
+        bullets = "\n".join(f"    - {t}" for t in row.phenotype_terms)
+        pheno = "  Recorded phenotype profile (excluding any lifespan/mortality findings):\n" + bullets
+    else:
+        pheno = "  Recorded phenotype profile: none reported."
+    return f"{head}\n{pheno}"
+
+
+def render_pairwise_message(row_a: GenotypeRow, row_b: GenotypeRow, condition: str) -> str:
+    """Build the user-turn for a pairwise lifespan-extension item (LB-0150). Strain A and B are
+    the two candidates; the model picks which is more likely to EXTEND lifespan. Same ablation
+    lever: gene identity shown (geno_pheno) or withheld (pheno_only) for BOTH strains."""
+    if condition not in CONDITIONS:
+        raise ValueError(f"unknown condition {condition!r}; expected one of {CONDITIONS}")
+    a = _strain_block("A", row_a, condition)
+    b = _strain_block("B", row_b, condition)
+    return (f"Two laboratory mouse strains each carry a different mutation.\n\n{a}\n\n{b}\n\n"
+            f"{_PAIRWISE_QUESTION}\n\n{_ANSWER_LINE}")

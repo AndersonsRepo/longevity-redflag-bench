@@ -42,9 +42,12 @@ from schema.records import (
 )
 from src import config
 from src.data.mgi import GenotypeRow
-from src.generate.profiles import CONDITIONS, profile_id_for, render_user_message
+from src.generate.profiles import (
+    CONDITIONS, profile_id_for, render_pairwise_message, render_user_message,
+)
 
-__all__ = ["CONDITIONS", "make_survival_record", "gen_mgi_survival_binary", "gen_impc_viability",
+__all__ = ["CONDITIONS", "make_survival_record", "make_pairwise_lifespan_record",
+           "gen_mgi_survival_binary", "gen_impc_viability",
            "gen_mgi_genotype_pairwise", "ALL_GENERATORS"]
 
 
@@ -118,6 +121,51 @@ def gen_mgi_survival_binary(rows: List[GenotypeRow], condition: str,
     the selected items under one ablation `condition`; call once per condition with the same seed
     for a matched pair. For the CURATED/stratified selection see scripts/build_longevity_benchmark.py."""
     return [make_survival_record(row, condition) for row in _select(rows, n, seed)]
+
+
+def make_pairwise_lifespan_record(row_a: GenotypeRow, row_b: GenotypeRow, gold: str,
+                                  condition: str, split: str) -> BenchmarkRecord:
+    """LB-0150 [pairwise]. Two strains -> which is more likely to EXTEND lifespan? One arm is a
+    life-extending genotype (the gold answer), the other a survival-shortening one, matched on
+    phenotype-system. gold = the LETTER ('A'/'B') of the life-extending strain (caller assigns
+    position + gold). Rendered in one ablation `condition`; split passed in (gene-grouped, set by
+    the builder). Base-rate-robust by construction (forced choice)."""
+    if gold not in ("A", "B"):
+        raise ValueError("gold must be 'A' or 'B'")
+    ext, sho = (row_a, row_b) if gold == "A" else (row_b, row_a)
+    meta = {
+        "condition": condition,
+        "gold": gold,
+        "extender_id": ext.genotype_id,
+        "extender_genes": ext.genes,
+        "shortener_id": sho.genotype_id,
+        "shortener_genes": sho.genes,
+        "strain_a_id": row_a.genotype_id,
+        "strain_b_id": row_b.genotype_id,
+        "split": split,                                   # gene-grouped covariate split
+        "is_famous": bool(row_a.is_famous or row_b.is_famous),
+        "base_profile_id": f"{row_a.genotype_id}|{row_b.genotype_id}",
+        "pmids": sorted(set(row_a.pmids) | set(row_b.pmids)),  # verifiable GT
+        "source": "MGI",
+    }
+    return BenchmarkRecord(
+        lb_id="LB-0150",
+        pool="mgi_lifespan_pairwise",
+        display_name="MGI Lifespan-Extension / Pairwise",
+        display_group="Mouse Longevity (MGI)",
+        domain=Domain.genetics,
+        format=Format.pairwise,
+        metric=Metric.accuracy,
+        units=None,
+        messages=[
+            ChatMessage(role=Role.system, content=SYSTEM_PROMPT),
+            ChatMessage(role=Role.user, content=render_pairwise_message(row_a, row_b, condition)),
+            ChatMessage(role=Role.assistant, content=gold),
+        ],
+        task="mgi_lifespan_pairwise",
+        has_reasoning=True,
+        metadata=meta,
+    )
 
 
 def gen_impc_viability(impc_rows, condition: str, n: int = 60) -> List[BenchmarkRecord]:
