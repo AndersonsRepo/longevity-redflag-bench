@@ -17,6 +17,7 @@
       "pred_label": "No effect",
       "correct": false,
       "trace": "The mouse carries a heterozygous Apc<Min> mutation, which typically predisposes to intestinal adenomas and accelerates aging phenotypes through Wnt pathway dysregulation. However, the co-occurring Cd44<tm1Mak>/Cd44<tm1Mak> homozygous mutation introduces a critical counterbalance. Cd44 encodes a hyaluronan receptor essential for cell adhesion and immune modulation; its deletion disrupts tumor microenvironment interactions and may suppress oncogenic signaling. The observed reduction in intestinal adenoma incidence suggests Cd44 loss mitigates Apc<Min>-driven tumorigenesis, likely by impairing tumor cell survival or proliferation. While Apc<Min> alone shortens lifespan via cancer risk, the Cd44 knockout appears to override this effect, aligning with the \"decreased adenoma incidence\" phenotype. This interaction implies a shift toward tumor suppression, potentially extending lifespan. However, Cd44's role in immune regulation and tissue repair could introduce trade-offs, such as chronic inflammation or impaired wound healing, which might offset longevity gains. The decisive factor is the direct suppression of adenomas, a major driver of mortality in Apc<Min> models, suggesting a net lifespan extension.\n</think>\nB",
+      "latency_s": 8.6,
       "trace_score": 0.25,
       "sub_scores": {
         "trace_score": 0.25,
@@ -81,6 +82,7 @@
       "pred_label": "Shortens",
       "correct": false,
       "trace": "The mouse carries a Y-linked Mecp2<tm1.1Bird> mutation, which is a well-characterized model of Rett syndrome, a neurodevelopmental disorder caused by loss of MECP2 function. MECP2 is critical for neuronal stability, and its absence leads to progressive neurodegeneration, seizures, and early mortality in humans. The Sum2<+> allele (ubiquitin-conjugating enzyme) is likely a wild-type background, with no compensatory effects on MECP2 function. The observed phenotypes\u2014tremors, lethargy, and abnormal body weight\u2014align with Rett syndrome\u2019s neurological and metabolic dysregulation. While the mouse strain\u2019s sex (Y chromosome) suggests male, MECP2 haploinsufficiency in males is lethal in early development, but this strain survives to exhibit age-related phenotypes, indicating partial MECP2 activity or compensatory mechanisms. However, the presence of tremors and lethargy suggests ongoing neurodegeneration, which would accelerate aging. The lack of clear compensatory alleles (e.g., Sum2<+> does not rescue MECP2 loss) and the severity of Rett-like symptoms point to a shortened lifespan. The most decisive evidence is the MECP2 mutation\u2019s direct link to premature mortality in Rett syndrome models.\n</think>\nA",
+      "latency_s": 8.9,
       "trace_score": 0.6,
       "sub_scores": {
         "trace_score": 0.6,
@@ -140,6 +142,7 @@
       "pred_label": "Shortens",
       "correct": true,
       "trace": "The Ptpn6 gene encodes a tyrosine phosphatase that negatively regulates immune signaling pathways, including those activated by cytokines like IL-6 and TNF-\u03b1. Its protein product interacts with key signaling molecules such as JAK1, JAK3, and STAT proteins, which are central to inflammatory and immune responses. The homozygous mutation in this gene likely disrupts these regulatory interactions, leading to hyperactivation of downstream signaling cascades. The observed phenotypes\u2014increased autoantibody levels, elevated IgM, and enhanced splenocyte proliferation\u2014strongly suggest a chronic inflammatory state driven by dysregulated immune signaling. Chronic inflammation (inflammaging) is a well-established hallmark of aging that accelerates tissue dysfunction and disease susceptibility. The combination of autoimmune features and immune hyperactivation in this mouse model aligns with a pro-aging phenotype, where persistent immune stimulation contributes to systemic damage and organ dysfunction. Given the direct link between immune dysregulation and age-related pathologies, the most plausible outcome is a shortened lifespan due to premature immune-mediated tissue damage and systemic inflammation.\n</think>\nA",
+      "latency_s": 8.7,
       "trace_score": 0.6,
       "sub_scores": {
         "trace_score": 0.6,
@@ -205,6 +208,7 @@
       "pred_label": "No effect",
       "correct": true,
       "trace": "The gene Vss is associated with the VSS protein, which is linked to the Wnt signaling pathway, a critical regulator of development and tissue homeostasis. The Wnt pathway interacts with key aging-related processes such as stem cell maintenance, cellular senescence, and inflammation. While Vss itself is not a well-characterized gene in aging studies, its potential role in Wnt signaling suggests indirect effects on aging. The heterozygous mutation (Vss/Vss<+>) may partially disrupt Wnt pathway activity, which could influence tissue regeneration and cellular senescence. However, the absence of clear evidence linking Vss to longevity or age-related diseases, combined with the lack of dominant-negative effects in heterozygotes, implies a limited impact on lifespan. The observed phenotypes (belly spot, decreased body size) are developmental or morphological traits rather than systemic aging markers. Given the limited functional characterization of Vss and its uncertain role in aging pathways, the most parsimonious conclusion is that this mutation has no clear effect on lifespan.\n</think>\nB",
+      "latency_s": 7.3,
       "trace_score": 0.6,
       "sub_scores": {
         "trace_score": 0.6,
@@ -264,6 +268,7 @@
       "pred_label": "No effect",
       "correct": false,
       "trace": "The mouse strain exhibits increased enterocyte apoptosis and reduced intestinal adenoma incidence, suggesting a complex interplay between tissue homeostasis and cancer suppression. The heightened apoptosis in intestinal epithelial cells indicates a potential compensatory mechanism to eliminate damaged or dysplastic cells, which could mitigate tumor formation. This aligns with the observed decrease in adenoma incidence, a hallmark of aging-related neoplastic progression. However, excessive apoptosis in regenerative tissues like the intestine may impair tissue renewal, leading to functional decline and systemic effects. The balance between these opposing forces\u2014cancer suppression versus tissue degeneration\u2014depends on the extent of apoptosis and its downstream consequences. In aging biology, chronic inflammation and stem cell exhaustion are key drivers of tissue dysfunction. If the increased apoptosis reflects a heightened immune surveillance or DNA damage response, it might counteract age-related clonal expansion of mutated cells, thereby delaying cancer onset. Conversely, persistent apoptosis could deplete stem cell pools, accelerating organ failure. The absence of other aging-related phenotypes (e.g., frailty, metabolic dysregulation) suggests the primary impact is localized to the intestine. Given the trade-off between tumor suppression and tissue maintenance, the most decisive factor is the potential for apoptosis to drive stem cell exhaustion, a primary hallmark of aging. This would likely outweigh the benefit of reduced adenoma incidence, tipping the balance toward accelerated aging.\n</think>\nB",
+      "latency_s": 9.2,
       "trace_score": 0.6,
       "sub_scores": {
         "trace_score": 0.6,

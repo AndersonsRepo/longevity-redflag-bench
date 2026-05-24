@@ -77,7 +77,8 @@ def main():
             "story": story, "prompt": p["prompt_text"],
             "gold": e["gold"], "gold_label": CLS.get(e["gold"]),
             "pred": e["pred"], "pred_label": CLS.get(e["pred"]), "correct": e["correct"],
-            "trace": e["raw"], "trace_score": sc.get("trace_score"), "sub_scores": sc.get("checks", sc),
+            "trace": e["raw"], "latency_s": e.get("latency_s"),   # real generation time → pace the stream
+            "trace_score": sc.get("trace_score"), "sub_scores": sc.get("checks", sc),
         })
     out = os.path.join(config.REPO_ROOT, "results", "demo_data.json")
     json.dump({"note": "Pre-computed trace-scorer demo (no live API). Longevity-LLM ternary; scores from judge/score_trace.py --no-api.",
