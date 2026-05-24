@@ -36,7 +36,8 @@
 
 = LongevityBench-Mouse
 #text(size: 9pt, fill: soft)[A mouse-genetics benchmark for testing whether aging LLMs reason from phenotype evidence or lean on memorized gene names.]
-#text(size: 7.6pt, fill: accent)[Live dashboard: #link("https://recall-vs-reason.lovable.app")[recall-vs-reason.lovable.app] #h(0.5em)·#h(0.5em) Code: #link("https://github.com/AndersonsRepo/longevity-redflag-bench")[github.com/AndersonsRepo/longevity-redflag-bench]]
+
+#text(size: 7.6pt, fill: accent)[Live dashboard: #underline[#link("https://recall-vs-reason.lovable.app")[recall-vs-reason.lovable.app]] #h(0.6em)·#h(0.6em) Code: #underline[#link("https://github.com/AndersonsRepo/longevity-redflag-bench")[github.com/AndersonsRepo/longevity-redflag-bench]]]
 
 #v(0.06in)
 #grid(columns: (1fr, 1fr, 1fr, 1fr), gutter: 5pt)[
@@ -96,11 +97,11 @@
 
 #v(0.02in)
 #grid(columns: (1fr, 1fr, 1fr), gutter: 5pt)[
-  #card("Recall reliance, controlled set", "+0.100", "Longevity-LLM Delta_recall; McNemar p=0.017 (significant)", color: accent)
+  #card("Recall reliance, mixed-gene set", "+0.100", "Longevity-LLM Delta_recall — McNemar p=0.017, significant", color: accent)
 ][
-  #card("...collapses, single-gene only", "+0.017", "not significant (p=0.86) - the effect was a multi-gene/epistasis artifact", color: good)
+  #card("...collapses, single-gene only", "+0.017", "n.s. (p=0.86) — the apparent effect was a multi-gene / epistasis artifact", color: accent)
 ][
-  #card("Life-extension blind spot", "1/20", "Longevity extends-recall gene-shown vs 10/20 gene-hidden - showing the gene makes it WORSE", color: warn)
+  #card("Life-extension blind spot", "1/20", "Longevity extends-recall gene-shown vs 10/20 gene-hidden — showing the gene makes it WORSE", color: warn)
 ]
 
 #grid(columns: (1fr, 1fr), gutter: 0.2in)[
