@@ -316,7 +316,102 @@
         "delta_multigene": 0.083,
         "shift": -0.033
       }
-    ]
+    ],
+    "ternary": {
+      "Longevity-LLM": {
+        "geno_pheno": {
+          "n": 60,
+          "per_class_recall": {
+            "shortens": {
+              "correct": 15,
+              "n": 20,
+              "recall": 0.75
+            },
+            "no_effect": {
+              "correct": 14,
+              "n": 20,
+              "recall": 0.7
+            },
+            "extends": {
+              "correct": 1,
+              "n": 20,
+              "recall": 0.05
+            }
+          }
+        },
+        "pheno_only": {
+          "n": 60,
+          "per_class_recall": {
+            "shortens": {
+              "correct": 15,
+              "n": 20,
+              "recall": 0.75
+            },
+            "no_effect": {
+              "correct": 10,
+              "n": 20,
+              "recall": 0.5
+            },
+            "extends": {
+              "correct": 10,
+              "n": 20,
+              "recall": 0.5
+            }
+          }
+        }
+      },
+      "Claude-Sonnet-4.6": {
+        "geno_pheno": {
+          "n": 60,
+          "per_class_recall": {
+            "shortens": {
+              "correct": 19,
+              "n": 20,
+              "recall": 0.95
+            },
+            "no_effect": {
+              "correct": 8,
+              "n": 20,
+              "recall": 0.4
+            },
+            "extends": {
+              "correct": 9,
+              "n": 20,
+              "recall": 0.45
+            }
+          }
+        },
+        "pheno_only": {
+          "n": 60,
+          "per_class_recall": {
+            "shortens": {
+              "correct": 18,
+              "n": 20,
+              "recall": 0.9
+            },
+            "no_effect": {
+              "correct": 3,
+              "n": 20,
+              "recall": 0.15
+            },
+            "extends": {
+              "correct": 10,
+              "n": 20,
+              "recall": 0.5
+            }
+          }
+        }
+      }
+    },
+    "pairwise": {
+      "Longevity-LLM": {
+        "geno_pheno": 0.8431,
+        "pheno_only": 0.8431,
+        "delta_recall": 0.0,
+        "n_pairs": 51
+      }
+    },
+    "extension_blindspot_note": "The extension blind-spot PERSISTS single-gene: Longevity extends-recall stays ~1/20 gene-shown (vs 10/20 gene-hidden \u2014 showing the gene makes it worse); pairwise \u0394_recall collapses to 0. Epistasis control removes the recall artifact but not the genuine capability gap."
   },
   "contamination_probe": {
     "longevity_llm": {
@@ -400,6 +495,232 @@
       }
     },
     "note": "100% of responses parsed; the risky fallback fired 0% \u2014 errors are task failures, not format."
+  },
+  "reasoning_stress_test": {
+    "total": 12,
+    "correct": 9,
+    "accuracy": 0.75,
+    "mean_trace_score": 0.682,
+    "model": "longevity-llm",
+    "judge_model": "claude-haiku-4-5-20251001",
+    "desc": "12 adversarial reasoning prompts (multi-mutant, synthetic-gene, reverse-lookup, gene-complement), scored by judge/score_trace.py against MGI-derived facts.",
+    "by_category": {
+      "multi_mutant": {
+        "correct": 2,
+        "n": 3,
+        "mean_trace_score": 0.7
+      },
+      "synthetic_gene": {
+        "correct": 3,
+        "n": 3,
+        "mean_trace_score": 0.75
+      },
+      "reverse_lookup": {
+        "correct": 2,
+        "n": 3,
+        "mean_trace_score": 0.65
+      },
+      "gene_complement": {
+        "correct": 2,
+        "n": 3,
+        "mean_trace_score": 0.629
+      }
+    },
+    "prompts": [
+      {
+        "id": "MM-001",
+        "category": "multi_mutant",
+        "title": "Arv1 \u00d7 Cry1 double knockout",
+        "format": "binary",
+        "difficulty": "medium",
+        "genes": [
+          "Arv1",
+          "Cry1"
+        ],
+        "gold": "A",
+        "pred": "A",
+        "correct": true,
+        "trace_score": 0.525
+      },
+      {
+        "id": "MM-002",
+        "category": "multi_mutant",
+        "title": "Fas \u00d7 Ctla4 double knockout",
+        "format": "pairwise",
+        "difficulty": "hard",
+        "genes": [
+          "Fas",
+          "Ctla4"
+        ],
+        "gold": "A",
+        "pred": "A",
+        "correct": true,
+        "trace_score": 0.912
+      },
+      {
+        "id": "MM-003",
+        "category": "multi_mutant",
+        "title": "Col4a3 \u00d7 Slc2a4 double knockout",
+        "format": "pairwise",
+        "difficulty": "hard",
+        "genes": [
+          "Col4a3",
+          "Slc2a4"
+        ],
+        "gold": "B",
+        "pred": "?",
+        "correct": false,
+        "trace_score": 0.662
+      },
+      {
+        "id": "SG-001",
+        "category": "synthetic_gene",
+        "title": "Lgvx3 knockout \u2014 late-endosomal lipid trafficking",
+        "format": "binary",
+        "difficulty": "medium",
+        "genes": [
+          "Lgvx3"
+        ],
+        "gold": "A",
+        "pred": "A",
+        "correct": true,
+        "trace_score": 0.8
+      },
+      {
+        "id": "SG-002",
+        "category": "synthetic_gene",
+        "title": "Hspk2 knockout \u2014 proteotoxic stress kinase",
+        "format": "binary",
+        "difficulty": "easy",
+        "genes": [
+          "Hspk2"
+        ],
+        "gold": "B",
+        "pred": "B",
+        "correct": true,
+        "trace_score": 0.6
+      },
+      {
+        "id": "SG-003",
+        "category": "synthetic_gene",
+        "title": "Tmfc5 overexpression \u2014 cardiac matrix connector",
+        "format": "multiclass",
+        "difficulty": "medium",
+        "genes": [
+          "Tmfc5"
+        ],
+        "gold": "C",
+        "pred": "C",
+        "correct": true,
+        "trace_score": 0.85
+      },
+      {
+        "id": "RP-001",
+        "category": "reverse_lookup",
+        "title": "Identify gene: cerebellar + lipid storage",
+        "format": "multiple_choice",
+        "difficulty": "easy",
+        "genes": [
+          "Npc1",
+          "Arv1",
+          "Slc2a4",
+          "Hnf1b"
+        ],
+        "gold": "B",
+        "pred": "B",
+        "correct": true,
+        "trace_score": 0.662
+      },
+      {
+        "id": "RP-002",
+        "category": "reverse_lookup",
+        "title": "Identify gene: glucose transport + cardiac",
+        "format": "multiple_choice",
+        "difficulty": "medium",
+        "genes": [
+          "Slc2a4",
+          "Npc1",
+          "Arv1",
+          "Col4a3"
+        ],
+        "gold": "C",
+        "pred": "C",
+        "correct": true,
+        "trace_score": 0.662
+      },
+      {
+        "id": "RP-003",
+        "category": "reverse_lookup",
+        "title": "Identify gene: lymphoproliferative multi-organ",
+        "format": "multiple_choice",
+        "difficulty": "hard",
+        "genes": [
+          "Fas",
+          "Smad3",
+          "Ctla4",
+          "Bcl2l11"
+        ],
+        "gold": "D",
+        "pred": "A",
+        "correct": false,
+        "trace_score": 0.625
+      },
+      {
+        "id": "GC-001",
+        "category": "gene_complement",
+        "title": "Complement to Ctla4 KO \u2014 dual T-cell checkpoint",
+        "format": "multiple_choice",
+        "difficulty": "hard",
+        "genes": [
+          "Ctla4",
+          "Fas",
+          "Cry1",
+          "Gatm",
+          "Npc2"
+        ],
+        "gold": "A",
+        "pred": "A",
+        "correct": true,
+        "trace_score": 0.662
+      },
+      {
+        "id": "GC-002",
+        "category": "gene_complement",
+        "title": "Complement to Arv1 KO \u2014 atherogenic lipid axis",
+        "format": "multiple_choice",
+        "difficulty": "medium",
+        "genes": [
+          "Arv1",
+          "Ddr1",
+          "Ldlr",
+          "Proc",
+          "Nherf1",
+          "Sun3"
+        ],
+        "gold": "A",
+        "pred": "A",
+        "correct": true,
+        "trace_score": 0.613
+      },
+      {
+        "id": "GC-003",
+        "category": "gene_complement",
+        "title": "Complement to Col4a3 KO \u2014 immune-mediated nephropathy",
+        "format": "multiple_choice",
+        "difficulty": "hard",
+        "genes": [
+          "Col4a3",
+          "Was",
+          "Proc",
+          "Foxo4",
+          "Tgm3"
+        ],
+        "gold": "A",
+        "pred": "C",
+        "correct": false,
+        "trace_score": 0.613
+      }
+    ]
   },
   "caveats": [
     "n=120/condition \u2192 wide CIs; underpowered for the smaller effects (Claude \u0394_recall, model gaps).",

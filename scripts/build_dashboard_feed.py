@@ -12,11 +12,92 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 from src import config  # noqa: E402
 
 R = os.path.join(config.REPO_ROOT, "results")
+O = os.path.join(config.REPO_ROOT, "outputs")
+TERN_CLS = {"A": "shortens", "B": "no_effect", "C": "extends"}
 
 
 def load(p, default=None):
     fp = os.path.join(R, p)
     return json.load(open(fp)) if os.path.exists(fp) else default
+
+
+def _recs(path):
+    return [json.loads(l) for l in open(path, encoding="utf-8") if l.strip()] if os.path.exists(path) else []
+
+
+def tern_per_class(path):
+    """Per-class recall (shortens/no_effect/extends) by condition for one ternary eval file."""
+    recs = _recs(path)
+    out = {}
+    for cond in ("geno_pheno", "pheno_only"):
+        sub = [r for r in recs if r["condition"] == cond]
+        cell = {}
+        for code, name in TERN_CLS.items():
+            gold = [r for r in sub if r["gold"] == code]
+            cor = sum(1 for r in gold if r["pred"] == code)
+            cell[name] = {"correct": cor, "n": len(gold),
+                          "recall": round(cor / len(gold), 4) if gold else None}
+        out[cond] = {"n": len(sub), "per_class_recall": cell}
+    return out
+
+
+def pairwise_delta(path):
+    """acc(gene-shown) - acc(gene-hidden) for a pairwise eval file."""
+    recs = _recs(path)
+    by = {"geno_pheno": [], "pheno_only": []}
+    for r in recs:
+        if r["condition"] in by:
+            by[r["condition"]].append(bool(r["correct"]))
+    g = sum(by["geno_pheno"]) / len(by["geno_pheno"]) if by["geno_pheno"] else None
+    p = sum(by["pheno_only"]) / len(by["pheno_only"]) if by["pheno_only"] else None
+    return {"geno_pheno": round(g, 4) if g is not None else None,
+            "pheno_only": round(p, 4) if p is not None else None,
+            "delta_recall": round(g - p, 4) if (g is not None and p is not None) else None,
+            "n_pairs": len(by["geno_pheno"])}
+
+
+def stress_test_block():
+    """Summarize testing/new_prompts_results.json (12 adversarial reasoning prompts)."""
+    import ast
+    fp = os.path.join(config.REPO_ROOT, "testing", "new_prompts_results.json")
+    if not os.path.exists(fp):
+        return None
+    d = json.load(open(fp))
+
+    def parse_genes(g):
+        try:
+            return ast.literal_eval(g) if isinstance(g, str) else (g or [])
+        except Exception:
+            return []
+
+    def is_true(v):
+        return str(v).lower() == "true"
+
+    by_cat = {}
+    prompts = []
+    for r in d["results"]:
+        cat = r.get("category", "other")
+        ok = is_true(r.get("correct"))
+        ts = float(r.get("trace_score") or 0)
+        by_cat.setdefault(cat, {"correct": 0, "n": 0, "trace_sum": 0.0})
+        by_cat[cat]["n"] += 1
+        by_cat[cat]["correct"] += 1 if ok else 0
+        by_cat[cat]["trace_sum"] += ts
+        prompts.append({"id": r.get("id"), "category": cat, "title": r.get("title"),
+                        "format": r.get("format"), "difficulty": r.get("difficulty"),
+                        "genes": parse_genes(r.get("genes")), "gold": r.get("gold_answer"),
+                        "pred": r.get("predicted_answer"), "correct": ok,
+                        "trace_score": round(ts, 3)})
+    cats = {c: {"correct": v["correct"], "n": v["n"],
+                "mean_trace_score": round(v["trace_sum"] / v["n"], 3) if v["n"] else None}
+            for c, v in by_cat.items()}
+    return {
+        "total": d["total_prompts"], "correct": d["correct"], "accuracy": d["accuracy"],
+        "mean_trace_score": d["mean_trace_score"], "model": d.get("model"),
+        "judge_model": d.get("judge_model"),
+        "desc": "12 adversarial reasoning prompts (multi-mutant, synthetic-gene, reverse-lookup, gene-complement), scored by judge/score_trace.py against MGI-derived facts.",
+        "by_category": cats, "prompts": prompts,
+    }
 
 
 def main():
@@ -26,6 +107,21 @@ def main():
     cont_l = load("contamination_n60_longevity-llm.json", {})
     cont_c = load("contamination_n60_claude.json", {})
     parse = load("parse_audit.json", {})
+
+    # additive: single-gene ternary + pairwise (completes the epistasis story on the dashboard)
+    if sg is not None:
+        sg["ternary"] = {
+            "Longevity-LLM": tern_per_class(os.path.join(O, "single_gene/eval_longevity_ternary_singlegene.jsonl")),
+            "Claude-Sonnet-4.6": tern_per_class(os.path.join(O, "single_gene/eval_claude_ternary_singlegene.jsonl")),
+        }
+        sg["pairwise"] = {
+            "Longevity-LLM": pairwise_delta(os.path.join(O, "single_gene/eval_longevity_pairwise_singlegene.jsonl")),
+        }
+        sg["extension_blindspot_note"] = (
+            "The extension blind-spot PERSISTS single-gene: Longevity extends-recall stays ~1/20 gene-shown "
+            "(vs 10/20 gene-hidden — showing the gene makes it worse); pairwise Δ_recall collapses to 0. "
+            "Epistasis control removes the recall artifact but not the genuine capability gap."
+        )
 
     def dr(key):
         d = stats.get(key, {})
@@ -70,6 +166,7 @@ def main():
                                 "desc": "gene-name-only; famous (GenAge) vs obscure; impairs-YES recall is the decisive cell"},
         "reliability": {"parse_audit": parse,
                         "note": "100% of responses parsed; the risky fallback fired 0% — errors are task failures, not format."},
+        "reasoning_stress_test": stress_test_block(),
         "caveats": [
             "n=120/condition → wide CIs; underpowered for the smaller effects (Claude Δ_recall, model gaps).",
             "Endpoint non-deterministic at temp=0 (~11% per-item flip) → binary/pairwise use 3-run averaging/majority-vote.",
