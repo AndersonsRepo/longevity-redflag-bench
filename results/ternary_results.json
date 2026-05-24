@@ -1,0 +1,139 @@
+{
+  "Longevity-LLM": {
+    "geno_pheno": {
+      "n": 150,
+      "accuracy": 0.6,
+      "macro_f1": 0.5084,
+      "parse_fail": 0,
+      "per_class_recall": {
+        "shortens": {
+          "correct": 46,
+          "n": 50,
+          "recall": 0.92
+        },
+        "no_effect": {
+          "correct": 41,
+          "n": 50,
+          "recall": 0.82
+        },
+        "extends": {
+          "correct": 3,
+          "n": 50,
+          "recall": 0.06
+        }
+      },
+      "confusion": {
+        "shortens->shortens": 46,
+        "shortens->no_effect": 4,
+        "no_effect->no_effect": 41,
+        "no_effect->shortens": 8,
+        "no_effect->extends": 1,
+        "extends->no_effect": 27,
+        "extends->shortens": 20,
+        "extends->extends": 3
+      }
+    },
+    "pheno_only": {
+      "n": 150,
+      "accuracy": 0.62,
+      "macro_f1": 0.6015,
+      "parse_fail": 0,
+      "per_class_recall": {
+        "shortens": {
+          "correct": 46,
+          "n": 50,
+          "recall": 0.92
+        },
+        "no_effect": {
+          "correct": 30,
+          "n": 50,
+          "recall": 0.6
+        },
+        "extends": {
+          "correct": 17,
+          "n": 50,
+          "recall": 0.34
+        }
+      },
+      "confusion": {
+        "shortens->no_effect": 4,
+        "shortens->shortens": 46,
+        "no_effect->no_effect": 30,
+        "no_effect->shortens": 18,
+        "no_effect->extends": 2,
+        "extends->no_effect": 9,
+        "extends->shortens": 24,
+        "extends->extends": 17
+      }
+    }
+  },
+  "Claude-Sonnet-4.6": {
+    "geno_pheno": {
+      "n": 150,
+      "accuracy": 0.6667,
+      "macro_f1": 0.6532,
+      "parse_fail": 0,
+      "per_class_recall": {
+        "shortens": {
+          "correct": 48,
+          "n": 50,
+          "recall": 0.96
+        },
+        "no_effect": {
+          "correct": 35,
+          "n": 50,
+          "recall": 0.7
+        },
+        "extends": {
+          "correct": 17,
+          "n": 50,
+          "recall": 0.34
+        }
+      },
+      "confusion": {
+        "shortens->shortens": 48,
+        "shortens->extends": 1,
+        "shortens->no_effect": 1,
+        "no_effect->no_effect": 35,
+        "no_effect->shortens": 12,
+        "no_effect->extends": 3,
+        "extends->extends": 17,
+        "extends->shortens": 32,
+        "extends->no_effect": 1
+      }
+    },
+    "pheno_only": {
+      "n": 150,
+      "accuracy": 0.58,
+      "macro_f1": 0.56,
+      "parse_fail": 0,
+      "per_class_recall": {
+        "shortens": {
+          "correct": 47,
+          "n": 50,
+          "recall": 0.94
+        },
+        "no_effect": {
+          "correct": 20,
+          "n": 50,
+          "recall": 0.4
+        },
+        "extends": {
+          "correct": 20,
+          "n": 50,
+          "recall": 0.4
+        }
+      },
+      "confusion": {
+        "shortens->shortens": 47,
+        "shortens->extends": 3,
+        "no_effect->extends": 8,
+        "no_effect->no_effect": 20,
+        "no_effect->shortens": 22,
+        "extends->shortens": 25,
+        "extends->no_effect": 5,
+        "extends->extends": 20
+      }
+    }
+  }
+}
