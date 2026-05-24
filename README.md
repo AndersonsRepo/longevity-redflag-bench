@@ -9,7 +9,7 @@ Mirrors the original NHANES method (measurements → mortality), with an added g
 
 **The dataset is the deliverable** — judged on Utility / Diversity / Retrieval-Resistance / Statistical-Rigor. No demo/leaderboard score.
 
-**For judges:** [Live Lovable dashboard](https://mouse-pathfinder-data.lovable.app) · [one-page PDF](docs/hackathon-submission-one-page.pdf) · [evaluation notes](docs/EVALS.md) · [GitHub repo](https://github.com/AndersonsRepo/longevity-redflag-bench)
+**For judges:** [Live Lovable dashboard](https://recall-vs-reason.lovable.app) · [one-page PDF](docs/hackathon-submission-one-page.pdf) · [evaluation notes](docs/EVALS.md) · [GitHub repo](https://github.com/AndersonsRepo/longevity-redflag-bench)
 
 ## Quickstart
 ```bash
@@ -70,7 +70,7 @@ vLLM-served `longevity-llm`, **28K** context, ignores JSON → end prompts with 
 - **Stubs (`# TODO`):** `src/data/impc.py` + `gen_impc_viability` (LB-0142, blocked on IMPC re-pull),
   `gen_mgi_genotype_pairwise` (LB-0146), baselines, the per-category sampler, Hallmark-of-Aging tags.
 
-## Extra credit: Reasoning trace scorer &nbsp;|&nbsp; [Live Dashboard](https://mouse-pathfinder-data.lovable.app)
+## Extra credit: Reasoning trace scorer &nbsp;|&nbsp; [Live Dashboard](https://recall-vs-reason.lovable.app)
 
 Beyond final-answer accuracy, we built a **programmatic reasoning scorer** (`judge/`) that grades the *quality* of the model's `<think>` trace against real biological ground truth. Three checks run instantly with no API key; one optional check uses Claude Haiku (~$0.001/call).
 

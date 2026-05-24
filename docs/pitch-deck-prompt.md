@@ -38,7 +38,7 @@ benchmark's most valuable contribution.
 - Subtitle: *Can an aging-biology LLM reason from genotype + phenotype to a mutation's lifespan effect — or is it recalling famous genes?*
 - Model under test: **Longevity-LLM** (Insilico, Qwen3.5-9B, 28K ctx). Baseline: **Claude Sonnet 4.6**.
 - Track 01, Caltech Longevity Hackathon 2026. Team: Anderson Edmond, Ibrahim, CS teammate, biology teammates.
-- Links (make them visible): Live dashboard `mouse-pathfinder-data.lovable.app` · Code `github.com/AndersonsRepo/longevity-redflag-bench`.
+- Links (make them visible): Live dashboard `recall-vs-reason.lovable.app` · Code `github.com/AndersonsRepo/longevity-redflag-bench`.
 
 **2 — The problem.**
 Aging-biology LLMs can score well when an eval rewards recall of famous longevity genes (Sirt6, Foxo3…).
@@ -99,7 +99,7 @@ Beyond final-answer accuracy, a **programmatic scorer** (`judge/score_trace.py`)
 `<think>` trace against real biology: **gene hallucination**, **think/answer consistency**, **pathway/
 system grounding** (no API key), plus an optional Claude Haiku biological-verification check. On a
 12-prompt reasoning stress test: **9/12 correct, mean trace score 0.682**. Live, fully-static dashboard
-replays scored traces — `mouse-pathfinder-data.lovable.app`. (Show a screenshot placeholder.)
+replays scored traces — `recall-vs-reason.lovable.app`. (Show a screenshot placeholder.)
 
 **11 — Why it meets Track 01.**
 - Preferred formats: binary, ternary, pairwise MCQ.
@@ -113,7 +113,7 @@ replays scored traces — `mouse-pathfinder-data.lovable.app`. (Show a screensho
 **12 — Closing.**
 One line: *A verifiable mouse-genetics benchmark that separates reasoning from recall — and surfaces a
 real capability gap (life-extension) that frontier and specialist models share.*
-Repeat the two links big: **mouse-pathfinder-data.lovable.app** · **github.com/AndersonsRepo/longevity-redflag-bench**.
+Repeat the two links big: **recall-vs-reason.lovable.app** · **github.com/AndersonsRepo/longevity-redflag-bench**.
 
 ## Rules
 - Every number above is verified against `results/dashboard_data.json` / `results/single_gene/comparison.md`
