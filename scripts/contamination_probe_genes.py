@@ -218,7 +218,8 @@ def main():
                 "parsed": pred is not None, "pmids": pmids,
                 "raw": (raw or "").replace("\n", " ")[:300]}
 
-    print(f"[probe] querying LongevityLLM ({len(items)} calls, {args.workers} workers) ...", flush=True)
+    _mlabel = args.claude_model if args.backend == "claude" else config.LONGEVITY_MODEL
+    print(f"[probe] querying {_mlabel} ({len(items)} calls, {args.workers} workers) ...", flush=True)
     with ThreadPoolExecutor(max_workers=args.workers) as ex:
         futs = [ex.submit(run, it) for it in items]
         done = 0
@@ -252,8 +253,9 @@ def main():
     ci = bootstrap_gap(fam_correct, obs_correct) if (fam_correct and obs_correct) else (None, None)
     n_pred_no = Counter(r["pred"] for r in results)
 
+    model_label = args.claude_model if args.backend == "claude" else config.LONGEVITY_MODEL
     summary = {
-        "model": config.LONGEVITY_MODEL, "base_url": config.LONGEVITY_BASE_URL,
+        "backend": args.backend, "model": model_label, "base_url": config.LONGEVITY_BASE_URL,
         "seed": args.seed, "n_per_group": args.n,
         "famous_accuracy": fam_acc, "famous_n": fam_n,
         "obscure_accuracy": obs_acc, "obscure_n": obs_n,
@@ -266,7 +268,7 @@ def main():
     json.dump(summary, open(OUT_JSON, "w"), indent=2)
 
     print("\n================ CONTAMINATION PROBE SUMMARY ================")
-    print(f"model: {config.LONGEVITY_MODEL}")
+    print(f"backend: {args.backend} | model: {model_label}")
     print(f"FAMOUS (GenAge)  accuracy: {fam_acc:.1%} (n={fam_n})" if fam_acc is not None else "famous: n/a")
     print(f"OBSCURE          accuracy: {obs_acc:.1%} (n={obs_n})" if obs_acc is not None else "obscure: n/a")
     print(f"RECALL GAP (famous - obscure): {gap:+.1%}  95% CI [{ci[0]:+.1%}, {ci[1]:+.1%}]" if gap is not None else "gap: n/a")

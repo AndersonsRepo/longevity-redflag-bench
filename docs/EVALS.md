@@ -54,6 +54,25 @@ justifies the famous-gene blocklist and validates the Δ_recall ablation. (Run w
 - **LB-0142** IMPC viability (viable/subviable/lethal) — data-blocked (lethal-only extract).
 - **Ternary** shortens/no-effect/extends, **regression** (OpenGenes/SynergyAge %-change) — candidates.
 
+## Claude SOTA arm — model comparison (Sonnet 4.6, same prompts/genes)
+Run with `eval_lb0138.py --model claude --claude-model claude-sonnet-4-6 --max-tokens 1500`
+(Claude reasons more than the 9B; 600 tokens truncated it before the answer → use 1500) and
+`contamination_probe_genes.py --backend claude`. Outputs: `eval_claude_{controlled,random,pairwise}.jsonl`,
+`data/contamination_probe_*_claude.{csv,json}`.
+
+| task | Longevity-LLM (gp / po / Δ) | Claude-Sonnet (gp / po / Δ) |
+|---|---|---|
+| controlled | 0.808 / 0.683 / **+0.125** | 0.825 / 0.692 / **+0.133** |
+| random | 0.792 / 0.775 / +0.017 | 0.867 / 0.842 / +0.025 |
+| pairwise | 0.885 / 0.827 / +0.058 | 0.827 / 0.788 / +0.038 |
+| contamination (impairs-YES famous/obscure) | 70% / 5% | 95% / 40% |
+
+**Findings:** (1) Claude's controlled Δ_recall (+0.133) ≈ Longevity-LLM's (+0.125) → the gene-recall
+reliance is a model-agnostic TASK property, not Longevity-LLM-specific memorization. (2) The 9B
+specialist matches Claude on the binary (0.81 vs 0.83) and BEATS it on pairwise extension
+(0.885 vs 0.827); Claude wins only on the random/developmental set. (3) Claude also recalls
+famous≫obscure → contamination/blocklist warranted for any model. (vault LRN-20260523-440.)
+
 ## Source / selection files (not prompts)
 | file | what it is |
 |---|---|

@@ -16,8 +16,8 @@ data/*
 !data/longevity_sample_controlled.csv
 !data/longevity_sample_random.csv
 !data/aging_direction.csv
-!data/contamination_probe_results.csv
-!data/contamination_probe_summary.json
+!data/contamination_probe_results*.csv
+!data/contamination_probe_summary*.json
 # never track caches / large raw sources
 data/.cache*
 outputs/
