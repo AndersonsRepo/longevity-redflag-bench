@@ -1,0 +1,118 @@
+gene_symbol,hallmarks,n_go_terms,status
+Arv1,deregulated nutrient sensing|loss of proteostasis,24,ok
+Npc1,disabled macroautophagy|loss of proteostasis,49,ok
+Slc2a4,chronic inflammation|deregulated nutrient sensing,47,ok
+Proc,chronic inflammation|loss of proteostasis,19,ok
+Cry1,deregulated nutrient sensing|epigenetic alterations|genomic instability|loss of proteostasis|mitochondrial dysfunction,40,ok
+Osmr,altered intercellular communication|deregulated nutrient sensing,16,ok
+Sun3,,6,no_hallmark
+Chohd6,,0,no_mygene_hit
+Ctla4,chronic inflammation|deregulated nutrient sensing|genomic instability,19,ok
+Aire,altered intercellular communication|chronic inflammation|epigenetic alterations,23,ok
+Smad3,altered intercellular communication|chronic inflammation|deregulated nutrient sensing|epigenetic alterations|loss of proteostasis|mitochondrial dysfunction,152,ok
+Fas,chronic inflammation|deregulated nutrient sensing|mitochondrial dysfunction,70,ok
+Bcl2l11,disabled macroautophagy|genomic instability|loss of proteostasis|mitochondrial dysfunction,48,ok
+Il27ra,chronic inflammation|deregulated nutrient sensing,23,ok
+Slitrk5,,18,no_hallmark
+Wdr41,chronic inflammation|disabled macroautophagy,7,ok
+H2,,0,no_hallmark
+Prnp,chronic inflammation|deregulated nutrient sensing|loss of proteostasis|mitochondrial dysfunction,69,ok
+F5,loss of proteostasis,8,ok
+Proz,loss of proteostasis,6,ok
+Pdpk1,altered intercellular communication|chronic inflammation|deregulated nutrient sensing,50,ok
+Spi1,altered intercellular communication|cellular senescence|chronic inflammation|deregulated nutrient sensing|epigenetic alterations|stem cell exhaustion,73,ok
+Ddr1,deregulated nutrient sensing,31,ok
+Ldlr,chronic inflammation,72,ok
+Zic3,epigenetic alterations|stem cell exhaustion,55,ok
+Isl1,altered intercellular communication|chronic inflammation|deregulated nutrient sensing|epigenetic alterations,92,ok
+Jun,altered intercellular communication|deregulated nutrient sensing|epigenetic alterations|genomic instability|loss of proteostasis|mitochondrial dysfunction,98,ok
+Il18r1,altered intercellular communication|chronic inflammation,18,ok
+Gatm,deregulated nutrient sensing|mitochondrial dysfunction,16,ok
+Myb,altered intercellular communication|chronic inflammation|stem cell exhaustion,49,ok
+Hdac1,altered intercellular communication|chronic inflammation|deregulated nutrient sensing|epigenetic alterations|stem cell exhaustion,96,ok
+Hdac2,altered intercellular communication|chronic inflammation|deregulated nutrient sensing|epigenetic alterations|loss of proteostasis|stem cell exhaustion,88,ok
+Npc2,loss of proteostasis,21,ok
+Rcor1,epigenetic alterations|genomic instability,16,ok
+Blnk,deregulated nutrient sensing,17,ok
+Pbrgcsf2,,0,no_hallmark
+Tcf3,epigenetic alterations,54,ok
+Mcmbp,epigenetic alterations|genomic instability,8,ok
+Tlx1,,16,no_hallmark
+Foxg1,,30,no_hallmark
+Notch2,chronic inflammation,78,ok
+Tgif1,deregulated nutrient sensing|epigenetic alterations,23,ok
+En2,,19,no_hallmark
+Syde1,,20,no_hallmark
+Nefh,mitochondrial dysfunction,36,ok
+Nefm,,27,no_hallmark
+26Sor,,0,no_mygene_hit
+Grhl3,epigenetic alterations,29,ok
+Csmd3,,3,no_hallmark
+Pfn2,,27,no_hallmark
+Smn1,altered intercellular communication,28,ok
+Zfp36,altered intercellular communication|chronic inflammation,64,ok
+Erbb2,altered intercellular communication|deregulated nutrient sensing|loss of proteostasis,96,ok
+Trex1,chronic inflammation|genomic instability|loss of proteostasis|mitochondrial dysfunction|stem cell exhaustion,86,ok
+Prickle1,altered intercellular communication|deregulated nutrient sensing|loss of proteostasis,75,ok
+Bgeq1,,0,no_hallmark
+Mohg1,,0,no_hallmark
+Bw5,,0,no_hallmark
+Usp42,loss of proteostasis,7,ok
+Mims1,,0,no_mygene_hit
+Tnfsf11,altered intercellular communication|chronic inflammation|deregulated nutrient sensing,49,ok
+Fgfr3,altered intercellular communication|deregulated nutrient sensing|loss of proteostasis|stem cell exhaustion,93,ok
+Acan,,23,no_hallmark
+Sox9,altered intercellular communication|chronic inflammation|deregulated nutrient sensing|epigenetic alterations|stem cell exhaustion,155,ok
+Adipoq,altered intercellular communication|chronic inflammation|deregulated nutrient sensing|loss of proteostasis,74,ok
+Dbh,deregulated nutrient sensing|loss of proteostasis,42,ok
+Ctnnb1,altered intercellular communication|deregulated nutrient sensing|epigenetic alterations|loss of proteostasis|stem cell exhaustion|telomere attrition,275,ok
+Osr2,,37,no_hallmark
+Phex,altered intercellular communication|deregulated nutrient sensing|loss of proteostasis,19,ok
+Mex3c,loss of proteostasis,8,ok
+Plg,loss of proteostasis,36,ok
+Nherf1,altered intercellular communication|deregulated nutrient sensing,76,ok
+Bmi1,chronic inflammation|epigenetic alterations|loss of proteostasis|stem cell exhaustion,36,ok
+Ret,deregulated nutrient sensing|loss of proteostasis,52,ok
+Il25,altered intercellular communication|chronic inflammation,11,ok
+Drd2,altered intercellular communication|chronic inflammation|deregulated nutrient sensing|disabled macroautophagy,150,ok
+Inava,altered intercellular communication|chronic inflammation|deregulated nutrient sensing|loss of proteostasis|mitochondrial dysfunction,21,ok
+Muc2,dysbiosis,19,ok
+Apc,altered intercellular communication|deregulated nutrient sensing|genomic instability|loss of proteostasis|stem cell exhaustion,108,ok
+Il22,altered intercellular communication|chronic inflammation|mitochondrial dysfunction,10,ok
+Hnf1b,deregulated nutrient sensing|epigenetic alterations,62,ok
+Usp8,altered intercellular communication|loss of proteostasis,29,ok
+Map2k4,deregulated nutrient sensing|genomic instability,32,ok
+Ift88,altered intercellular communication|deregulated nutrient sensing|disabled macroautophagy|stem cell exhaustion,82,ok
+Lith18,,0,no_hallmark
+Shmt1,deregulated nutrient sensing|epigenetic alterations|genomic instability|mitochondrial dysfunction,37,ok
+Mtch2,genomic instability|mitochondrial dysfunction|stem cell exhaustion,22,ok
+Speer6-ps1,,0,no_hallmark
+Rrm2b,genomic instability|mitochondrial dysfunction,22,ok
+Cldn4,,22,no_hallmark
+Col4a3,deregulated nutrient sensing|loss of proteostasis,16,ok
+Pax2,mitochondrial dysfunction|stem cell exhaustion,88,ok
+Foxo4,deregulated nutrient sensing|epigenetic alterations|genomic instability|loss of proteostasis|stem cell exhaustion,37,ok
+Was,chronic inflammation|genomic instability,37,ok
+Jaml,,15,no_hallmark
+Lepr,altered intercellular communication|deregulated nutrient sensing|disabled macroautophagy,44,ok
+Tgm3,,14,no_hallmark
+Coro2b,,17,no_hallmark
+Bloc1s6,altered intercellular communication|chronic inflammation|deregulated nutrient sensing|loss of proteostasis,105,ok
+Ndufs4,chronic inflammation|mitochondrial dysfunction,32,ok
+Kras,altered intercellular communication|cellular senescence|deregulated nutrient sensing,38,ok
+Mapk14,altered intercellular communication|cellular senescence|chronic inflammation|deregulated nutrient sensing|genomic instability|mitochondrial dysfunction,84,ok
+Polr2a,epigenetic alterations|loss of proteostasis,31,ok
+Fbn1,altered intercellular communication|chronic inflammation|deregulated nutrient sensing,50,ok
+Scn4a,,19,no_hallmark
+Foxp2,,37,no_hallmark
+Scgb1a1,altered intercellular communication|chronic inflammation,21,ok
+Sftpd,chronic inflammation,14,ok
+Amhr2,altered intercellular communication|deregulated nutrient sensing,20,ok
+Smad1,altered intercellular communication|chronic inflammation|deregulated nutrient sensing|epigenetic alterations|loss of proteostasis|stem cell exhaustion,64,ok
+Smad5,altered intercellular communication|deregulated nutrient sensing|loss of proteostasis|mitochondrial dysfunction|stem cell exhaustion,48,ok
+Rb1,chronic inflammation|deregulated nutrient sensing|epigenetic alterations|loss of proteostasis,80,ok
+Rbl1,cellular senescence|epigenetic alterations,16,ok
+Loricrin,,8,no_hallmark
+Wap,chronic inflammation|deregulated nutrient sensing,6,ok
+Edar,altered intercellular communication|chronic inflammation,15,ok
+Abo,,14,no_hallmark

@@ -10,6 +10,14 @@ data/*
 !data/famous_gene_blocklist.csv
 # canonical labeled dataset (~31M; under GitHub's 100MB limit)
 !data/mgi_labeled.csv
+# curated tables + benchmark selections + analysis (all small)
+!data/go_hallmark_map.csv
+!data/hallmark_tags.csv
+!data/longevity_sample_controlled.csv
+!data/longevity_sample_random.csv
+!data/aging_direction.csv
+# never track caches / large raw sources
+data/.cache*
 outputs/
 
 # python

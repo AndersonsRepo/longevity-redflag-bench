@@ -18,6 +18,8 @@ import csv
 import json
 import os
 import sys
+import time
+import threading
 import urllib.request
 import urllib.error
 from collections import defaultdict
@@ -31,12 +33,14 @@ MGI_CSV = os.path.join(DATA, "mgi_genotype_phenotype.csv")
 BLOCKLIST_CSV = os.path.join(DATA, "famous_gene_blocklist.csv")
 OUT_CSV = os.path.join(DATA, "quant_lifespan_mouse.csv")
 OVERLAP_CSV = os.path.join(DATA, "quant_mgi_overlap.csv")
+OG_CACHE = os.path.join(DATA, ".cache_opengenes_mouse.json")  # {symbol: [records]} — resumable
 
 UA = {"User-Agent": "longevity-bench/1.0 (research; +caltech-hackathon)"}
 
 
 # ---------------------------------------------------------------- http helpers
-def _get(url: str, tries: int = 3, timeout: int = 20):
+def _get(url: str, tries: int = 4, timeout: int = 12, backoff=(2, 5, 12)):
+    """GET JSON with retry + backoff. Raises on final failure."""
     last = None
     for i in range(tries):
         try:
@@ -45,6 +49,8 @@ def _get(url: str, tries: int = 3, timeout: int = 20):
                 return json.loads(r.read().decode("utf-8"))
         except Exception as e:  # noqa: BLE001
             last = e
+            if i < tries - 1:
+                time.sleep(backoff[min(i, len(backoff) - 1)])
     raise last
 
 
@@ -84,13 +90,40 @@ def pick_pct(median, mean, mx):
 
 # ---------------------------------------------------------------- OpenGenes
 def fetch_opengenes() -> list[dict]:
-    print("[OpenGenes] fetching gene list ...", flush=True)
-    listing = _get(f"{OG_BASE}/gene/search?pageSize=3000")
-    symbols = [it["symbol"] for it in listing.get("items", []) if it.get("symbol")]
-    print(f"[OpenGenes] {len(symbols)} genes; crawling details concurrently ...", flush=True)
+    # Resumable cache: {symbol: [records]}. Lets a throttled crawl pick up where it left off.
+    cache: dict[str, list] = {}
+    if os.path.exists(OG_CACHE):
+        try:
+            cache = json.load(open(OG_CACHE))
+            print(f"[OpenGenes] loaded cache: {len(cache)} genes already fetched", flush=True)
+        except Exception:  # noqa: BLE001
+            cache = {}
 
-    rows: list[dict] = []
-    fails = 0
+    # Fast health probe — never start a long crawl against a throttled/down API.
+    healthy = True
+    try:
+        _get(f"{OG_BASE}/gene/GHR", tries=1, timeout=8)
+    except Exception as e:  # noqa: BLE001
+        healthy = False
+        print(f"[OpenGenes] health probe FAILED ({type(e).__name__}) — API unreachable right now. "
+              f"Skipping crawl; using cache only ({len(cache)} genes). Re-run when it recovers.", flush=True)
+
+    symbols = list(cache.keys())
+    if healthy:
+        print("[OpenGenes] healthy; fetching gene list ...", flush=True)
+        try:
+            listing = _get(f"{OG_BASE}/gene/search?pageSize=3000")
+            symbols = [it["symbol"] for it in listing.get("items", []) if it.get("symbol")]
+        except Exception as e:  # noqa: BLE001
+            print(f"[OpenGenes] gene-list fetch FAILED ({e}); using cache only.", flush=True)
+            symbols = list(cache.keys())
+
+    to_fetch = [s for s in symbols if s not in cache] if healthy else []
+    print(f"[OpenGenes] {len(symbols)} genes total; {len(to_fetch)} to fetch, {len(cache)} cached. "
+          f"Gentle crawl (4 workers + backoff) ...", flush=True)
+
+    lock = threading.Lock()
+    state = {"done": 0, "fails": 0, "consec_fail": 0, "aborted": False}
 
     def one(sym):
         d = _get(f"{OG_BASE}/gene/{sym}")
@@ -133,18 +166,45 @@ def fetch_opengenes() -> list[dict]:
             })
         return out
 
-    with ThreadPoolExecutor(max_workers=16) as ex:
-        futs = {ex.submit(one, s): s for s in symbols}
-        done = 0
-        for fut in as_completed(futs):
-            done += 1
-            if done % 400 == 0:
-                print(f"  ... {done}/{len(symbols)}", flush=True)
-            try:
-                rows.extend(fut.result())
-            except Exception:  # noqa: BLE001
-                fails += 1
-    print(f"[OpenGenes] mouse lifespan experiments: {len(rows)} (failed gene fetches: {fails})", flush=True)
+    def save_cache():
+        tmp = OG_CACHE + ".tmp"
+        json.dump(cache, open(tmp, "w"))
+        os.replace(tmp, OG_CACHE)
+
+    if to_fetch and not state["aborted"]:
+        with ThreadPoolExecutor(max_workers=4) as ex:
+            futs = {ex.submit(one, s): s for s in to_fetch}
+            for fut in as_completed(futs):
+                sym = futs[fut]
+                with lock:
+                    state["done"] += 1
+                    try:
+                        cache[sym] = fut.result()
+                        state["consec_fail"] = 0
+                    except Exception:  # noqa: BLE001
+                        state["fails"] += 1
+                        state["consec_fail"] += 1
+                    if state["done"] % 200 == 0:
+                        print(f"  ... {state['done']}/{len(to_fetch)} "
+                              f"(fails {state['fails']})", flush=True)
+                        save_cache()
+                    # circuit breaker: API is clearly down/blocking — stop hammering it
+                    if state["consec_fail"] >= 25 and not state["aborted"]:
+                        state["aborted"] = True
+                        print(f"[OpenGenes] ABORTING crawl after {state['consec_fail']} consecutive "
+                              f"failures — API unreachable. Cached {len(cache)} genes so far; "
+                              f"re-run later to resume.", flush=True)
+                        for f2 in futs:
+                            f2.cancel()
+        save_cache()
+
+    # build rows from everything we have in cache
+    rows: list[dict] = []
+    for recs in cache.values():
+        rows.extend(recs)
+    status = "PARTIAL (API throttled — re-run to complete)" if state["aborted"] else "complete"
+    print(f"[OpenGenes] mouse lifespan experiments: {len(rows)} from {len(cache)} genes "
+          f"[{status}] (failed fetches: {state['fails']})", flush=True)
     return rows
 
 
