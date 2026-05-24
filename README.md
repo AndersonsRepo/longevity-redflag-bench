@@ -68,7 +68,7 @@ vLLM-served `longevity-llm`, **28K** context, ignores JSON → end prompts with 
 - **Stubs (`# TODO`):** `src/data/impc.py` + `gen_impc_viability` (LB-0142, blocked on IMPC re-pull),
   `gen_mgi_genotype_pairwise` (LB-0146), baselines, the per-category sampler, Hallmark-of-Aging tags.
 
-## Extra credit: Reasoning trace scorer
+## Extra credit: Reasoning trace scorer &nbsp;|&nbsp; [Live Dashboard](https://mouse-pathfinder-data.lovable.app)
 
 Beyond final-answer accuracy, we built a **programmatic reasoning scorer** (`judge/`) that grades the *quality* of the model's `<think>` trace against real biological ground truth. Three checks run instantly with no API key; one optional check uses Claude Haiku (~$0.001/call).
 
