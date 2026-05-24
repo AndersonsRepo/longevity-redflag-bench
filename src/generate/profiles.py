@@ -74,6 +74,24 @@ def render_user_message(row: GenotypeRow, condition: str) -> str:
 _PAIRWISE_QUESTION = ("Question: Which strain's mutation is more likely to EXTEND lifespan "
                       "(promote longevity / slow aging)?\n\nOptions: A. Strain A  B. Strain B")
 
+_TERNARY_QUESTION = ("Question: What is this genotype's most likely effect on lifespan?\n\n"
+                     "Options: A. Shortens lifespan (premature death / reduced survival)  "
+                     "B. No clear effect on lifespan  "
+                     "C. Extends lifespan (promotes longevity / slows aging)")
+
+
+def render_ternary_message(row: GenotypeRow, condition: str) -> str:
+    """LB-0154 ternary: shortens / no-effect / extends. Same ablation lever as the binary
+    (gene+alleles shown in geno_pheno, withheld in pheno_only). gold letter set by the builder."""
+    if condition not in CONDITIONS:
+        raise ValueError(f"unknown condition {condition!r}; expected one of {CONDITIONS}")
+    if condition == "geno_pheno":
+        head = "A laboratory mouse strain carries the following mutation:\n\n" + _genotype_block(row)
+    else:
+        zyg = _ZYGOSITY_PHRASE.get(row.zygosity, "a mutation")
+        head = f"A laboratory mouse strain carries {zyg} in an undisclosed gene."
+    return f"{head}\n\n{_phenotype_block(row)}\n\n{_TERNARY_QUESTION}\n\n{_ANSWER_LINE}"
+
 
 def _strain_block(label: str, row: GenotypeRow, condition: str) -> str:
     """One strain's block inside a pairwise prompt; gene/allele shown only in geno_pheno."""

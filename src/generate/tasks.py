@@ -43,12 +43,15 @@ from schema.records import (
 from src import config
 from src.data.mgi import GenotypeRow
 from src.generate.profiles import (
-    CONDITIONS, profile_id_for, render_pairwise_message, render_user_message,
+    CONDITIONS, profile_id_for, render_pairwise_message, render_ternary_message, render_user_message,
 )
 
 __all__ = ["CONDITIONS", "make_survival_record", "make_pairwise_lifespan_record",
-           "gen_mgi_survival_binary", "gen_impc_viability",
+           "make_ternary_record", "gen_mgi_survival_binary", "gen_impc_viability",
            "gen_mgi_genotype_pairwise", "ALL_GENERATORS"]
+
+# ternary gold-letter map (fixed order A/B/C)
+TERNARY_CLASS = {"shortens": "A", "no_effect": "B", "extends": "C"}
 
 
 def _select(rows: List[GenotypeRow], n: int, seed: int, test_frac: float = 0.2) -> List[GenotypeRow]:
@@ -165,6 +168,35 @@ def make_pairwise_lifespan_record(row_a: GenotypeRow, row_b: GenotypeRow, gold: 
         task="mgi_lifespan_pairwise",
         has_reasoning=True,
         metadata=meta,
+    )
+
+
+def make_ternary_record(row: GenotypeRow, klass: str, condition: str, split: str) -> BenchmarkRecord:
+    """LB-0154 [ternary]. Genotype + phenotype -> lifespan effect: shortens / no_effect / extends.
+    `klass` in {shortens, no_effect, extends}; gold = its letter (A/B/C). Adds the neutral option the
+    scientist asked for + tests the rare 'extends' direction. Rendered in one ablation `condition`."""
+    if klass not in TERNARY_CLASS:
+        raise ValueError(f"klass must be one of {list(TERNARY_CLASS)}")
+    gold = TERNARY_CLASS[klass]
+    meta = {
+        "genotype_id": row.genotype_id, "genes": row.genes, "zygosity": row.zygosity,
+        "expression_direction": row.expression_direction, "condition": condition,
+        "ternary_class": klass, "gold": gold,
+        "mortality_category": row.mortality_category, "lethality_stage": row.lethality_stage,
+        "is_famous": row.is_famous, "split": split, "base_profile_id": profile_id_for(row),
+        "n_genes": len(row.genes), "n_phenotype_terms": len(row.phenotype_terms),
+        "pmids": row.pmids, "source": "MGI",
+    }
+    return BenchmarkRecord(
+        lb_id="LB-0154", pool="mgi_lifespan_ternary",
+        display_name="MGI Lifespan Direction / Ternary", display_group="Mouse Longevity (MGI)",
+        domain=Domain.genetics, format=Format.ternary, metric=Metric.accuracy, units=None,
+        messages=[
+            ChatMessage(role=Role.system, content=SYSTEM_PROMPT),
+            ChatMessage(role=Role.user, content=render_ternary_message(row, condition)),
+            ChatMessage(role=Role.assistant, content=gold),
+        ],
+        task="mgi_lifespan_ternary", has_reasoning=True, metadata=meta,
     )
 
 

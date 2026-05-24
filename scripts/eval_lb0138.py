@@ -86,7 +86,7 @@ def main():
             "gold": gold, "pred": pred, "correct": (pred == gold),
             "parse_failure": pa.failure_type, "parse_path": pa.path,
             "ok": ok, "error": err, "latency_s": round(lat, 1),
-            "raw": content[:500],
+            "raw": content,        # FULL model reply (not truncated) — for the judges / evidence
         }
 
     with ThreadPoolExecutor(max_workers=args.workers) as ex:
