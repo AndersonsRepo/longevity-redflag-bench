@@ -34,6 +34,7 @@ Contamination (famous/obscure, gene-only, n=60): impairs-YES Longevity 0.67/0.10
 - `results/figures/delta_recall_forest.svg` — **hero**: forest plot of Δ_recall with 95% CIs + zero line
   (only Longevity-controlled excludes zero).
 - `results/figures/accuracy_bars.svg` — grouped accuracy bars (model × condition) with 95% CIs + chance line.
+- `results/figures/mcnemar_tables.svg` — McNemar paired-test results table (discordant b/c, exact p, significance highlighted).
 - Suggested deck flow: (1) the question/ablation, (2) forest plot, (3) accuracy bars, (4) the
   9B-ties-frontier result, (5) contamination evidence, (6) caveats + next steps (ternary, scale-N).
 

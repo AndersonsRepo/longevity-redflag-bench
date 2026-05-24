@@ -91,7 +91,42 @@ def main():
     fig.savefig(os.path.join(FIG, "accuracy_bars.svg"))
     plt.close(fig)
 
-    print(f"wrote results/stats.json + {FIG}/delta_recall_forest.{{png,svg}} + accuracy_bars.{{png,svg}}")
+    # --- Figure 3: McNemar results table (paired tests) ---
+    L = sc.load_runs("longevity", "controlled")[0]
+    C = sc.load_runs("claude", "controlled")[0]
+    tbl_rows = []
+    for label, key in [("Longevity Δ_recall (controlled)", "longevity_controlled"),
+                       ("Claude Δ_recall (controlled)", "claude_controlled"),
+                       ("Longevity Δ_recall (random)", "longevity_random"),
+                       ("Longevity Δ_recall (pairwise)", "longevity_pairwise")]:
+        d = data[key]["delta_recall"]
+        tbl_rows.append([label, d["mcnemar_b_genoOnly"], d["mcnemar_c_phenoOnly"],
+                         f"{d['mcnemar_p']:.3f}", "yes" if d["mcnemar_p"] < 0.05 else "no"])
+    for cond, clabel in [("geno_pheno", "gene-shown"), ("pheno_only", "gene-hidden")]:
+        gids = sorted({g for (g, c) in L if c == cond} & {g for (g, c) in C if c == cond})
+        pairs = [(L[(g, cond)], C[(g, cond)]) for g in gids]
+        b, c, p = sc.mcnemar(pairs)
+        tbl_rows.append([f"Longevity vs Claude ({clabel})", b, c, f"{p:.3f}", "yes" if p < 0.05 else "no"])
+    fig, ax = plt.subplots(figsize=(8.5, 2.8))
+    ax.axis("off")
+    t = ax.table(cellText=tbl_rows, colLabels=["comparison", "b", "c", "exact p", "sig (p<.05)"],
+                 loc="center", cellLoc="center", colWidths=[0.42, 0.1, 0.1, 0.14, 0.14])
+    t.auto_set_font_size(False)
+    t.set_fontsize(9)
+    t.scale(1, 1.6)
+    for j in range(5):
+        t[0, j].set_facecolor("#2c6fbb")
+        t[0, j].set_text_props(color="white", fontweight="bold")
+    for i, r in enumerate(tbl_rows, start=1):
+        if r[4] == "yes":
+            for j in range(5):
+                t[i, j].set_facecolor("#d9ead3")
+    ax.set_title("McNemar's paired test — b/c = discordant counts; green = significant", fontsize=11)
+    fig.savefig(os.path.join(FIG, "mcnemar_tables.png"))
+    fig.savefig(os.path.join(FIG, "mcnemar_tables.svg"))
+    plt.close(fig)
+
+    print(f"wrote results/stats.json + {FIG}/ {{delta_recall_forest, accuracy_bars, mcnemar_tables}}.{{png,svg}}")
 
 
 if __name__ == "__main__":
