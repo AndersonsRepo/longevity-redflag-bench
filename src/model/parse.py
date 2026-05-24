@@ -20,6 +20,8 @@ class ParsedAnswer:
     answer: object                 # "A".. | float | list[str] | None
     failure_type: Optional[str]    # None=ok | "malformed" | "refusal" | "missing"
     raw: str
+    path: Optional[str] = None     # how a letter was extracted: explicit|leading|fallback_last|none
+                                   # ("fallback_last" = a low-confidence guess; audit it — verify_parsing.py)
 
     @property
     def ok(self) -> bool:
@@ -35,19 +37,23 @@ def parse(raw: str, fmt: Format) -> ParsedAnswer:
         return ParsedAnswer(None, "missing", raw)
     if _REFUSAL.search(text) and len(text) < 240:
         return ParsedAnswer(None, "refusal", raw)
+    path = None
     try:
         if fmt == Format.regression:
-            ans = _number(text)
+            ans, path = _number(text), "numeric"
         elif fmt == Format.generation:
-            ans = _set(text)
+            ans, path = _set(text), "set"
         else:  # binary | multiclass | ternary | pairwise -> option letter
-            ans = _letter(text)
+            ans, path = _letter(text)
     except Exception:
-        return ParsedAnswer(None, "malformed", raw)
-    return ParsedAnswer(ans, None if ans is not None else "malformed", raw)
+        return ParsedAnswer(None, "malformed", raw, path)
+    return ParsedAnswer(ans, None if ans is not None else "malformed", raw, path)
 
 
-def _letter(text: str) -> Optional[str]:
+def _letter(text: str):
+    """Returns (letter|None, path). path records HOW it was found so a low-confidence
+    fallback guess is never silent — verified 2026-05-24 (results/parse-audit.md): the
+    fallback fires 0% across both models; Claude=explicit, Longevity-LLM=leading."""
     # The answer follows the thinking block; restrict to the region AFTER the last
     # </think> so stray "Patient A/B" mentions inside the reasoning can't be grabbed
     # (fixes the first-match mis-grade — vault ERR-20260523-002).
@@ -55,14 +61,14 @@ def _letter(text: str) -> Optional[str]:
     # explicit "Answer: B" / "(B)" in the answer region
     m = re.search(r"\b(?:answer|option)\s*[:=]?\s*\(?([A-E])\)?", region, re.I)
     if m:
-        return m.group(1).upper()
+        return m.group(1).upper(), "explicit"
     # leading bare letter
     m = re.match(r"\(?([A-E])\)?[\.\):]?\b", region.strip(), re.I)
     if m:
-        return m.group(1).upper()
-    # fallback: the LAST standalone A-E in the answer region (the verdict comes last)
+        return m.group(1).upper(), "leading"
+    # fallback: the LAST standalone A-E in the answer region (LOW CONFIDENCE — a guess)
     matches = re.findall(r"\b([A-E])\b", region)
-    return matches[-1].upper() if matches else None
+    return (matches[-1].upper(), "fallback_last") if matches else (None, "none")
 
 
 def _number(text: str) -> Optional[float]:

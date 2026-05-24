@@ -1,0 +1,27 @@
+{
+  "longevity": {
+    "n": 60,
+    "api_errors": 0,
+    "path_counts": {
+      "leading": 57,
+      "explicit": 3
+    },
+    "explicit_rate": 0.05,
+    "fallback_rate": 0.0,
+    "none_rate": 0.0,
+    "answer_keyword_rate": 0.05,
+    "fallback_disagreements": 0
+  },
+  "claude": {
+    "n": 60,
+    "api_errors": 0,
+    "path_counts": {
+      "explicit": 60
+    },
+    "explicit_rate": 1.0,
+    "fallback_rate": 0.0,
+    "none_rate": 0.0,
+    "answer_keyword_rate": 1.0,
+    "fallback_disagreements": 0
+  }
+}

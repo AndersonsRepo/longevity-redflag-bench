@@ -84,7 +84,8 @@ def main():
             "mortality_category": meta.get("mortality_category"),
             "lethality_stage": meta.get("lethality_stage"),
             "gold": gold, "pred": pred, "correct": (pred == gold),
-            "parse_failure": pa.failure_type, "ok": ok, "error": err, "latency_s": round(lat, 1),
+            "parse_failure": pa.failure_type, "parse_path": pa.path,
+            "ok": ok, "error": err, "latency_s": round(lat, 1),
             "raw": content[:500],
         }
 
