@@ -41,7 +41,11 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from src import config
-from src.model.client import chat
+from src.model.client import chat, chat_claude
+
+# set in main() from --backend/--claude-model so ask_gene can pick the model
+BACKEND = "longevity"
+CLAUDE_MODEL = "claude-sonnet-4-6"
 
 DATA = config.DATA_DIR
 MGI_LABELED = os.path.join(DATA, "mgi_labeled.csv")
@@ -136,8 +140,9 @@ def ask_gene(symbol: str) -> tuple[str | None, str]:
             f"Question: Does this knockout impair survival (cause premature death or a "
             f"shortened lifespan)?\n\nOptions: A. Yes  B. No\n\n"
             f"Reason briefly, then on the FINAL line output exactly: Answer: <letter>")
-    r = chat([{"role": "system", "content": SYS_PROMPT},
-              {"role": "user", "content": user}], max_tokens=500)
+    msgs = [{"role": "system", "content": SYS_PROMPT}, {"role": "user", "content": user}]
+    r = (chat_claude(msgs, model=CLAUDE_MODEL, max_tokens=1500) if BACKEND == "claude"
+         else chat(msgs, max_tokens=500))
     if not r.ok:
         return None, f"ERROR: {r.error}"
     return parse_letter(r.content), r.content
@@ -171,10 +176,15 @@ def main():
     ap.add_argument("--n", type=int, default=40, help="genes per group")
     ap.add_argument("--seed", type=int, default=config.SEED)
     ap.add_argument("--workers", type=int, default=3)
+    ap.add_argument("--backend", choices=["longevity", "claude"], default="longevity")
+    ap.add_argument("--claude-model", default="claude-sonnet-4-6")
     ap.add_argument("--tag", default="", help="suffix for output files (keeps prior runs)")
     args = ap.parse_args()
 
-    global OUT_CSV, OUT_JSON
+    global OUT_CSV, OUT_JSON, BACKEND, CLAUDE_MODEL
+    BACKEND, CLAUDE_MODEL = args.backend, args.claude_model
+    if not args.tag and args.backend == "claude":
+        args.tag = "claude"          # keep Claude outputs distinct from the Longevity-LLM run
     if args.tag:
         OUT_CSV = os.path.join(DATA, f"contamination_probe_results_{args.tag}.csv")
         OUT_JSON = os.path.join(DATA, f"contamination_probe_summary_{args.tag}.json")

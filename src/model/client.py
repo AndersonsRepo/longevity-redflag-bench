@@ -61,3 +61,34 @@ def chat(
             if attempt < retries - 1:
                 time.sleep(backoff[min(attempt, len(backoff) - 1)])
     return ChatResult(content="", latency_s=0.0, ok=False, error=last_err)
+
+
+def chat_claude(
+    messages: List[dict],
+    *,
+    model: str = "claude-sonnet-4-6",
+    temperature: float = 0.0,
+    max_tokens: int = 600,
+    retries: int = 3,
+    backoff=(5, 15, 45),
+) -> ChatResult:
+    """Claude SOTA arm (Anthropic Messages API). Same ChatResult contract as chat(); the system
+    turn is hoisted to `system=`. Used by the eval harness + contamination probe for the 2x2."""
+    from anthropic import Anthropic
+
+    client = Anthropic(api_key=config.require("ANTHROPIC_API_KEY", config.ANTHROPIC_API_KEY))
+    system = "\n".join(m["content"] for m in messages if m["role"] == "system")
+    convo = [{"role": m["role"], "content": m["content"]} for m in messages if m["role"] != "system"]
+    last_err = None
+    for attempt in range(retries):
+        t0 = time.time()
+        try:
+            resp = client.messages.create(model=model, max_tokens=max_tokens,
+                                          temperature=temperature, system=system, messages=convo)
+            txt = "".join(b.text for b in resp.content if getattr(b, "type", "") == "text")
+            return ChatResult(content=txt, latency_s=time.time() - t0, ok=True)
+        except Exception as e:  # noqa: BLE001
+            last_err = str(e)
+            if attempt < retries - 1:
+                time.sleep(backoff[min(attempt, len(backoff) - 1)])
+    return ChatResult(content="", latency_s=0.0, ok=False, error=last_err)
