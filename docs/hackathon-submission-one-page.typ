@@ -36,7 +36,7 @@
 
 = LongevityBench-Mouse
 #text(size: 9pt, fill: soft)[A mouse-genetics benchmark for testing whether aging LLMs reason from phenotype evidence or lean on memorized gene names.]
-#text(size: 7.6pt, fill: accent)[Live dashboard: #link("https://mouse-pathfinder-data.lovable.app")[mouse-pathfinder-data.lovable.app]]
+#text(size: 7.6pt, fill: accent)[Live dashboard: #link("https://mouse-pathfinder-data.lovable.app")[mouse-pathfinder-data.lovable.app] #h(0.5em)·#h(0.5em) Code: #link("https://github.com/AndersonsRepo/longevity-redflag-bench")[github.com/AndersonsRepo/longevity-redflag-bench]]
 
 #v(0.06in)
 #grid(columns: (1fr, 1fr, 1fr, 1fr), gutter: 5pt)[
@@ -129,5 +129,6 @@
     `results/single_gene/comparison.md`, `results/ternary_results.md`,
     `testing/new_prompts_results.json`, `judge/score_trace.py`, and the live Lovable dashboard
     (#link("https://mouse-pathfinder-data.lovable.app")[mouse-pathfinder-data.lovable.app]) backed by `results/dashboard_data.json`.
+    Full code + data: #link("https://github.com/AndersonsRepo/longevity-redflag-bench")[github.com/AndersonsRepo/longevity-redflag-bench].
   ]
 ]
