@@ -55,6 +55,7 @@ def main():
     ap.add_argument("--n-per-condition", type=int, default=20)
     ap.add_argument("--workers", type=int, default=8)
     ap.add_argument("--max-tokens", type=int, default=600)
+    ap.add_argument("--out", default=None, help="output path (default outputs/eval_lb0138_<model>.jsonl)")
     args = ap.parse_args()
 
     records = [json.loads(l) for l in open(args.jsonl, encoding="utf-8") if l.strip()]
@@ -89,7 +90,7 @@ def main():
     with ThreadPoolExecutor(max_workers=args.workers) as ex:
         results = list(ex.map(run_one, items))
 
-    outp = os.path.join(config.OUTPUTS_DIR, f"eval_lb0138_{args.model}.jsonl")
+    outp = args.out or os.path.join(config.OUTPUTS_DIR, f"eval_lb0138_{args.model}.jsonl")
     with open(outp, "w", encoding="utf-8") as f:
         for r in results:
             f.write(json.dumps(r) + "\n")
