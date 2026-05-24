@@ -1,0 +1,40 @@
+{
+  "group": "eval_longevity_controlled",
+  "n_runs": 3,
+  "geno_pheno": {
+    "mean": 0.7639,
+    "std": 0.0275,
+    "n_runs": 3,
+    "runs": [
+      0.7583,
+      0.8,
+      0.7333
+    ]
+  },
+  "pheno_only": {
+    "mean": 0.675,
+    "std": 0.0068,
+    "n_runs": 3,
+    "runs": [
+      0.6667,
+      0.6833,
+      0.675
+    ]
+  },
+  "delta_recall": {
+    "mean": 0.0889,
+    "std": 0.0239,
+    "n_runs": 3,
+    "runs": [
+      0.0917,
+      0.1167,
+      0.0583
+    ]
+  },
+  "per_item_flip_rate": 0.1083,
+  "source_runs": [
+    "eval_longevity_controlled_run1.jsonl",
+    "eval_longevity_controlled_run2.jsonl",
+    "eval_longevity_controlled_run3.jsonl"
+  ]
+}

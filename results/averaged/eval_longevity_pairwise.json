@@ -1,0 +1,40 @@
+{
+  "group": "eval_longevity_pairwise",
+  "n_runs": 3,
+  "geno_pheno": {
+    "mean": 0.8782,
+    "std": 0.0091,
+    "n_runs": 3,
+    "runs": [
+      0.8846,
+      0.8654,
+      0.8846
+    ]
+  },
+  "pheno_only": {
+    "mean": 0.8333,
+    "std": 0.024,
+    "n_runs": 3,
+    "runs": [
+      0.8269,
+      0.8077,
+      0.8654
+    ]
+  },
+  "delta_recall": {
+    "mean": 0.0449,
+    "std": 0.0181,
+    "n_runs": 3,
+    "runs": [
+      0.0577,
+      0.0577,
+      0.0192
+    ]
+  },
+  "per_item_flip_rate": 0.0481,
+  "source_runs": [
+    "eval_longevity_pairwise_run1.jsonl",
+    "eval_longevity_pairwise_run2.jsonl",
+    "eval_longevity_pairwise_run3.jsonl"
+  ]
+}

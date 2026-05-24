@@ -10,7 +10,29 @@ regenerable)** — this doc is the source of truth for what each one is.
 - Eval command: `python scripts/eval_lb0138.py --model longevity --jsonl <prompts> --out <eval> --n-per-condition <N>`
   (the script scores any binary/pairwise letter task, not just LB-0138.)
 
-## Tasks
+## ⭐ Canonical results — 3-run averaged (mean ± std) — USE THESE in the writeup
+Single-run numbers are noisy (**~11% per-item flip at temp=0**), so cite these averaged figures.
+Source files: **`results/averaged_stats.md`** + **`results/averaged/*.json`** (from
+`scripts/aggregate_runs.py` over `outputs/eval_<model>_<task>_run{1,2,3}.jsonl`).
+
+| task | model | gene-shown | gene-hidden | Δ_recall | result file |
+|---|---|---|---|---|---|
+| controlled | Longevity-LLM | 0.764 ± 0.028 | 0.675 ± 0.007 | **0.089 ± 0.024** | `results/averaged/eval_longevity_controlled.json` |
+| controlled | Claude Sonnet 4.6 | 0.811 ± 0.004 | 0.739 ± 0.032 | **0.072 ± 0.028** | `results/averaged/eval_claude_controlled.json` |
+| random | Longevity-LLM | 0.753 ± 0.004 | 0.744 ± 0.010 | 0.008 ± 0.007 | `results/averaged/eval_longevity_random.json` |
+| pairwise | Longevity-LLM | 0.878 ± 0.009 | 0.833 ± 0.024 | 0.045 ± 0.018 | `results/averaged/eval_longevity_pairwise.json` |
+
+(Claude random/pairwise = single run — `results/eval_claude_{random,pairwise}.json`; Claude is steadier than the vLLM endpoint.)
+
+**Holds after averaging:** controlled Δ_recall (~0.08) ≫ random (~0.008) → curation exposes recall;
+Longevity (0.089) ≈ Claude (0.072) within ±std → model-agnostic. NOTE single runs overstated the
+controlled Δ_recall (0.125/0.133); the **averaged ~0.07–0.09 is the honest figure**.
+
+**Contamination n=60 (≥50/group):** `results/contamination_n60_longevity-llm.json`,
+`results/contamination_n60_claude.json` — impairs-YES famous/obscure = Longevity **0.67/0.10**,
+Claude **0.83/0.33** (the recall gap holds at the larger n).
+
+## Tasks (single-run, superseded by the averaged table above for the binary/pairwise tasks)
 
 ### LB-0138 — survival binary ("does this genotype impair survival? Yes/No")
 Positive = `death` (impairs, gold A); negative = `none` (gold B). Metric: balanced accuracy / F1 /

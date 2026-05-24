@@ -1,0 +1,40 @@
+{
+  "group": "eval_claude_controlled",
+  "n_runs": 3,
+  "geno_pheno": {
+    "mean": 0.8111,
+    "std": 0.0039,
+    "n_runs": 3,
+    "runs": [
+      0.8167,
+      0.8083,
+      0.8083
+    ]
+  },
+  "pheno_only": {
+    "mean": 0.7389,
+    "std": 0.0322,
+    "n_runs": 3,
+    "runs": [
+      0.7833,
+      0.7083,
+      0.725
+    ]
+  },
+  "delta_recall": {
+    "mean": 0.0722,
+    "std": 0.0283,
+    "n_runs": 3,
+    "runs": [
+      0.0333,
+      0.1,
+      0.0833
+    ]
+  },
+  "per_item_flip_rate": 0.1083,
+  "source_runs": [
+    "eval_claude_controlled_run1.jsonl",
+    "eval_claude_controlled_run2.jsonl",
+    "eval_claude_controlled_run3.jsonl"
+  ]
+}
