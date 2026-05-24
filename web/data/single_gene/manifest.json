@@ -1,0 +1,22 @@
+{
+  "description": "Epistasis-controlled rebuild of the CONTROLLED survival-binary task (LB-0138) with MULTI-GENE and transgene genotypes REMOVED — single-gene genotypes only. Same controlled curation and 120-genotype structure as the mixed multi-gene set, both ablation conditions. Live eval run 2026-05-24. Record schema and compute recipe are identical to ../manifest.json.",
+  "task": "LB-0138 survival binary, controlled, single-gene only",
+  "prompts_file": "longevity_controlled_singlegene.jsonl",
+  "results_file": "results.json",
+  "headline": {
+    "Longevity-LLM": { "geneShown": 0.708, "geneHidden": 0.692, "deltaRecall": 0.017, "ci95": [-0.075, 0.108], "mcnemarP": 0.8555, "aggregation": "3-run majority vote" },
+    "Claude Sonnet 4.6": { "geneShown": 0.750, "geneHidden": 0.700, "deltaRecall": 0.050, "ci95": [-0.033, 0.125], "mcnemarP": 0.3075, "aggregation": "single run" },
+    "baseline_multigene": { "Longevity-LLM": 0.100, "Claude Sonnet 4.6": 0.083 },
+    "finding": "Controlling for epistasis (single-gene only) shrinks Delta_recall toward zero and removes its significance (Longevity 0.100→0.017, p 0.017→0.86; Claude 0.083→0.050). Absolute accuracy also drops (single-gene genotypes are harder). Consistent with single-gene obscure genotypes being genuinely retrieval-resistant — the gene name carries little recallable signal — with the multi-gene cases having carried most of the recall effect. CAVEAT: n=120, underpowered; the single-gene CIs overlap the multi-gene baseline, so the shift is SUGGESTIVE, not significant at this n."
+  },
+  "files": [
+    { "file": "eval_longevity_controlled_singlegene_run1.jsonl", "model": "Longevity-LLM",     "model_short": "longevity", "split": "controlled_singlegene", "run": 1,    "pairs": 120, "lines": 240 },
+    { "file": "eval_longevity_controlled_singlegene_run2.jsonl", "model": "Longevity-LLM",     "model_short": "longevity", "split": "controlled_singlegene", "run": 2,    "pairs": 120, "lines": 240 },
+    { "file": "eval_longevity_controlled_singlegene_run3.jsonl", "model": "Longevity-LLM",     "model_short": "longevity", "split": "controlled_singlegene", "run": 3,    "pairs": 120, "lines": 240 },
+    { "file": "eval_claude_controlled_singlegene.jsonl",         "model": "Claude Sonnet 4.6", "model_short": "claude",    "split": "controlled_singlegene", "run": null, "pairs": 120, "lines": 240 }
+  ],
+  "groups": [
+    { "model": "Longevity-LLM",     "split": "controlled_singlegene", "runs": [1, 2, 3], "aggregations": ["majority", "run1", "run2", "run3", "mean"] },
+    { "model": "Claude Sonnet 4.6", "split": "controlled_singlegene", "runs": [],        "aggregations": ["single"] }
+  ]
+}

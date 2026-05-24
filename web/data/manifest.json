@@ -1,0 +1,70 @@
+{
+  "description": "Per-item evaluation outputs for the LongevityBench-Mouse benchmark (Caltech Longevity Hackathon 2026, Track 01). Each line of every .jsonl file is one evaluated benchmark item. The frontend loads these and recomputes accuracy / Delta_recall / McNemar client-side — nothing is pre-baked.",
+  "record_schema": {
+    "genotype_id": "string — stable key; pairs the SAME item across the two conditions (and across runs).",
+    "condition": "geno_pheno = gene name SHOWN | pheno_only = gene name HIDDEN",
+    "mortality_category": "death | none | reversed (curator-derived label class)",
+    "lethality_stage": "adult_aging | developmental | ... (when the death occurs)",
+    "gold": "correct answer letter (A/B)",
+    "pred": "model's parsed answer letter (A/B)",
+    "correct": "boolean — pred === gold",
+    "parse_failure": "null when extraction succeeded",
+    "ok": "boolean — request succeeded",
+    "error": "null when no request error",
+    "latency_s": "number — seconds for the model call",
+    "raw": "string — the model's FULL response (reasoning trace + final 'Answer: X' line)"
+  },
+  "how_to_compute": {
+    "accuracy": "mean(correct) over items of a given condition",
+    "delta_recall": "accuracy(geno_pheno) - accuracy(pheno_only)  [chance ~= 0.50 on the balanced binary]",
+    "mcnemar": "pair items across conditions by genotype_id; b = correct-when-shown & wrong-when-hidden, c = the reverse; exact two-sided binomial p on min(b,c) vs Binom(b+c, 0.5)",
+    "default_aggregation": "3-run majority vote: per (genotype_id, condition) majority-vote `correct` across the run files, THEN compute. Also support per-run and simple-mean modes.",
+    "note": "Majority-vote default lands near the authoritative headline numbers in results/stats.json; per-run and random-split modes will differ due to temp-0 non-determinism (~7.5% per-item flips). That is expected."
+  },
+  "files": [
+    { "file": "eval_longevity_controlled_run1.jsonl", "model": "Longevity-LLM",     "model_short": "longevity", "split": "controlled", "run": 1,    "pairs": 120, "lines": 240 },
+    { "file": "eval_longevity_controlled_run2.jsonl", "model": "Longevity-LLM",     "model_short": "longevity", "split": "controlled", "run": 2,    "pairs": 120, "lines": 240 },
+    { "file": "eval_longevity_controlled_run3.jsonl", "model": "Longevity-LLM",     "model_short": "longevity", "split": "controlled", "run": 3,    "pairs": 120, "lines": 240 },
+    { "file": "eval_longevity_random_run1.jsonl",     "model": "Longevity-LLM",     "model_short": "longevity", "split": "random",     "run": 1,    "pairs": 120, "lines": 240 },
+    { "file": "eval_longevity_random_run2.jsonl",     "model": "Longevity-LLM",     "model_short": "longevity", "split": "random",     "run": 2,    "pairs": 120, "lines": 240 },
+    { "file": "eval_longevity_random_run3.jsonl",     "model": "Longevity-LLM",     "model_short": "longevity", "split": "random",     "run": 3,    "pairs": 120, "lines": 240 },
+    { "file": "eval_longevity_pairwise_run1.jsonl",   "model": "Longevity-LLM",     "model_short": "longevity", "split": "pairwise",   "run": 1,    "pairs": 52,  "lines": 104 },
+    { "file": "eval_longevity_pairwise_run2.jsonl",   "model": "Longevity-LLM",     "model_short": "longevity", "split": "pairwise",   "run": 2,    "pairs": 52,  "lines": 104 },
+    { "file": "eval_longevity_pairwise_run3.jsonl",   "model": "Longevity-LLM",     "model_short": "longevity", "split": "pairwise",   "run": 3,    "pairs": 52,  "lines": 104 },
+    { "file": "eval_claude_controlled_run1.jsonl",    "model": "Claude Sonnet 4.6", "model_short": "claude",    "split": "controlled", "run": 1,    "pairs": 120, "lines": 240 },
+    { "file": "eval_claude_controlled_run2.jsonl",    "model": "Claude Sonnet 4.6", "model_short": "claude",    "split": "controlled", "run": 2,    "pairs": 120, "lines": 240 },
+    { "file": "eval_claude_controlled_run3.jsonl",    "model": "Claude Sonnet 4.6", "model_short": "claude",    "split": "controlled", "run": 3,    "pairs": 120, "lines": 240 },
+    { "file": "eval_claude_random.jsonl",             "model": "Claude Sonnet 4.6", "model_short": "claude",    "split": "random",     "run": null, "pairs": 120, "lines": 240 },
+    { "file": "eval_claude_pairwise.jsonl",           "model": "Claude Sonnet 4.6", "model_short": "claude",    "split": "pairwise",   "run": null, "pairs": 52,  "lines": 104 }
+  ],
+  "groups": [
+    { "model": "Longevity-LLM",     "split": "controlled", "runs": [1, 2, 3], "aggregations": ["majority", "run1", "run2", "run3", "mean"] },
+    { "model": "Longevity-LLM",     "split": "random",     "runs": [1, 2, 3], "aggregations": ["majority", "run1", "run2", "run3", "mean"] },
+    { "model": "Longevity-LLM",     "split": "pairwise",   "runs": [1, 2, 3], "aggregations": ["majority", "run1", "run2", "run3", "mean"] },
+    { "model": "Claude Sonnet 4.6", "split": "controlled", "runs": [1, 2, 3], "aggregations": ["majority", "run1", "run2", "run3", "mean"] },
+    { "model": "Claude Sonnet 4.6", "split": "random",     "runs": [],        "aggregations": ["single"] },
+    { "model": "Claude Sonnet 4.6", "split": "pairwise",   "runs": [],        "aggregations": ["single"] }
+  ],
+
+  "headline": {
+    "file": "headline.json",
+    "note": "Authoritative 3-run majority-voted numbers (CIs + McNemar p) for the STATIC sections. The explorer recomputes from the per-item files above and may differ slightly (temp-0 non-determinism)."
+  },
+
+  "ternary": {
+    "note": "LB-0154 is a 3-CLASS task (A=shortens, B=no-effect, C=extends), NOT the binary Delta_recall task. Do not run the binary accuracy/Delta_recall/McNemar logic on these. Compute overall accuracy + per-class recall + macro-F1 instead; the authoritative aggregate numbers are in headline.json -> ternary. The item drawer (gold / pred / correct / raw) works unchanged — A/B/C parse the same way.",
+    "chance": 0.33,
+    "per_class": 50,
+    "runs": 1,
+    "prompts_file": "ternary_prompts.jsonl",
+    "files": [
+      { "file": "eval_longevity_ternary.jsonl", "model": "Longevity-LLM",     "model_short": "longevity", "split": "ternary", "run": null, "items": 150, "lines": 300 },
+      { "file": "eval_claude_ternary.jsonl",    "model": "Claude Sonnet 4.6", "model_short": "claude",    "split": "ternary", "run": null, "items": 150, "lines": 300 }
+    ]
+  },
+
+  "single_gene": {
+    "note": "Epistasis-controlled rebuild of the controlled binary task with MULTI-GENE genotypes removed (single-gene only). Lives under web/data/single_gene/ with its own manifest + headline once the live run finishes. Compare its Delta_recall against the (mixed) controlled numbers above.",
+    "folder": "single_gene/"
+  }
+}
