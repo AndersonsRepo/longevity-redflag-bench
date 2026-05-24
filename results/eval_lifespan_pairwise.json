@@ -1,0 +1,25 @@
+{
+  "source_file": "eval_lifespan_pairwise.jsonl",
+  "model": "longevity-llm",
+  "task": "pairwise_lifespan_extension",
+  "n_records": 104,
+  "delta_recall": 0.0577,
+  "conditions": {
+    "geno_pheno": {
+      "n": 52,
+      "parsed": 52,
+      "parse_fail": 0,
+      "accuracy": 0.8846,
+      "sensitivity_pos": 0.8519,
+      "specificity_neg": 0.92
+    },
+    "pheno_only": {
+      "n": 52,
+      "parsed": 52,
+      "parse_fail": 0,
+      "accuracy": 0.8269,
+      "sensitivity_pos": 0.7778,
+      "specificity_neg": 0.88
+    }
+  }
+}

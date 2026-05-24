@@ -1,0 +1,25 @@
+{
+  "source_file": "eval_claude_random.jsonl",
+  "model": "claude",
+  "task": "survival_binary_random",
+  "n_records": 240,
+  "delta_recall": 0.025,
+  "conditions": {
+    "geno_pheno": {
+      "n": 120,
+      "parsed": 120,
+      "parse_fail": 0,
+      "accuracy": 0.8667,
+      "sensitivity_pos": 0.8333,
+      "specificity_neg": 0.9
+    },
+    "pheno_only": {
+      "n": 120,
+      "parsed": 120,
+      "parse_fail": 0,
+      "accuracy": 0.8417,
+      "sensitivity_pos": 0.8833,
+      "specificity_neg": 0.8
+    }
+  }
+}

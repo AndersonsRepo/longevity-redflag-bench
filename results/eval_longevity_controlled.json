@@ -1,0 +1,25 @@
+{
+  "source_file": "eval_longevity_controlled.jsonl",
+  "model": "longevity-llm",
+  "task": "survival_binary_controlled",
+  "n_records": 240,
+  "delta_recall": 0.125,
+  "conditions": {
+    "geno_pheno": {
+      "n": 120,
+      "parsed": 120,
+      "parse_fail": 0,
+      "accuracy": 0.8083,
+      "sensitivity_pos": 0.85,
+      "specificity_neg": 0.7667
+    },
+    "pheno_only": {
+      "n": 120,
+      "parsed": 120,
+      "parse_fail": 0,
+      "accuracy": 0.6833,
+      "sensitivity_pos": 0.7667,
+      "specificity_neg": 0.6
+    }
+  }
+}
